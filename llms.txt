@@ -1,24 +1,35 @@
 # knowledge management
 
-> Proof of concept for the SD Worx challenge "Unlock the Knowledge Within: Find it. Understand it. Trust it." at the Tectonic Hackathon (30 September 2026). It is a single-page, offline knowledge manager. It gathers scattered HR documents (policies and update emails about payroll, vacation days and working hours) into one short summary per topic, links every statement in a summary to its source documents, and shows what a reader should check before trusting a document.
+> Proof of concept for the SD Worx challenge "Unlock the Knowledge Within: Find it. Understand it. Trust it." at the Tectonic Hackathon (30 September 2026). It is a single-page, offline knowledge manager that combines scattered HR documents into one summary per company and country, using a fixed template. When documents disagree, the summary uses the most recent approved information. For every section of a summary, the app shows all the documents that were considered, so a reader can check that the right one was used.
 
 ## Challenge it addresses
 
-SD Worx asked: "How might we turn fragmented organisational knowledge into a trusted shared resource?" The prompt describes the moment of doubt when several documents answer the same question and one is outdated, one has no owner and one applies to another country. This project targets that moment. For any question about payroll, vacation days or working hours, in a given company and country, it gives one summary and makes visible why each part of it can or cannot be trusted.
+SD Worx asked: "How might we turn fragmented organisational knowledge into a trusted shared resource?" The challenge describes the moment of doubt when several documents answer the same question and one is outdated, one has no owner and one applies to another country. This project targets that moment for employee working conditions. It gives one answer per company and country, and makes visible where each part of the answer comes from and what was set aside.
 
 ## How it works
 
-- Structure: Company -> Country -> topic summary (Payroll, Vacation days, Working hours) -> the source documents behind it.
-- Graph view (default): nodes for each company. Clicking a folder makes its children appear below it, connected by lines. Clicking a summary or document opens it in a pop-up. The "+" on a summary shows its source documents in the graph.
-- Summaries: short bullet points, each ending in numbered citations such as [1]. In the pop-up every [n] opens that source document. "Open as folder" lists all sources. Each summary states conflicts, outdated sources and unapproved drafts explicitly.
-- Trust signals per document: owner or sender, status (verified / unverified / outdated), last updated, last reviewed (flagged after 180 days), missing date, duplicate text, and conflicts with other documents.
-- Metadata is read from the document header lines "Document owner:", "Status:", "Last updated:", "Last reviewed:", "From:" and "Date:", so imported .txt files keep this information.
-- Conflict detection (heuristic, runs in the browser):
-  - It compares numbers in documents from the same company and country only, because Belgium and France may legitimately differ.
-  - It ignores dates, times, e-mail addresses and links.
-  - Two numbers are a conflict only if they share topic words (for example "minimum wage"), have the same kind of unit (money, %, days or hours, and the same period) and have different values.
-- Stale summaries: if a source is added or edited in the app after its summary was written, the summary is flagged as possibly out of date.
-- Search covers every company and country and ranks summaries first and superseded documents last. "Needs attention" lists contradicted and outdated documents and stale summaries.
+- Structure: Company -> Country -> summary "Employee Working Conditions" -> one folder per template section -> the source documents about that section.
+- Summary template (taken from a sample policy summary):
+  - a title and the line "Current approved policy — Effective <date>"
+  - seven sections: Working hours, Overtime, Vacation, Remote work, Sick leave, Meal vouchers, and Parental and special leave; each has a bold value and short detail lines
+  - a footer with the policy owner, status, effective date and version
+- In SUMMARY.txt, each section ends with a "Source:" line naming the document or documents it was taken from.
+- Resolution rule: when sources disagree, the most recent approved policy or announcement wins. Superseded documents and draft proposals are never used. The detail line records what changed and what the older source said.
+- The app sorts documents into section folders by keyword. A full policy covers every section, so it appears in all seven folders. Documents that match no section go into "Other documents".
+- Clicking a section in the summary lists every document considered for it:
+  - the document(s) used first, then the rest, newest first
+  - each document's date, status and owner
+  - the sentences where that document mentions the section
+  - the reason a document was not used: older, superseded, draft, or "newer than the one used", which is a warning
+- Trust signals per document: owner or sender, status (approved / unverified / superseded / draft), date, review date, duplicate text, and numeric conflicts with other documents.
+- Conflict detection is a heuristic that runs in the browser.
+  - It compares numbers only between documents of the same company and country, and only when both numbers are about the same template section and have the same kind of unit (money, %, days, weeks or hours, and the same period).
+  - Each number is compared with its best-matching counterpart in the other document.
+  - Dates, times, e-mail addresses and links are ignored.
+- A summary is flagged when, for a section:
+  - a newer document that is neither a draft nor superseded was not used, or
+  - a named source is missing, or
+  - a source was added or edited in the app after the summary was compiled.
 - Trustworthiness score: every opened document shows "Trust 6/10". This is a deliberate placeholder. The function trustScore() in index.html returns 6 for every document, and no scoring algorithm exists yet.
 
 ## How to run
@@ -29,27 +40,43 @@ Open index.html in a browser (Chrome or Edge recommended). There is no build ste
 
 - [index.html](index.html): the whole application (HTML, CSS and JavaScript in one file), plus the built-in example documents in a JSON block with id "seed-data".
 - [README.md](README.md): project description, how to run, and what is unfinished.
-- Company A/ and Company B/: the example documents as plain .txt files, one folder per country and topic. SUMMARY.txt in a topic folder is that topic's summary. These are the same texts as the built-in data, and "Import folder" in the app reads this layout.
+- Company A/<Country>/Employee Working Conditions/ and Company B/<Country>/Employee Working Conditions/: SUMMARY.txt plus the source documents as plain .txt files. These are the same texts as the built-in data, and "Import folder" in the app reads this layout.
 - [robots.txt](robots.txt): allows all crawlers.
 
 ## Example data (all fictional)
 
-The example data covers Company A and Company B, each with America, Belgium and France. That is 18 summaries and 44 source documents. General legal references (Belgian double holiday pay of 92%, 20 legal vacation days in Belgium, the 35-hour week in France, US overtime at 1.5 times the regular rate above 40 hours) reflect the rules as generally known. Company-specific numbers are invented.
+The example data covers Company A and Company B, each with America, Belgium and France: 6 summaries and 39 source documents. General legal references reflect the rules as generally known:
+- Belgium: a 38-hour average working week, 20 legal vacation days, and 20 days of birth leave for the co-parent.
+- France: the 35-hour week, overtime at +25% for the first 8 hours and +50% beyond, and 25 days of paternity leave.
+- United States: overtime at 1.5 times the regular rate above 40 hours (FLSA), and FMLA job protection.
 
-Some problems are planted on purpose so the trust features can be checked:
-- Conflicts that the app detects (9):
-  - Company A / America / Payroll: $48,000 vs $75,000 minimum wage. The $75,000 email is undated and unsigned.
-  - Company A / America / Vacation days: 15 vs 12 days of PTO (the 12 comes from an old 2022 email).
-  - Company A / Belgium / Vacation days: 6 vs 4 extra days (the 4 comes from a superseded 2023 policy).
-  - Company A / Belgium / Working hours: €150 vs €129.48 home working allowance (the €129.48 comes from a superseded 2021 policy).
-  - Company A / France / Payroll: payday on the 28th vs the 25th.
-  - Company A / France / Vacation days: 10 vs 11 RTT days.
-  - Company B / America / Working hours: 3 vs 4 office days.
-  - Company B / France / Payroll: 50% vs 60% mutuelle contribution.
-  - Company B / France / Working hours: 35 vs 39 hours (the 39 comes from a superseded 2019 policy).
-- One duplicate filed in the wrong folder: "FW New payroll provider.txt" under Company B / America / Working hours.
-- One policy that is still a draft: Company B / America / Time off policy.
-- Policies overdue for review (more than 180 days since the last review).
+Company-specific numbers are invented.
+
+Conflicts planted on purpose, and how each summary resolves them (the most recent source wins):
+- Company A / Belgium:
+  - Remote work: the policy (v3.1, effective 1 January 2026) says 2 days; an email of 2 March 2026 says 1 day from April. The summary uses 1 day.
+  - The superseded policy v2.4 differs on vacation (20 vs 21 days, maximum 25 vs 26), remote work (3 days) and meal vouchers (€7). It is not used.
+- Company A / France:
+  - RTT days: the policy says 10; an email of 5 January 2026 says 11. The summary uses 11.
+  - Titres-restaurant: the policy says €9; an email of 2 February 2026 says €10 from March. The summary uses €10.
+  - The superseded policy v1.3 (39 hours, 20 RTT days) is not used.
+- Company A / America:
+  - Remote work: the handbook says 2 days; an email of 10 September 2026 says 1 day from October. The summary uses 1 day.
+  - Sick days: the handbook says 5; an email of 1 April 2026 says 7. The summary uses 7.
+  - A 2022 email and the superseded handbook v3.2 give 12 PTO days. They are not used.
+  - "payrollemail.txt" (an undated, unsigned email about a $75,000 minimum wage) matches no template section. It appears under "Other documents".
+- Company B / Belgium:
+  - Meal vouchers: the policy says €7; an email of 1 June 2026 says €8 from July. The summary uses €8.
+  - Sick leave: the policy requires a certificate from the first day; an email of 15 January 2026 removes that for the first day, up to 3 times a year. The summary uses the email.
+  - A four-day-week draft is newer but is a draft. It is not used.
+- Company B / France:
+  - Remote work: the policy says 3 days; an email of 20 April 2026 says 2 days from May. The summary uses 2 days.
+  - Employer share of titres-restaurant: the policy says 50%; an email of 8 January 2026 says 60%. The summary uses 60%.
+  - A superseded 2019 document says 39 hours. It is not used.
+- Company B / America:
+  - Remote work: the handbook says 2 days; an email of 10 September 2026 says 1 day from October. The summary uses 1 day.
+  - Parental leave: the handbook gives 8 weeks to non-birthing parents; an email of 1 July 2026 gives 16 weeks to all parents. The summary uses 16 weeks.
+  - A draft PTO update (15 days) is newer but is a draft. It is not used.
 
 ## Security
 
@@ -61,7 +88,7 @@ Some problems are planted on purpose so the trust features can be checked:
 ## Limitations
 
 - The trust score is a fixed placeholder (6/10).
-- The summaries were written in advance. They are not generated when the app runs. The app flags a summary that may be out of date, but it does not rewrite it.
-- Only .txt sources are supported. There are no email, Teams, PDF or SharePoint connectors.
+- The summaries were written in advance using the resolution rule above. They are not generated when the app runs. The app checks them but does not rewrite them.
+- Only .txt sources are supported.
 - The app runs in a single browser for a single user. There is no shared backend, so there is no authentication or authorisation.
-- Conflict detection is a heuristic. It can miss contradictions that are not stated as numbers.
+- Documents are sorted into sections by keyword, and conflicts are only detected when they are stated as numbers.

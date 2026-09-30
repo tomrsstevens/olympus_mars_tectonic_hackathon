@@ -1,0 +1,34 @@
+EMPLOYEE WORKING CONDITIONS POLICY
+Company: Company A (United States)
+Policy ID: PEO-US-010
+Effective date: 1 January 2026
+Version: 4.0
+Policy owner: People Team (US)
+Status: Approved
+
+1. Purpose and Scope
+This policy establishes the general working conditions applicable to all regular employees of Company A in the United States, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.
+
+2. Working Hours
+The standard schedule is 40 hours per week, Monday to Friday, with core hours from 10:00 to 15:00. Non-exempt employees are paid overtime at 1.5 times their regular rate for hours worked over 40 in a workweek, as required by the Fair Labor Standards Act. Overtime must be approved in advance.
+
+3. Annual Leave
+Full-time employees receive 15 days of paid time off (PTO) per year, accrued each pay period. After 5 years of service this increases to 20 days per year. Up to 5 unused PTO days can be carried over to the next year.
+
+4. Remote Work
+Employees in hybrid roles may work remotely up to 2 days per week and work from the office on the other days.
+
+5. Sick Leave
+Employees receive 5 paid sick days per year, or more where state or local law requires it. A doctor's note is required after 3 consecutive days of absence.
+
+6. Meal Vouchers
+Company A does not offer meal vouchers in the United States. Lunch is provided in the office on office days.
+
+7. Parental and Special Leave
+Employees receive 12 weeks of paid parental leave after the birth or adoption of a child. Eligible employees are also protected under the Family and Medical Leave Act (FMLA).
+
+8. Policy Administration
+Human Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.
+
+Approved by: Director of Human Resources
+Approval date: 1 December 2025

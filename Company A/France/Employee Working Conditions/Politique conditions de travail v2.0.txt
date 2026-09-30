@@ -1,0 +1,34 @@
+EMPLOYEE WORKING CONDITIONS POLICY
+Company: Company A (France)
+Policy ID: RH-FR-002
+Effective date: 1 January 2025
+Version: 2.0
+Policy owner: RH France (Julien Bernard)
+Status: Approved
+
+1. Purpose and Scope
+This policy establishes the general working conditions applicable to all permanent employees of Company A working under a French employment contract, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.
+
+2. Working Hours
+The standard full-time schedule consists of 37 hours per week from Monday to Friday. Because the legal working week in France is 35 hours, the extra hours are compensated with 10 RTT days per year. Overtime must be approved in advance and is paid at +25% for the first 8 overtime hours per week and at +50% beyond that.
+
+3. Annual Leave
+Employees receive 25 working days of paid leave (congés payés) per year, i.e. five weeks. At least 12 consecutive days must be taken between 1 May and 31 October.
+
+4. Remote Work
+Télétravail is possible up to 2 days per week, agreed with the employee's manager and recorded in the HR tool.
+
+5. Sick Leave
+Employees who are ill must send their sick note (arrêt de travail) to Human Resources within 48 hours.
+
+6. Meal Vouchers
+Employees receive titres-restaurant with a face value of €9 per working day. Company A pays 60% of the face value.
+
+7. Parental and Special Leave
+Parental, maternity, paternity and special leave are granted in accordance with French employment law. Paternity leave is 25 days.
+
+8. Policy Administration
+Human Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.
+
+Approved by: Director of Human Resources
+Approval date: 10 December 2024

@@ -1,0 +1,48 @@
+Employee Working Conditions
+Company A - France
+Current approved policy — Effective 1 January 2025
+
+Working hours
+37 hours per week
+  11 RTT days in 2026 for the hours above 35 (announced 5 January 2026); policy v2.0 says 10
+  Outside working hours, no one is expected to answer work messages (20:00 to 08:00)
+  Source: Email - RTT days 2026.txt; Politique conditions de travail v2.0.txt
+
+Overtime
++25% for the first 8 overtime hours per week
+  +50% after that
+  Must be approved in advance
+  Source: Politique conditions de travail v2.0.txt
+
+Vacation
+25 working days per year
+  Five weeks of congés payés
+  At least 12 consecutive days between 1 May and 31 October
+  Summer requests before 31 March
+  Source: Politique conditions de travail v2.0.txt; Email - Summer leave requests.txt
+
+Remote work
+Up to 2 days per week
+  Agreed with your manager; Mondays are team days in the office
+  Source: Email - Teletravail reminder.txt; Politique conditions de travail v2.0.txt
+
+Sick leave
+Send your sick note (arrêt de travail) within 48 hours
+  Source: Politique conditions de travail v2.0.txt
+
+Meal vouchers
+€10 per working day
+  Titres-restaurant; Company A pays 60%
+  Since 1 March 2026 (announced 2 February 2026); policy v2.0 says €9
+  Source: Email - Titres-restaurant from March 2026.txt
+
+Parental and special leave
+Available according to French employment law and company procedures.
+  Paternity leave: 25 days
+  Source: Politique conditions de travail v2.0.txt
+
+Policy owner: RH France (Julien Bernard)
+Status: Approved
+Effective date: 1 January 2025
+Version: 2.0
+Compiled: 2026-09-30 from 7 source documents
