@@ -405,47 +405,9 @@
       .gnode.summary:hover { border-color: #8fd0a8; box-shadow: 0 8px 18px rgba(31, 157, 85, 0.14); }
       .gnode.summary.open { background: #e2f6ea; }
       .gnode.summary.selected { border-color: var(--good); box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.2); }
-      .gnode.summary .gnode-name { white-space: normal; line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 0.8rem; }
       .gnode.summary .gnode-toggle { background: var(--good); box-shadow: 0 2px 6px rgba(31, 157, 85, 0.35); cursor: pointer; width: 22px; height: 22px; margin-left: -11px; bottom: -11px; }
       .gnode.summary .gnode-toggle:hover { filter: brightness(1.1); }
       .gnode.summary.open .gnode-toggle { background: #8a97b3; box-shadow: none; }
-
-      .viewer-body.as-card { white-space: normal; font: inherit; background: white; padding: 22px 26px; }
-      .policy-title { text-align: center; color: #1f3a5f; font-size: 1.5rem; margin: 0 0 4px; letter-spacing: -0.01em; }
-      .policy-sub { text-align: center; color: var(--muted); font-size: 0.85rem; }
-      .policy-effective { text-align: center; font-weight: 700; font-size: 0.9rem; margin: 10px 0 4px; padding-top: 10px; border-top: 2px solid #4f7cff; }
-      .policy-hint { text-align: center; font-size: 0.75rem; color: var(--muted); margin-bottom: 10px; }
-      .policy-section { border-radius: 10px; }
-      .policy-head {
-        display: flex; flex-direction: column; align-items: flex-start; gap: 1px;
-        width: 100%; text-align: left; background: transparent; color: var(--text);
-        padding: 7px 10px; border-radius: 10px; font-size: 0.9rem;
-      }
-      .policy-head:hover, .policy-head.open { background: var(--panel-alt); transform: none; }
-      .policy-h { font-weight: 700; font-size: 1rem; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
-      .policy-count { font-weight: 400; font-size: 0.72rem; color: var(--primary-dark); }
-      .policy-val { font-weight: 700; }
-      .policy-det { font-size: 0.8rem; color: #3a4252; padding-left: 14px; }
-      .policy-footer { border-top: 1px solid var(--line); margin-top: 12px; padding-top: 10px; font-size: 0.88rem; line-height: 1.6; }
-      .policy-compiled { font-size: 0.75rem; color: var(--muted); margin-top: 6px; }
-      .considered { margin: 4px 0 10px 14px; padding: 10px 12px; border-left: 3px solid #cfdcff; background: #fbfcff; border-radius: 0 10px 10px 0; }
-      .considered-intro { font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; }
-      .considered-doc { background: white; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin-bottom: 6px; }
-      .considered-doc.used { border-color: #9fd8b5; box-shadow: 0 0 0 2px rgba(31, 157, 85, 0.1); }
-      .considered-top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 0.86rem; }
-      .considered-tag { font-size: 0.72rem; font-weight: 700; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
-      .considered-tag.good { background: var(--good-bg); color: var(--good); }
-      .considered-tag.bad { background: var(--bad-bg); color: var(--bad); }
-      .considered-tag.muted { background: #eef1f6; color: var(--muted); }
-      .considered-meta { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
-      .considered-quote { font-size: 0.8rem; color: #3a4252; margin-top: 4px; font-style: italic; }
-      .group-title { margin: 18px 0 8px; font-size: 0.95rem; }
-      .group-title:first-of-type { margin-top: 4px; }
-      .group-count { font-weight: 400; color: var(--muted); font-size: 0.85rem; }
-      .gnode.section { background: #f4f7ff; border-color: #d4def7; }
-      .gnode.section.open { background: #e9efff; }
-      .gnode.section .gnode-toggle { background: #6f8fe8; }
-      .gnode.section.open .gnode-toggle { background: #8a97b3; }
 
       .cite {
         background: var(--panel-alt);
@@ -478,14 +440,59 @@
         flex: 1;
         overflow: auto;
         margin: 0 0 14px;
-        padding: 14px 16px;
+        padding: 24px;
         border: 1px solid var(--line);
         border-radius: 12px;
-        background: #fbfcff;
-        white-space: pre-wrap;
+        background: #eef1f6;
         word-break: break-word;
-        font: 14px/1.5 "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
       }
+      .viewer-card { width: min(940px, calc(100vw - 32px)); }
+      .doc-paper {
+        width: min(100%, 760px);
+        min-height: 760px;
+        margin: 0 auto;
+        padding: 54px 62px 64px;
+        background: white;
+        border: 1px solid #e2e6ee;
+        box-shadow: 0 10px 30px rgba(30, 36, 48, 0.10);
+        color: #20242c;
+        font-family: Calibri, Aptos, "Segoe UI", Arial, sans-serif;
+        line-height: 1.55;
+      }
+      .doc-title {
+        margin: 0 0 8px;
+        font-size: 1.65rem;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: #1b315b;
+      }
+      .doc-subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 24px; }
+      .doc-meta {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 5px 14px;
+        padding: 14px 16px;
+        margin: 18px 0 26px;
+        background: #f7f9fc;
+        border: 1px solid #e5eaf2;
+        border-radius: 8px;
+        font-size: 0.88rem;
+      }
+      .doc-meta-key { color: var(--muted); font-weight: 600; }
+      .doc-meta-value { color: var(--text); }
+      .doc-section { margin: 24px 0 8px; font-size: 1.08rem; color: #1b315b; }
+      .doc-paragraph { margin: 8px 0 12px; font-size: 0.95rem; }
+      .doc-bullet { margin: 5px 0 5px 20px; font-size: 0.95rem; }
+      .doc-callout {
+        margin: 18px 0;
+        padding: 12px 14px;
+        border-left: 4px solid var(--warn);
+        background: var(--warn-bg);
+        border-radius: 6px;
+        font-size: 0.92rem;
+      }
+      .doc-sources-title { margin-top: 24px; padding-top: 16px; border-top: 1px solid #e5eaf2; font-weight: 700; color: #1b315b; }
+      @media (max-width: 700px) { .doc-paper { padding: 32px 24px 42px; min-height: 0; } .viewer-body { padding: 10px; } }
       .viewer-card .trust-box { max-height: 30vh; overflow: auto; }
 
       .score {
@@ -503,6 +510,51 @@
       .score-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
       .score-value { font-size: 1.15rem; font-weight: 800; }
       .editor-header, .viewer-head { align-items: flex-start; }
+
+
+      .policy-view-toggle {
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+        margin: 0 0 12px;
+        padding: 4px;
+        width: fit-content;
+        align-self: center;
+        background: #edf2ff;
+        border-radius: 11px;
+      }
+      .policy-view-toggle button {
+        padding: 7px 14px;
+        background: transparent;
+        color: var(--muted);
+        font-weight: 700;
+        font-size: 0.84rem;
+      }
+      .policy-view-toggle button.on {
+        background: white;
+        color: var(--primary-dark);
+        box-shadow: 0 1px 4px rgba(30,36,48,.12);
+      }
+      .resolved-note {
+        display: flex; align-items: center; gap: 8px;
+        background: #eefaf3; border: 1px solid #bfe5cd; color: #246b3d;
+        border-radius: 10px; padding: 9px 12px; margin: 0 0 18px;
+        font-size: .84rem; font-weight: 650;
+      }
+      .trust-pill {
+        display: inline-flex; align-items: center; gap: 4px;
+        margin-left: 5px; padding: 2px 7px; border-radius: 999px;
+        background: #e6f6ec; color: #187744; border: 1px solid #bfe5cd;
+        font-size: .72rem; font-weight: 800; white-space: nowrap; vertical-align: .12em;
+      }
+      .trust-pill.mid { background: #fff4dc; color: #9a6517; border-color: #f1d49b; }
+      .policy-summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+      .policy-summary-card { border: 1px solid var(--line); border-radius: 12px; padding: 13px 14px; background: #fbfcff; }
+      .policy-summary-label { font-size: .76rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+      .policy-summary-value { font-size: 1.02rem; font-weight: 800; margin-top: 5px; line-height: 1.35; }
+      .policy-summary-detail { font-size: .8rem; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+      .trusted-inline { font-weight: 800; color: #172033; background: #f0f5ff; padding: 0 3px; border-radius: 4px; }
+      @media (max-width: 700px) { .policy-summary-grid { grid-template-columns: 1fr; } }
 
       .hidden { display: none !important; }
 
@@ -591,6 +643,10 @@
         </div>
         <div class="viewer-path" id="viewerPath"></div>
         <div id="viewerTrust"></div>
+        <div class="policy-view-toggle hidden" id="policyViewToggle" role="group" aria-label="Policy view">
+          <button type="button" data-policy-view="full" class="on">Original structured</button>
+          <button type="button" data-policy-view="summary">Summary</button>
+        </div>
         <div class="viewer-body" id="viewerBody"></div>
         <div class="modal-actions">
           <button class="secondary-btn" id="viewerClose" type="button">Close</button>
@@ -601,15 +657,15 @@
     </div>
 
     <!-- Built-in example documents (the same files as the company folders on disk). -->
-    <script type="application/json" id="seed-data">[{"path": ["Company A", "America", "Employee Working Conditions"], "name": "Employee Handbook - Working Conditions v4.0.txt", "content": "EMPLOYEE WORKING CONDITIONS POLICY\nCompany: Company A (United States)\nPolicy ID: PEO-US-010\nEffective date: 1 January 2026\nVersion: 4.0\nPolicy owner: People Team (US)\nStatus: Approved\n\n1. Purpose and Scope\nThis policy establishes the general working conditions applicable to all regular employees of Company A in the United States, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.\n\n2. Working Hours\nThe standard schedule is 40 hours per week, Monday to Friday, with core hours from 10:00 to 15:00. Non-exempt employees are paid overtime at 1.5 times their regular rate for hours worked over 40 in a workweek, as required by the Fair Labor Standards Act. Overtime must be approved in advance.\n\n3. Annual Leave\nFull-time employees receive 15 days of paid time off (PTO) per year, accrued each pay period. After 5 years of service this increases to 20 days per year. Up to 5 unused PTO days can be carried over to the next year.\n\n4. Remote Work\nEmployees in hybrid roles may work remotely up to 2 days per week and work from the office on the other days.\n\n5. Sick Leave\nEmployees receive 5 paid sick days per year, or more where state or local law requires it. A doctor's note is required after 3 consecutive days of absence.\n\n6. Meal Vouchers\nCompany A does not offer meal vouchers in the United States. Lunch is provided in the office on office days.\n\n7. Parental and Special Leave\nEmployees receive 12 weeks of paid parental leave after the birth or adoption of a child. Eligible employees are also protected under the Family and Medical Leave Act (FMLA).\n\n8. Policy Administration\nHuman Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.\n\nApproved by: Director of Human Resources\nApproval date: 1 December 2025\n"}, {"path": ["Company A", "America", "Employee Working Conditions"], "name": "Employee Handbook - Working Conditions v3.2 (2024).txt", "content": "EMPLOYEE WORKING CONDITIONS POLICY\nCompany: Company A (United States)\nPolicy ID: PEO-US-010\nEffective date: 1 January 2024\nVersion: 3.2\nPolicy owner: People Team (US)\nStatus: Superseded\n\n1. Purpose and Scope\nThis policy establishes the general working conditions applicable to all regular employees of Company A in the United States, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.\n\n2. Working Hours\nThe standard schedule is 40 hours per week, Monday to Friday. Non-exempt employees are paid overtime at 1.5 times their regular rate for hours worked over 40 in a workweek.\n\n3. Annual Leave\nFull-time employees receive 12 days of paid time off (PTO) per year. Unused days cannot be carried over.\n\n4. Remote Work\nEmployees in hybrid roles may work remotely up to 3 days per week.\n\n5. Sick Leave\nEmployees receive 3 paid sick days per year.\n\n6. Meal Vouchers\nCompany A does not offer meal vouchers in the United States.\n\n7. Parental and Special Leave\nEmployees receive 8 weeks of paid parental leave after the birth or adoption of a child.\n\n8. Policy Administration\nHuman Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.\n\nApproved by: Director of Human Resources\nApproval date: 4 December 2023\n"}, {"path": ["Company A", "America", "Employee Working Conditions"], "name": "Email - More paid sick days.txt", "content": "From: People Team (US)\nTo: All US employees\nDate: 2026-04-01\nSubject: More paid sick days from April\n\nHi everyone,\n\nFrom April 2026, every employee receives 7 paid sick days per year instead of 5.\nThe rule for doctor's notes does not change: we need one after 3 consecutive days of absence.\n\nTake care,\nPeople Team\n"}, {"path": ["Company A", "America", "Employee Working Conditions"], "name": "Email - Office days from October.txt", "content": "From: Office of the COO\nTo: All US employees\nDate: 2026-09-10\nSubject: Four office days from October\n\nHi all,\n\nFrom October 2026, hybrid employees work from the office 4 days per week, so remote work is limited to 1 day per week.\nWe will review this arrangement at the end of the year.\n\nThanks for making this work,\nOffice of the COO\n"}, {"path": ["Company A", "America", "Employee Working Conditions"], "name": "Email - PTO carry-over reminder.txt", "content": "From: People Team (US)\nTo: All US employees\nDate: 2026-09-15\nSubject: Reminder: plan your remaining PTO\n\nHi everyone,\n\nA friendly reminder that only 5 unused PTO days can be carried over into 2027.\nAnything above that is lost on December 31, so talk to your manager now if you still have days to plan.\n\nThanks,\nPeople Team\n"}, {"path": ["Company A", "America", "Employee Working Conditions"], "name": "Email - PTO changes for 2023.txt", "content": "From: HR Department\nTo: All US employees\nDate: 2022-11-03\nSubject: PTO changes for 2023\n\nDear colleagues,\n\nStarting next year, full-time employees receive 12 days of paid time off per year.\nCarry-over of unused days will no longer be allowed.\n\nRegards,\nHR Department\n"}, {"path": ["Company A", "America", "Employee Working Conditions"], "name": "Email - Summer Fridays 2026.txt", "content": "From: Office of the COO\nTo: All US employees\nDate: 2026-05-20\nSubject: Summer Fridays are back\n\nHi all,\n\nFrom Memorial Day to Labor Day, our US offices close at 1 pm on Fridays.\nYour weekly hours stay the same, so plan the missing Friday afternoon earlier in the week.\n\nEnjoy the summer!\n"}, {"path": ["Company A", "America", "Employee Working Conditions"], "name": "payrollemail.txt", "content": "Subject: Updated Minimum Wage at Company A\n\nDear Team,\n\nWe are pleased to share that the minimum wage at Company A has been raised to $75,000 per year in the United States.\n\nThis increase reflects our commitment to recognizing the value of our employees and supporting fair compensation across our organization. We believe this adjustment will help ensure our team members are compensated competitively and can continue to thrive in their roles.\n\nThank you for your dedication and hard work. We appreciate everything you do to contribute to the success of Company A.\n\nSincerely,\n[Your Name]\n[Your Title]\nCompany A\n"}, {"path": ["Company A", "America", "Employee Working Conditions"], "name": "SUMMARY.txt", "content": "Employee Working Conditions\nCompany A - America\nCurrent approved policy — Effective 1 January 2026\n\nWorking hours\n40 hours per week\n  Monday to Friday, core hours 10:00 to 15:00\n  Summer Fridays: offices close at 1 pm from Memorial Day to Labor Day\n  Source: Employee Handbook - Working Conditions v4.0.txt; Email - Summer Fridays 2026.txt\n\nOvertime\n1.5 times the regular hourly rate\n  For non-exempt employees, for hours over 40 in a workweek\n  Must be approved in advance\n  Source: Employee Handbook - Working Conditions v4.0.txt\n\nVacation\n15 days of paid time off per year\n  20 days after 5 years of service\n  Up to 5 unused days carry over; the rest is lost on December 31\n  Source: Employee Handbook - Working Conditions v4.0.txt; Email - PTO carry-over reminder.txt\n\nRemote work\nUp to 1 day per week\n  From October 2026: 4 office days per week (announced 10 September 2026); handbook v4.0 says 2 remote days\n  Source: Email - Office days from October.txt\n\nSick leave\n7 paid sick days per year\n  Doctor's note required after 3 consecutive days\n  Since April 2026 (announced 1 April 2026); handbook v4.0 says 5 days\n  Source: Email - More paid sick days.txt\n\nMeal vouchers\nNot offered in the United States\n  Lunch is provided in the office on office days\n  Source: Employee Handbook - Working Conditions v4.0.txt\n\nParental and special leave\n12 weeks of paid parental leave\n  Job protection under the FMLA where eligible\n  Source: Employee Handbook - Working Conditions v4.0.txt\n\nPolicy owner: People Team (US)\nStatus: Approved\nEffective date: 1 January 2026\nVersion: 4.0\nCompiled: 2026-09-30 from 8 source documents\n"}, {"path": ["Company A", "Belgium", "Employee Working Conditions"], "name": "Working Conditions Policy v3.1.txt", "content": "EMPLOYEE WORKING CONDITIONS POLICY\nCompany: Company A (Belgium)\nPolicy ID: HR-BE-004\nEffective date: 1 January 2026\nVersion: 3.1\nPolicy owner: Human Resources Belgium\nStatus: Approved\n\n1. Purpose and Scope\nThis policy establishes the general working conditions applicable to all permanent employees of Company A working under a Belgian employment contract, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.\n\n2. Working Hours\nThe standard full-time working schedule consists of 38 hours per week, normally distributed across five working days from Monday to Friday. Alternative schedules may be agreed with the employee's manager, subject to applicable working-time rules. Any working time beyond the agreed schedule must receive prior approval. Approved overtime shall be compensated at 150% of the employee's standard hourly rate or, where agreed, through equivalent compensatory time off.\n\n3. Annual Leave\nFull-time employees are entitled to a minimum of 21 paid vacation days per calendar year. After each completed year of continuous employment, employees receive one additional paid vacation day, up to a maximum of 26 paid vacation days per calendar year. Vacation requests must be submitted through the HR platform and are subject to manager approval.\n\n4. Remote Work\nEmployees whose role is suitable for remote work may work remotely for up to 2 days per working week. Remote-working days must be coordinated with the employee's manager and may be restricted where physical presence is required.\n\n5. Sick Leave\nEmployees unable to work due to illness must notify their manager and Human Resources as soon as reasonably possible. A medical certificate is required when an absence exceeds 2 consecutive working days.\n\n6. Meal Vouchers\nEligible employees receive meal vouchers with a total value of €8 per working day. Meal vouchers are provided only for days on which the employee has effectively performed work.\n\n7. Parental and Special Leave\nEmployees may request parental leave, maternity or paternity leave, bereavement leave and other forms of special leave in accordance with applicable Belgian employment legislation and internal HR procedures.\n\n8. Policy Administration\nHuman Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.\n\nApproved by: Director of Human Resources\nApproval date: 15 December 2025\n"}, {"path": ["Company A", "Belgium", "Employee Working Conditions"], "name": "Working Conditions Policy v2.4 (2024).txt", "content": "EMPLOYEE WORKING CONDITIONS POLICY\nCompany: Company A (Belgium)\nPolicy ID: HR-BE-004\nEffective date: 1 January 2024\nVersion: 2.4\nPolicy owner: Human Resources Belgium\nStatus: Superseded\n\n1. Purpose and Scope\nThis policy establishes the general working conditions applicable to all permanent employees of Company A working under a Belgian employment contract, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.\n\n2. Working Hours\nThe standard full-time working schedule consists of 38 hours per week from Monday to Friday. Approved overtime shall be compensated at 150% of the employee's standard hourly rate or through equivalent compensatory time off.\n\n3. Annual Leave\nFull-time employees are entitled to a minimum of 20 paid vacation days per calendar year. After each completed year of continuous employment, employees receive one additional paid vacation day, up to a maximum of 25 paid vacation days per calendar year.\n\n4. Remote Work\nEmployees whose role is suitable for remote work may work remotely for up to 3 days per working week, in agreement with their manager.\n\n5. Sick Leave\nEmployees unable to work due to illness must notify their manager immediately. A medical certificate is required from the first day of absence.\n\n6. Meal Vouchers\nEligible employees receive meal vouchers with a total value of €7 per working day.\n\n7. Parental and Special Leave\nParental and special leave are available in accordance with applicable Belgian employment legislation.\n\n8. Policy Administration\nHuman Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.\n\nApproved by: Director of Human Resources\nApproval date: 12 December 2023\n"}, {"path": ["Company A", "Belgium", "Employee Working Conditions"], "name": "Email - Remote work from April 2026.txt", "content": "From: Management Team Belgium\nTo: All employees Belgium\nDate: 2026-03-02\nSubject: Remote work: one day per week from April\n\nDear all,\n\nFrom 1 April 2026, remote work is limited to 1 day per week.\nTuesdays and Thursdays are office days for everyone, so plan your remote day on Monday, Wednesday or Friday.\nThe HR platform will be updated before the start of April.\n\nThe Management Team\n"}, {"path": ["Company A", "Belgium", "Employee Working Conditions"], "name": "Email - Overtime on Sundays and public holidays.txt", "content": "From: Ann Peeters, Payroll Belgium\nTo: All employees Belgium\nDate: 2026-02-10\nSubject: Overtime on Sundays and public holidays\n\nDear colleagues,\n\nA quick reminder on how overtime is paid.\nApproved overtime is paid at 150% of your hourly rate, and at 200% on Sundays and public holidays.\nAlways ask your manager for approval before you work extra hours.\n\nKind regards,\nAnn\n"}, {"path": ["Company A", "Belgium", "Employee Working Conditions"], "name": "Email - Meal vouchers reminder.txt", "content": "From: Ann Peeters, Payroll Belgium\nTo: All employees Belgium\nDate: 2026-05-12\nSubject: Meal vouchers: how they work\n\nDear colleagues,\n\nWe regularly get questions about meal vouchers, so here is a short reminder.\nYou receive a meal voucher worth €8 for every working day you actually worked.\nDays of leave or training outside the office do not count.\n\nKind regards,\nAnn\n"}, {"path": ["Company A", "Belgium", "Employee Working Conditions"], "name": "Email - Sick leave reporting.txt", "content": "From: Pieter Janssens, HR Belgium\nTo: All employees Belgium\nDate: 2026-01-20\nSubject: Reporting sick: the steps\n\nDear all,\n\nIf you are ill, call your manager before 9:00 on your first day of illness and register the absence in the HR platform.\nA medical certificate is needed when you are absent for more than 2 consecutive working days.\n\nGet well soon when it happens,\nPieter\n"}, {"path": ["Company A", "Belgium", "Employee Working Conditions"], "name": "Email - Birth leave.txt", "content": "From: Pieter Janssens, HR Belgium\nTo: All employees Belgium\nDate: 2025-11-04\nSubject: Birth leave for co-parents\n\nDear all,\n\nA reminder for future parents: in Belgium, the co-parent is entitled to 20 days of birth leave, to be taken within four months of the birth.\nPlease let HR know as early as possible so we can plan and inform the payroll team.\n\nPieter\n"}, {"path": ["Company A", "Belgium", "Employee Working Conditions"], "name": "SUMMARY.txt", "content": "Employee Working Conditions\nCompany A - Belgium\nCurrent approved policy — Effective 1 January 2026\n\nWorking hours\n38 hours per week\n  Monday to Friday\n  Source: Working Conditions Policy v3.1.txt\n\nOvertime\n150% of normal hourly rate\n  or equivalent compensatory time off\n  200% on Sundays and public holidays\n  Source: Email - Overtime on Sundays and public holidays.txt; Working Conditions Policy v3.1.txt\n\nVacation\n21 days per year\n  +1 additional day for every completed year of employment\n  Maximum: 26 days\n  Source: Working Conditions Policy v3.1.txt\n\nRemote work\nUp to 1 day per week\n  Since 1 April 2026 (announced 2 March 2026); policy v3.1 still says 2 days\n  Tuesdays and Thursdays are office days for everyone\n  Source: Email - Remote work from April 2026.txt\n\nSick leave\nMedical certificate required after 2 consecutive working days\n  Call your manager before 9:00 on the first day of illness\n  Source: Email - Sick leave reporting.txt; Working Conditions Policy v3.1.txt\n\nMeal vouchers\n€8 per working day\n  Only for days actually worked\n  Source: Email - Meal vouchers reminder.txt; Working Conditions Policy v3.1.txt\n\nParental and special leave\nAvailable according to Belgian employment law and company procedures.\n  Birth leave for the co-parent: 20 days\n  Source: Working Conditions Policy v3.1.txt; Email - Birth leave.txt\n\nPolicy owner: Human Resources Belgium\nStatus: Approved\nEffective date: 1 January 2026\nVersion: 3.1\nCompiled: 2026-09-30 from 7 source documents\n"}, {"path": ["Company A", "France", "Employee Working Conditions"], "name": "Politique conditions de travail v2.0.txt", "content": "EMPLOYEE WORKING CONDITIONS POLICY\nCompany: Company A (France)\nPolicy ID: RH-FR-002\nEffective date: 1 January 2025\nVersion: 2.0\nPolicy owner: RH France (Julien Bernard)\nStatus: Approved\n\n1. Purpose and Scope\nThis policy establishes the general working conditions applicable to all permanent employees of Company A working under a French employment contract, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.\n\n2. Working Hours\nThe standard full-time schedule consists of 37 hours per week from Monday to Friday. Because the legal working week in France is 35 hours, the extra hours are compensated with 10 RTT days per year. Overtime must be approved in advance and is paid at +25% for the first 8 overtime hours per week and at +50% beyond that.\n\n3. Annual Leave\nEmployees receive 25 working days of paid leave (congés payés) per year, i.e. five weeks. At least 12 consecutive days must be taken between 1 May and 31 October.\n\n4. Remote Work\nTélétravail is possible up to 2 days per week, agreed with the employee's manager and recorded in the HR tool.\n\n5. Sick Leave\nEmployees who are ill must send their sick note (arrêt de travail) to Human Resources within 48 hours.\n\n6. Meal Vouchers\nEmployees receive titres-restaurant with a face value of €9 per working day. Company A pays 60% of the face value.\n\n7. Parental and Special Leave\nParental, maternity, paternity and special leave are granted in accordance with French employment law. Paternity leave is 25 days.\n\n8. Policy Administration\nHuman Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.\n\nApproved by: Director of Human Resources\nApproval date: 10 December 2024\n"}, {"path": ["Company A", "France", "Employee Working Conditions"], "name": "Politique conditions de travail v1.3 (2022).txt", "content": "EMPLOYEE WORKING CONDITIONS POLICY\nCompany: Company A (France)\nPolicy ID: RH-FR-002\nEffective date: 1 January 2022\nVersion: 1.3\nPolicy owner: RH France\nStatus: Superseded\n\n1. Purpose and Scope\nThis policy establishes the general working conditions applicable to all permanent employees of Company A working under a French employment contract, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.\n\n2. Working Hours\nThe standard full-time schedule consists of 39 hours per week. The extra hours above the legal 35 hours are compensated with 20 RTT days per year.\n\n3. Annual Leave\nEmployees receive 25 working days of paid leave (congés payés) per year.\n\n4. Remote Work\nTélétravail is possible up to 1 day per week.\n\n5. Sick Leave\nEmployees who are ill must send their sick note (arrêt de travail) within 48 hours.\n\n6. Meal Vouchers\nEmployees receive titres-restaurant with a face value of €8 per working day.\n\n7. Parental and Special Leave\nParental and special leave are granted in accordance with French employment law.\n\n8. Policy Administration\nHuman Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.\n\nApproved by: Director of Human Resources\nApproval date: 6 December 2021\n"}, {"path": ["Company A", "France", "Employee Working Conditions"], "name": "Email - RTT days 2026.txt", "content": "From: Julien Bernard, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-01-05\nSubject: Vos jours de RTT 2026 / Your RTT days for 2026\n\nBonjour,\n\nIn 2026, full-time employees on the 37-hour schedule have their extra hours compensated with 11 RTT days.\nFive of them are fixed by the company (see the calendar); you choose the others yourself.\n\nJulien\n"}, {"path": ["Company A", "France", "Employee Working Conditions"], "name": "Email - Titres-restaurant from March 2026.txt", "content": "From: Claire Martin, Paie France\nTo: Tous les salariés / All employees France\nDate: 2026-02-02\nSubject: Titres-restaurant : nouvelle valeur / new value\n\nBonjour à tous,\n\nGood news: from 1 March 2026, the face value of your titres-restaurant rises to €10 per working day.\nCompany A keeps paying 60% of the value.\n\nClaire\n"}, {"path": ["Company A", "France", "Employee Working Conditions"], "name": "Email - Right to disconnect.txt", "content": "From: Direction France\nTo: Tous les salariés / All employees France\nDate: 2025-06-18\nSubject: Droit à la déconnexion / Right to disconnect\n\nBonjour à tous,\n\nA reminder of our right-to-disconnect agreement: outside working hours nobody is expected to read or answer work messages,\nin particular between 20:00 and 08:00, at weekends or during leave. Please schedule emails instead of sending them late.\n\nLa Direction\n"}, {"path": ["Company A", "France", "Employee Working Conditions"], "name": "Email - Summer leave requests.txt", "content": "From: Julien Bernard, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-02-16\nSubject: Congés d'été / Summer leave requests\n\nBonjour,\n\nPlease submit your summer leave requests in the HR tool before 31 March.\nManagers will confirm all requests by mid-April.\n\nJulien\n"}, {"path": ["Company A", "France", "Employee Working Conditions"], "name": "Email - Teletravail reminder.txt", "content": "From: Julien Bernard, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-06-03\nSubject: Télétravail : rappel / reminder\n\nBonjour,\n\nA reminder that télétravail is possible up to 2 days per week, agreed with your manager and recorded in the HR tool.\nMondays are team days in the office.\n\nJulien\n"}, {"path": ["Company A", "France", "Employee Working Conditions"], "name": "SUMMARY.txt", "content": "Employee Working Conditions\nCompany A - France\nCurrent approved policy — Effective 1 January 2025\n\nWorking hours\n37 hours per week\n  11 RTT days in 2026 for the hours above 35 (announced 5 January 2026); policy v2.0 says 10\n  Outside working hours, no one is expected to answer work messages (20:00 to 08:00)\n  Source: Email - RTT days 2026.txt; Politique conditions de travail v2.0.txt\n\nOvertime\n+25% for the first 8 overtime hours per week\n  +50% after that\n  Must be approved in advance\n  Source: Politique conditions de travail v2.0.txt\n\nVacation\n25 working days per year\n  Five weeks of congés payés\n  At least 12 consecutive days between 1 May and 31 October\n  Summer requests before 31 March\n  Source: Politique conditions de travail v2.0.txt; Email - Summer leave requests.txt\n\nRemote work\nUp to 2 days per week\n  Agreed with your manager; Mondays are team days in the office\n  Source: Email - Teletravail reminder.txt; Politique conditions de travail v2.0.txt\n\nSick leave\nSend your sick note (arrêt de travail) within 48 hours\n  Source: Politique conditions de travail v2.0.txt\n\nMeal vouchers\n€10 per working day\n  Titres-restaurant; Company A pays 60%\n  Since 1 March 2026 (announced 2 February 2026); policy v2.0 says €9\n  Source: Email - Titres-restaurant from March 2026.txt\n\nParental and special leave\nAvailable according to French employment law and company procedures.\n  Paternity leave: 25 days\n  Source: Politique conditions de travail v2.0.txt\n\nPolicy owner: RH France (Julien Bernard)\nStatus: Approved\nEffective date: 1 January 2025\nVersion: 2.0\nCompiled: 2026-09-30 from 7 source documents\n"}, {"path": ["Company B", "America", "Employee Working Conditions"], "name": "Working Conditions Handbook v2.1.txt", "content": "WORKING CONDITIONS HANDBOOK\nCompany: Company B (United States)\nPolicy ID: POPS-US-02\nEffective date: 15 March 2025\nVersion: 2.1\nPolicy owner: People Ops (Jasmine Ortiz)\nStatus: Approved\n\n1. Purpose and Scope\nThis policy establishes the general working conditions applicable to all regular employees of Company B in the United States, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.\n\n2. Working Hours\nThe standard working time is 40 hours per week. Non-exempt employees are paid overtime at 1.5 times their regular rate for hours worked over 40 in a workweek.\n\n3. Annual Leave\nCompany B offers flexible paid time off (PTO) agreed with your manager. Employees are expected to take at least 10 days off per year, including one full week in a row. Company B also observes 11 paid holidays.\n\n4. Remote Work\nEmployees in hybrid roles work from the office 3 days per week and may work remotely up to 2 days per week.\n\n5. Sick Leave\nEmployees receive 5 paid sick days per year, or more where state law requires it. A doctor's note is required after 5 consecutive days of absence.\n\n6. Meal Vouchers\nCompany B does not offer meal vouchers. Employees receive a $15 meal stipend for every day they work from the office.\n\n7. Parental and Special Leave\nBirthing parents receive 16 weeks of paid parental leave; other parents receive 8 weeks.\n\n8. Policy Administration\nHuman Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.\n\nApproved by: Director of Human Resources\nApproval date: 1 March 2025\n"}, {"path": ["Company B", "America", "Employee Working Conditions"], "name": "Email - Office days from October.txt", "content": "From: Office of the CEO\nTo: All US employees\nDate: 2026-09-10\nSubject: More time together in the office\n\nHi all,\n\nFrom October 2026, employees in hybrid roles work from the office 4 days per week, Monday to Thursday,\nso remote work is limited to 1 day per week (Friday).\n\nThanks for making this work,\nThe CEO office\n"}, {"path": ["Company B", "America", "Employee Working Conditions"], "name": "Email - Parental leave for all parents.txt", "content": "From: Jasmine Ortiz, People Ops\nTo: All US employees\nDate: 2026-07-01\nSubject: Equal parental leave for all parents\n\nHi everyone,\n\nFrom July 2026, all parents receive 16 weeks of paid parental leave, whether they gave birth or not.\nIf you are currently on parental leave, People Ops will contact you about the extension.\n\nJasmine\n"}, {"path": ["Company B", "America", "Employee Working Conditions"], "name": "Email - 2026 holiday calendar.txt", "content": "From: Jasmine Ortiz, People Ops\nTo: All US employees\nDate: 2025-12-01\nSubject: 2026 holiday calendar\n\nHi everyone,\n\nCompany B observes 11 paid holidays in 2026. The full list, including the floating holiday you can pick yourself,\nis in the people portal.\n\nJasmine\n"}, {"path": ["Company B", "America", "Employee Working Conditions"], "name": "DRAFT - Time off policy update.txt", "content": "COMPANY B - TIME OFF (US) - PROPOSED UPDATE\nDocument owner: People Ops (Jasmine Ortiz)\nStatus: Draft\nLast updated: 2026-08-28\n\nProposal, not yet approved: employees would be expected to take at least 15 days of paid time off per year,\nincluding one full week in a row.\n"}, {"path": ["Company B", "America", "Employee Working Conditions"], "name": "Email - New payroll provider.txt", "content": "From: Derek Chen, Finance\nTo: All US employees\nDate: 2026-08-19\nSubject: We are moving to a new payroll provider\n\nHi team,\n\nStarting with the October 15 payroll, Company B will use a new payroll provider.\nYou will get an invitation to create your account in the week of September 28.\nYour pay schedule does not change.\n\nDerek\n"}, {"path": ["Company B", "America", "Employee Working Conditions"], "name": "SUMMARY.txt", "content": "Employee Working Conditions\nCompany B - America\nCurrent approved policy — Effective 15 March 2025\n\nWorking hours\n40 hours per week\n  Source: Working Conditions Handbook v2.1.txt\n\nOvertime\n1.5 times the regular hourly rate\n  For non-exempt employees, for hours over 40 in a workweek\n  Source: Working Conditions Handbook v2.1.txt\n\nVacation\nFlexible PTO, at least 10 days per year\n  Including one full week in a row\n  Plus 11 paid holidays in 2026\n  A proposed minimum of 15 days is still a draft and not in force\n  Source: Working Conditions Handbook v2.1.txt; Email - 2026 holiday calendar.txt\n\nRemote work\nUp to 1 day per week\n  From October 2026: 4 office days, Monday to Thursday (announced 10 September 2026); handbook v2.1 says 2 remote days\n  Source: Email - Office days from October.txt\n\nSick leave\n5 paid sick days per year\n  Or more where state law requires it\n  Doctor's note required after 5 consecutive days\n  Source: Working Conditions Handbook v2.1.txt\n\nMeal vouchers\n$15 meal stipend per office day\n  No meal vouchers in the United States\n  Source: Working Conditions Handbook v2.1.txt\n\nParental and special leave\n16 weeks of paid parental leave for all parents\n  Since July 2026 (announced 1 July 2026); handbook v2.1 gives other parents 8 weeks\n  Source: Email - Parental leave for all parents.txt\n\nPolicy owner: People Ops (Jasmine Ortiz)\nStatus: Approved\nEffective date: 15 March 2025\nVersion: 2.1\nCompiled: 2026-09-30 from 6 source documents\n"}, {"path": ["Company B", "Belgium", "Employee Working Conditions"], "name": "Working Conditions Policy v1.2.txt", "content": "EMPLOYEE WORKING CONDITIONS POLICY\nCompany: Company B (Belgium)\nPolicy ID: HR-B-BE-01\nEffective date: 1 September 2025\nVersion: 1.2\nPolicy owner: Human Resources Belgium (Sofie Maes)\nStatus: Approved\n\n1. Purpose and Scope\nThis policy establishes the general working conditions applicable to all permanent employees of Company B working under a Belgian employment contract, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.\n\n2. Working Hours\nThe full-time working week is 40 hours, Monday to Friday. To bring the average back to 38 hours per week, employees receive 12 ADV days per year. Approved overtime is paid at 150% of the standard hourly rate, and at 200% on Sundays and public holidays.\n\n3. Annual Leave\nFull-time employees are entitled to 20 legal vacation days per calendar year, based on the days worked in the previous year. The 12 ADV days come on top of this.\n\n4. Remote Work\nEmployees may work from home up to 2 days per week, agreed with their manager.\n\n5. Sick Leave\nEmployees who are ill must inform their manager before the start of the working day. A medical certificate is required from the first day of illness.\n\n6. Meal Vouchers\nEmployees receive meal vouchers worth €7 per working day actually worked.\n\n7. Parental and Special Leave\nParental, birth, adoption and special leave are granted in accordance with Belgian employment legislation.\n\n8. Policy Administration\nHuman Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.\n\nApproved by: Director of Human Resources\nApproval date: 20 August 2025\n"}, {"path": ["Company B", "Belgium", "Employee Working Conditions"], "name": "Email - Meal vouchers go up in July.txt", "content": "From: Sofie Maes, Payroll Belgium\nTo: All employees Belgium\nDate: 2026-06-01\nSubject: Meal vouchers go up in July\n\nHi all,\n\nGood news: from 1 July 2026, meal vouchers increase to €8 per working day.\nThe new amount will be loaded onto your card with the July salary.\n\nSofie\n"}, {"path": ["Company B", "Belgium", "Employee Working Conditions"], "name": "Email - Sick leave without certificate.txt", "content": "From: Sofie Maes, HR Belgium\nTo: All employees Belgium\nDate: 2026-01-15\nSubject: Sick leave: no certificate needed for the first day\n\nHi all,\n\nFrom 1 February 2026, you no longer need a medical certificate for the first day of illness, up to 3 times per calendar year.\nFrom the second day of illness, a medical certificate is still required.\nPlease keep informing your manager before the start of the working day.\n\nSofie\n"}, {"path": ["Company B", "Belgium", "Employee Working Conditions"], "name": "Email - Collective closure summer 2026.txt", "content": "From: Sofie Maes, HR Belgium\nTo: All employees Belgium\nDate: 2026-03-05\nSubject: Collective closure this summer\n\nHi all,\n\nOur Belgian offices close from Monday 20 July to Friday 31 July 2026.\n21 July is a public holiday, so the closure uses nine of your vacation days.\n\nSofie\n"}, {"path": ["Company B", "Belgium", "Employee Working Conditions"], "name": "Email - Overtime approval.txt", "content": "From: Operations Belgium\nTo: All employees Belgium\nDate: 2025-11-12\nSubject: Overtime: approve it first\n\nHi all,\n\nOvertime must be approved in advance in the time-tracking tool.\nApproved overtime is paid at 150% of your hourly rate; overtime that was not approved cannot be paid.\n\nOperations Belgium\n"}, {"path": ["Company B", "Belgium", "Employee Working Conditions"], "name": "DRAFT - four-day week proposal.txt", "content": "COMPANY B BELGIUM - FOUR-DAY WEEK (PROPOSAL)\nDocument owner: HR Belgium (Sofie Maes)\nStatus: Draft\nLast updated: 2026-08-25\n\nProposal, not yet approved: employees could choose to work their full-time hours in a four-day week instead of five.\nThis needs a change to the work rules and approval from the works council before it can start.\n"}, {"path": ["Company B", "Belgium", "Employee Working Conditions"], "name": "SUMMARY.txt", "content": "Employee Working Conditions\nCompany B - Belgium\nCurrent approved policy — Effective 1 September 2025\n\nWorking hours\n40 hours per week\n  12 ADV days per year bring the average back to 38 hours\n  A four-day week is only a draft proposal and is not in force\n  Source: Working Conditions Policy v1.2.txt\n\nOvertime\n150% of normal hourly rate\n  200% on Sundays and public holidays\n  Approve it in advance in the time-tracking tool\n  Source: Working Conditions Policy v1.2.txt; Email - Overtime approval.txt\n\nVacation\n20 days per year\n  Plus 12 ADV days\n  Collective closure 20 to 31 July 2026 uses 9 vacation days\n  Source: Working Conditions Policy v1.2.txt; Email - Collective closure summer 2026.txt\n\nRemote work\nUp to 2 days per week\n  Agreed with your manager\n  Source: Working Conditions Policy v1.2.txt\n\nSick leave\nMedical certificate required from the second day of illness\n  No certificate for the first day, up to 3 times per year\n  Since 1 February 2026 (announced 15 January 2026); policy v1.2 still says from the first day\n  Source: Email - Sick leave without certificate.txt\n\nMeal vouchers\n€8 per working day\n  Since 1 July 2026 (announced 1 June 2026); policy v1.2 says €7\n  Source: Email - Meal vouchers go up in July.txt\n\nParental and special leave\nAvailable according to Belgian employment law and company procedures.\n  Source: Working Conditions Policy v1.2.txt\n\nPolicy owner: Human Resources Belgium (Sofie Maes)\nStatus: Approved\nEffective date: 1 September 2025\nVersion: 1.2\nCompiled: 2026-09-30 from 6 source documents\n"}, {"path": ["Company B", "France", "Employee Working Conditions"], "name": "Politique conditions de travail v3.0.txt", "content": "EMPLOYEE WORKING CONDITIONS POLICY\nCompany: Company B (France)\nPolicy ID: RH-B-FR-03\nEffective date: 1 June 2025\nVersion: 3.0\nPolicy owner: RH France (Élodie Petit)\nStatus: Approved\n\n1. Purpose and Scope\nThis policy establishes the general working conditions applicable to all permanent employees of Company B working under a French employment contract, unless otherwise stated in an individual employment agreement, collective labour agreement or legally binding amendment. Where applicable legislation or an individual employment agreement provides more favourable conditions, those conditions shall take precedence.\n\n2. Working Hours\nThe working week is 35 hours. Hours above 35 per week are overtime: the first 8 overtime hours are paid at +25% and further hours at +50%. Overtime must be requested by the manager.\n\n3. Annual Leave\nEmployees earn 2.5 days of paid leave (jours ouvrables) per month worked, i.e. 30 jours ouvrables or five weeks per year. The reference period runs from 1 June to 31 May.\n\n4. Remote Work\nTélétravail is possible up to 3 days per week, agreed with the employee's manager.\n\n5. Sick Leave\nEmployees who are ill must send their sick note (arrêt de travail) to Human Resources within 48 hours.\n\n6. Meal Vouchers\nEmployees receive titres-restaurant with a face value of €8.50 per working day. Company B pays 50% of the face value.\n\n7. Parental and Special Leave\nParental, maternity, paternity and special leave are granted in accordance with French employment law. Company B keeps paying the full salary during the 25 days of paternity leave.\n\n8. Policy Administration\nHuman Resources is responsible for the interpretation, implementation and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements or company practices. Any amendment must be formally approved and communicated to affected employees before becoming effective. The latest approved version supersedes all previous versions.\n\nApproved by: Director of Human Resources\nApproval date: 15 May 2025\n"}, {"path": ["Company B", "France", "Employee Working Conditions"], "name": "Working hours France (2019).txt", "content": "COMPANY B FRANCE - WORKING HOURS\nDocument owner: RH France\nStatus: Superseded\nLast updated: 2019-03-01\nLast reviewed: 2019-03-01\n\nThe working week is 39 hours, compensated with RTT days.\n"}, {"path": ["Company B", "France", "Employee Working Conditions"], "name": "Email - Teletravail from May 2026.txt", "content": "From: Élodie Petit, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-04-20\nSubject: Télétravail : 2 jours par semaine / 2 days per week\n\nBonjour à tous,\n\nFrom May 2026, télétravail is limited to 2 days per week (it used to be up to 3).\nTuesdays and Thursdays are office days for all teams.\n\nÉlodie\n"}, {"path": ["Company B", "France", "Employee Working Conditions"], "name": "Email - Titres-restaurant employer share.txt", "content": "From: Élodie Petit, Paie France\nTo: Tous les salariés / All employees France\nDate: 2026-01-08\nSubject: Titres-restaurant : participation employeur / employer share\n\nBonjour à tous,\n\nFrom January 2026, Company B pays 60% of your titres-restaurant (it was 50%).\nThe face value stays €8.50 per working day.\n\nÉlodie\n"}, {"path": ["Company B", "France", "Employee Working Conditions"], "name": "Email - Leave request deadline.txt", "content": "From: Élodie Petit, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-02-02\nSubject: Summer leave: requests before 15 March\n\nBonjour,\n\nPlease enter your summer leave requests in the HR tool before 15 March so we can plan the team rotas.\n\nÉlodie\n"}, {"path": ["Company B", "France", "Employee Working Conditions"], "name": "SUMMARY.txt", "content": "Employee Working Conditions\nCompany B - France\nCurrent approved policy — Effective 1 June 2025\n\nWorking hours\n35 hours per week\n  Source: Politique conditions de travail v3.0.txt\n\nOvertime\n+25% for the first 8 overtime hours per week\n  +50% after that\n  Requested by your manager\n  Source: Politique conditions de travail v3.0.txt\n\nVacation\n30 days per year\n  2.5 days (jours ouvrables) per month worked, i.e. five weeks\n  Reference period 1 June to 31 May; summer requests before 15 March\n  Source: Politique conditions de travail v3.0.txt; Email - Leave request deadline.txt\n\nRemote work\nUp to 2 days per week\n  Since May 2026 (announced 20 April 2026); policy v3.0 still says 3 days\n  Tuesdays and Thursdays are office days\n  Source: Email - Teletravail from May 2026.txt\n\nSick leave\nSend your sick note (arrêt de travail) within 48 hours\n  Source: Politique conditions de travail v3.0.txt\n\nMeal vouchers\n€8.50 per working day\n  Titres-restaurant; Company B pays 60% since January 2026 (policy v3.0 says 50%)\n  Source: Email - Titres-restaurant employer share.txt; Politique conditions de travail v3.0.txt\n\nParental and special leave\nAvailable according to French employment law and company procedures.\n  Full salary during the 25 days of paternity leave\n  Source: Politique conditions de travail v3.0.txt\n\nPolicy owner: RH France (Élodie Petit)\nStatus: Approved\nEffective date: 1 June 2025\nVersion: 3.0\nCompiled: 2026-09-30 from 5 source documents\n"}]</script>
+    <script type="application/json" id="seed-data">[{"path": ["Company A", "America", "Payroll"], "name": "US Payroll Policy.txt", "content": "COMPANY A - US PAYROLL POLICY\nDocument owner: Payroll Operations (US)\nStatus: Approved\nLast updated: 2026-01-12\nLast reviewed: 2026-05-04\nApplies to: all Company A employees in the United States\n\n1. Pay frequency\nEmployees are paid biweekly, every other Friday, by direct deposit.\n\n2. Minimum pay\nThe minimum wage at Company A is $48,000 per year for full-time employees in the United States.\nHourly employees are paid at least the applicable federal, state or local minimum wage, whichever is highest.\n\n3. Payroll corrections\nReport missing or incorrect pay to the payroll team within 5 business days of payday.\nCorrections are paid in the next regular payroll.\n\n4. Tax forms\nW-2 forms are available in the employee portal by January 31 each year.\n"}, {"path": ["Company A", "America", "Payroll"], "name": "Email - 2026 payroll calendar.txt", "content": "From: Maria Lopez, Payroll Operations (US)\nTo: All US employees\nDate: 2025-12-15\nSubject: 2026 payroll calendar\n\nHi all,\n\nThe 2026 payroll calendar is now in the employee portal. There are 26 paydays in 2026.\nWhen a payday falls on a bank holiday, you will be paid on the business day before.\n\nTimesheets for hourly staff are due by noon on the Monday before each payday.\n\nBest,\nMaria\n"}, {"path": ["Company A", "America", "Payroll"], "name": "payrollemail.txt", "content": "Subject: Updated Minimum Wage at Company A\n\nDear Team,\n\nWe are pleased to share that the minimum wage at Company A has been raised to $75,000 per year in the United States.\n\nThis increase reflects our commitment to recognizing the value of our employees and supporting fair compensation across our organization. We believe this adjustment will help ensure our team members are compensated competitively and can continue to thrive in their roles.\n\nThank you for your dedication and hard work. We appreciate everything you do to contribute to the success of Company A.\n\nSincerely,\n[Your Name]\n[Your Title]\nCompany A\n"}, {"path": ["Company A", "America", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY A - AMERICA\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Pay schedule: biweekly, every other Friday, by direct deposit; 26 paydays in 2026. [1][2]\n- Payday on a bank holiday: you are paid the business day before. [2]\n- Hourly staff: timesheets are due by noon on the Monday before each payday. [2]\n- Pay errors: report them within 5 business days of payday; they are fixed in the next payroll. [1]\n- W-2 forms: in the employee portal by January 31. [1]\n\n⚠ CONFLICT - minimum wage\n  The approved payroll policy (reviewed May 2026) sets the minimum wage at $48,000 a year for full-time staff. [1]\n  An undated email with no named sender says the minimum wage was raised to $75,000 a year. [3]\n  Until Payroll Operations (US) confirms the raise, rely on the policy.\n\nSources\n[1] US Payroll Policy.txt\n[2] Email - 2026 payroll calendar.txt\n[3] payrollemail.txt\n"}, {"path": ["Company A", "America", "Vacation days"], "name": "US Paid Time Off Policy.txt", "content": "COMPANY A - PAID TIME OFF (US)\nDocument owner: People Team (US)\nStatus: Approved\nLast updated: 2025-11-03\nLast reviewed: 2026-02-20\n\nFull-time employees receive 15 days of paid time off (PTO) per year, accrued each pay period.\nAfter five years of service this increases to 20 days per year.\n\nCarry-over: up to 5 unused days can be carried over to the next year and must be used by March 31.\n\nHolidays: Company A also observes 10 paid holidays; see the holiday calendar in the portal.\n\nNote: US federal law does not require paid vacation. This policy is a Company A benefit.\n"}, {"path": ["Company A", "America", "Vacation days"], "name": "Email - PTO carry-over reminder.txt", "content": "From: People Team (US)\nTo: All US employees\nDate: 2026-09-15\nSubject: Reminder: plan your remaining PTO\n\nHi everyone,\n\nA friendly reminder that only 5 unused days can be carried over into 2027.\nAnything above that is lost on December 31, so talk to your manager now if you still have days to plan.\n\nThanks,\nPeople Team\n"}, {"path": ["Company A", "America", "Vacation days"], "name": "Email - PTO changes for 2023.txt", "content": "From: HR Department\nTo: All US employees\nDate: 2022-11-03\nSubject: PTO changes for 2023\n\nDear colleagues,\n\nStarting next year, full-time employees receive 12 days of paid time off per year.\nCarry-over of unused days will no longer be allowed.\n\nRegards,\nHR Department\n"}, {"path": ["Company A", "America", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY A - AMERICA\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Paid time off: 15 days a year for full-time employees, accrued each pay period; 20 days after five years of service. [1]\n- Paid holidays: 10 a year, on top of PTO. [1]\n- Carry-over: at most 5 unused days move to the next year and must be used by March 31;\n  anything above that is lost on December 31. [1][2]\n- US law does not require paid vacation; this is a company benefit. [1]\n\n⚠ OUTDATED SOURCE\n  A 2022 email says 12 days of PTO and no carry-over. [3]\n  The current policy (reviewed February 2026) replaces it.\n\nSources\n[1] US Paid Time Off Policy.txt\n[2] Email - PTO carry-over reminder.txt\n[3] Email - PTO changes for 2023.txt\n"}, {"path": ["Company A", "America", "Working hours"], "name": "Working Hours and Overtime Policy (US).txt", "content": "COMPANY A - WORKING HOURS AND OVERTIME (US)\nDocument owner: People Team (US)\nStatus: Approved\nLast updated: 2024-10-01\nLast reviewed: 2025-03-11\n\nStandard schedule: 40 hours per week, Monday to Friday.\nCore hours are 10:00 to 15:00; outside core hours you can plan your day with your manager.\n\nOvertime: non-exempt employees are paid 1.5 times their regular rate for hours worked over 40 in a workweek,\nas required by the Fair Labor Standards Act. Overtime must be approved in advance by your manager.\n"}, {"path": ["Company A", "America", "Working hours"], "name": "Email - Summer Fridays 2026.txt", "content": "From: Office of the COO\nTo: All US employees\nDate: 2026-05-20\nSubject: Summer Fridays are back\n\nHi all,\n\nFrom Memorial Day to Labor Day, our US offices close at 1 pm on Fridays.\nYour weekly hours stay the same, so plan the missing Friday afternoon earlier in the week.\nHourly employees: record your actual hours as usual.\n\nEnjoy the summer!\n"}, {"path": ["Company A", "America", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY A - AMERICA\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Standard week: 40 hours, Monday to Friday; core hours 10:00 to 15:00. [1]\n- Overtime: non-exempt employees get 1.5 times their regular rate for hours over 40 in a week\n  (Fair Labor Standards Act); overtime needs your manager's approval in advance. [1]\n- Summer Fridays: from Memorial Day to Labor Day, offices close at 1 pm on Fridays; weekly hours stay the same. [2]\n\n⚠ REVIEW DUE\n  The working hours policy was last reviewed in March 2025, more than 18 months ago. [1]\n  Ask the People Team (US) to confirm it is still current.\n\nSources\n[1] Working Hours and Overtime Policy (US).txt\n[2] Email - Summer Fridays 2026.txt\n"}, {"path": ["Company A", "Belgium", "Payroll"], "name": "Payroll policy Belgium.txt", "content": "COMPANY A BELGIUM - PAYROLL POLICY (LOONBELEID)\nDocument owner: Payroll Belgium (Ann Peeters)\nStatus: Approved\nLast updated: 2026-01-05\nLast reviewed: 2026-04-02\n\n- Salaries are paid monthly, on the last working day of the month.\n- Double holiday pay (dubbel vakantiegeld) of 92% of the gross monthly salary is paid with the May salary.\n- An end-of-year bonus equal to one monthly salary is paid in December.\n- Salaries are indexed every January in line with the index for our joint committee.\n- Meal vouchers are worth €8 per working day; the employee share is €1.09.\n"}, {"path": ["Company A", "Belgium", "Payroll"], "name": "Email - Salary indexation January 2026.txt", "content": "From: Ann Peeters, Payroll Belgium\nTo: All employees Belgium\nDate: 2026-01-08\nSubject: Salary indexation January 2026 / Loonindexering januari 2026\n\nDear colleagues,\n\nAs every year, salaries in Belgium were indexed in January.\nFor our joint committee the indexation is 2.2%, which you will see on your January payslip.\n\nQuestions? Just reply to this email.\nAnn\n"}, {"path": ["Company A", "Belgium", "Payroll"], "name": "Email - Double holiday pay 2026.txt", "content": "From: Ann Peeters, Payroll Belgium\nTo: All employees Belgium\nDate: 2026-05-12\nSubject: Double holiday pay with your May salary\n\nDear colleagues,\n\nYour double holiday pay will be paid together with your May salary at the end of this month.\nIt is calculated on your gross monthly salary and is taxed at a special rate, so the net amount is lower than you might expect.\n\nKind regards,\nAnn\n"}, {"path": ["Company A", "Belgium", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY A - BELGIUM\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Salary: paid monthly, on the last working day of the month. [1]\n- Double holiday pay: 92% of your gross monthly salary, paid with the May salary;\n  it is taxed at a special rate, so the net amount is lower. [1][3]\n- End-of-year bonus: one monthly salary, paid in December. [1]\n- Indexation: every January, following the joint committee index; +2.2% in January 2026. [1][2]\n- Meal vouchers: €8 per working day, of which you pay €1.09. [1]\n\nNo conflicts found between these sources.\n\nSources\n[1] Payroll policy Belgium.txt\n[2] Email - Salary indexation January 2026.txt\n[3] Email - Double holiday pay 2026.txt\n"}, {"path": ["Company A", "Belgium", "Vacation days"], "name": "Vacation policy Belgium.txt", "content": "COMPANY A BELGIUM - VACATION POLICY\nDocument owner: HR Belgium (Pieter Janssens)\nStatus: Approved\nLast updated: 2025-12-18\nLast reviewed: 2026-01-15\n\nLegal vacation: employees with a full-time five-day week are entitled to 20 legal vacation days,\nbased on the days worked in the previous calendar year.\n\nCompany days: Company A Belgium adds 6 extra vacation days, for a total of 26 vacation days per year.\n\nRequests: submit vacation requests in the HR portal at least two weeks in advance for absences of a week or more.\n"}, {"path": ["Company A", "Belgium", "Vacation days"], "name": "Vacation policy Belgium (2023).txt", "content": "COMPANY A BELGIUM - VACATION POLICY\nDocument owner: HR Belgium\nStatus: Superseded\nLast updated: 2023-01-10\nLast reviewed: 2023-02-01\n\nEmployees are entitled to 20 legal vacation days.\nCompany days: Company A Belgium adds 4 extra vacation days, for a total of 24 vacation days per year.\n"}, {"path": ["Company A", "Belgium", "Vacation days"], "name": "Email - Bridge day 2026.txt", "content": "From: Pieter Janssens, HR Belgium\nTo: All employees Belgium\nDate: 2026-01-20\nSubject: Collective bridge day on Friday 15 May\n\nDear all,\n\nFriday 15 May 2026, the day after Ascension, is a collective bridge day: the office is closed.\nOne vacation day will be deducted automatically, so you do not need to request it.\n\nPieter\n"}, {"path": ["Company A", "Belgium", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY A - BELGIUM\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Total: 26 vacation days a year = 20 legal days + 6 extra company days (full-time, five-day week). [1]\n- Legal days depend on the days you worked in the previous calendar year. [1]\n- Requests: in the HR portal, at least two weeks ahead for absences of a week or more. [1]\n- Friday 15 May 2026 is a collective bridge day; one vacation day is deducted automatically. [3]\n\n⚠ OUTDATED SOURCE\n  The 2023 policy (4 extra days, 24 in total) is marked superseded. [2]\n  Use the current policy: 6 extra days, 26 in total. [1]\n\nSources\n[1] Vacation policy Belgium.txt\n[2] Vacation policy Belgium (2023).txt\n[3] Email - Bridge day 2026.txt\n"}, {"path": ["Company A", "Belgium", "Working hours"], "name": "Work rules - working hours Belgium.txt", "content": "COMPANY A BELGIUM - WORK RULES (ARBEIDSREGLEMENT): WORKING HOURS\nDocument owner: HR Belgium (Pieter Janssens)\nStatus: Approved\nLast updated: 2025-09-01\nLast reviewed: 2025-11-20\n\nFull-time employees work 38 hours per week, 7 hours 36 minutes per day, Monday to Friday.\nFlexible start between 07:30 and 09:30; core hours are 09:30 to 15:30.\nOvertime is only worked at the request of your manager and is compensated with recovery time.\n"}, {"path": ["Company A", "Belgium", "Working hours"], "name": "Email - Home working update.txt", "content": "From: Management Team Belgium\nTo: All employees Belgium\nDate: 2026-03-02\nSubject: Home working: two days per week from April\n\nDear all,\n\nFrom April onwards you can work from home on two days per week (it used to be three).\nTuesdays and Thursdays are office days for everyone.\nThe home working allowance is €150 per month.\n\nThe Management Team\n"}, {"path": ["Company A", "Belgium", "Working hours"], "name": "Home working policy (2021).txt", "content": "COMPANY A BELGIUM - HOME WORKING POLICY\nDocument owner: HR Belgium\nStatus: Superseded\nLast updated: 2021-06-01\nLast reviewed: 2021-06-01\n\nEmployees may work from home up to three days per week, in agreement with their manager.\nThe home working allowance is €129.48 per month.\n"}, {"path": ["Company A", "Belgium", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY A - BELGIUM\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Full-time week: 38 hours, 7 h 36 min a day, Monday to Friday. [1]\n- Flexible start between 07:30 and 09:30; core hours 09:30 to 15:30. [1]\n- Overtime only at your manager's request, compensated with recovery time. [1]\n- Home working: two days a week since April 2026; Tuesdays and Thursdays are office days for everyone. [2]\n- Home working allowance: €150 a month. [2]\n\n⚠ OUTDATED SOURCE\n  The 2021 home working policy (up to three days, €129.48 a month) was replaced by the March 2026 update. [3][2]\n\nSources\n[1] Work rules - working hours Belgium.txt\n[2] Email - Home working update.txt\n[3] Home working policy (2021).txt\n"}, {"path": ["Company A", "France", "Payroll"], "name": "Politique de paie France.txt", "content": "COMPANY A FRANCE - POLITIQUE DE PAIE / PAYROLL POLICY\nDocument owner: Paie France (Claire Martin)\nStatus: Approved\nLast updated: 2024-11-15\nLast reviewed: 2026-06-10\n\nSalaries are paid monthly on the 28th, or on the previous working day.\nA 13th-month bonus is paid with the December salary.\nPayslips (bulletins de paie) are issued electronically and kept in your digital safe for 50 years.\n"}, {"path": ["Company A", "France", "Payroll"], "name": "Email - New payday from January.txt", "content": "From: Claire Martin, Paie France\nTo: Tous les salariés / All employees France\nDate: 2025-12-01\nSubject: Nouvelle date de paie / New payday from January\n\nBonjour à tous,\n\nFrom January 2026, salaries are paid monthly on the 25th.\nThis gives everyone a few extra days before the end of the month.\n\nClaire\n"}, {"path": ["Company A", "France", "Payroll"], "name": "Email - Payslips going digital.txt", "content": "From: Claire Martin, Paie France\nTo: Tous les salariés / All employees France\nDate: 2025-10-01\nSubject: Your payslips are going digital\n\nBonjour à tous,\n\nFrom November, payslips will only be available in your digital safe.\nIf you prefer to keep receiving a paper payslip, let us know before the end of October.\n\nClaire\n"}, {"path": ["Company A", "France", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY A - FRANCE\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- 13th-month bonus: paid with the December salary. [1]\n- Payslips: digital only since November 2025 (paper only if you asked before the end of October 2025),\n  kept in your digital safe for 50 years. [1][3]\n\n⚠ CONFLICT - payday\n  The payroll policy says salaries are paid on the 28th. [1]\n  An email from Paie France (December 2025) says payday is the 25th from January 2026. [2]\n  The policy text dates from November 2024 and was re-approved in June 2026 without being corrected,\n  so the 25th is probably right. Confirm with Claire Martin (Paie France).\n\nSources\n[1] Politique de paie France.txt\n[2] Email - New payday from January.txt\n[3] Email - Payslips going digital.txt\n"}, {"path": ["Company A", "France", "Vacation days"], "name": "Conges payes - paid leave policy.txt", "content": "COMPANY A FRANCE - CONGÉS PAYÉS ET RTT / PAID LEAVE AND RTT\nDocument owner: RH France (Julien Bernard)\nStatus: Approved\nLast updated: 2024-06-01\nLast reviewed: 2024-09-02\n\nPaid leave: employees receive 25 working days of paid leave (five weeks) per year.\nRTT: full-time employees on the 37-hour schedule receive 10 RTT days per year.\nMain leave: take at least 12 consecutive days of leave between 1 May and 31 October.\n"}, {"path": ["Company A", "France", "Vacation days"], "name": "Email - RTT days 2026.txt", "content": "From: Julien Bernard, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-01-05\nSubject: Vos jours de RTT 2026 / Your RTT days for 2026\n\nBonjour,\n\nIn 2026, full-time employees on the 37-hour schedule receive 11 RTT days.\nFive of them are fixed by the company (see the calendar); you choose the others yourself.\n\nJulien\n"}, {"path": ["Company A", "France", "Vacation days"], "name": "Email - Summer leave requests.txt", "content": "From: Julien Bernard, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-02-16\nSubject: Congés d'été / Summer leave requests\n\nBonjour,\n\nPlease submit your summer leave requests in the HR portal before 31 March.\nManagers will confirm all requests by mid-April.\n\nJulien\n"}, {"path": ["Company A", "France", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY A - FRANCE\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Paid leave: 25 working days (five weeks) a year. [1]\n- Main leave: at least 12 consecutive days between 1 May and 31 October. [1]\n- Summer requests: in the HR portal before 31 March; managers confirm by mid-April. [3]\n- RTT (37-hour schedule): five RTT days are fixed by the company, you choose the others. [2]\n\n⚠ CONFLICT - number of RTT days\n  The paid leave policy says 10 RTT days a year. [1]\n  The January 2026 email says 11 RTT days in 2026. [2]\n  RTT days can change from year to year, so the email is probably right for 2026.\n  The policy was last reviewed in September 2024 and is overdue for review.\n\nSources\n[1] Conges payes - paid leave policy.txt\n[2] Email - RTT days 2026.txt\n[3] Email - Summer leave requests.txt\n"}, {"path": ["Company A", "France", "Working hours"], "name": "Working time agreement France.txt", "content": "COMPANY A FRANCE - ACCORD SUR LE TEMPS DE TRAVAIL / WORKING TIME AGREEMENT\nDocument owner: RH France (Julien Bernard)\nStatus: Approved\nLast updated: 2025-12-10\nLast reviewed: 2026-02-11\n\nThe legal working week in France is 35 hours.\nCompany A France works a 37-hour schedule; the extra hours are compensated with RTT days.\nManagers on a \"forfait jours\" contract work 218 days per year and do not count their hours.\n"}, {"path": ["Company A", "France", "Working hours"], "name": "Email - Right to disconnect.txt", "content": "From: Direction France\nTo: Tous les salariés / All employees France\nDate: 2025-06-18\nSubject: Droit à la déconnexion / Right to disconnect\n\nBonjour à tous,\n\nA reminder of our right-to-disconnect agreement: nobody is expected to read or answer work messages\nbetween 20:00 and 08:00, at weekends or during leave. Please schedule emails instead of sending them late.\n\nLa Direction\n"}, {"path": ["Company A", "France", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY A - FRANCE\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- The legal working week in France is 35 hours; Company A France works 37 hours and the extra hours become RTT days. [1]\n- Managers on a \"forfait jours\" contract: 218 days a year, hours are not counted. [1]\n- Right to disconnect: nobody is expected to read or answer work messages between 20:00 and 08:00,\n  at weekends or on leave. [2]\n\nNo conflicts found between these sources.\n\nSources\n[1] Working time agreement France.txt\n[2] Email - Right to disconnect.txt\n"}, {"path": ["Company B", "America", "Payroll"], "name": "Payroll handbook (US).txt", "content": "COMPANY B - PAYROLL HANDBOOK (US)\nDocument owner: Finance - Payroll (Derek Chen)\nStatus: Approved\nLast updated: 2026-06-20\nLast reviewed: 2026-07-01\n\nPay schedule: semi-monthly, on the 15th and on the last day of the month.\nDirect deposit is mandatory. Bank detail changes must be made at least ten days before a payday.\nExpense reimbursements are paid with the next regular payroll.\n"}, {"path": ["Company B", "America", "Payroll"], "name": "Email - New payroll provider.txt", "content": "From: Derek Chen, Finance\nTo: All US employees\nDate: 2026-08-19\nSubject: We are moving to a new payroll provider\n\nHi team,\n\nStarting with the October 15 payroll, Company B will use a new payroll provider.\nYou will get an invitation to create your account in the week of September 28.\nYour pay schedule does not change.\n\nPlease check your bank details in the new portal before October 5.\n\nDerek\n"}, {"path": ["Company B", "America", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY B - AMERICA\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Pay schedule: semi-monthly, on the 15th and on the last day of the month; the new provider does not change it. [1][2]\n- Direct deposit is mandatory; bank detail changes at least ten days before a payday. [1]\n- Expenses are reimbursed with the next regular payroll. [1]\n- New payroll provider from the October 15, 2026 payroll: accept the invitation (week of September 28)\n  and check your bank details in the new portal before October 5. [2]\n\nⓘ The same provider email is also filed under Working hours (\"FW New payroll provider\").\n\nSources\n[1] Payroll handbook (US).txt\n[2] Email - New payroll provider.txt\n"}, {"path": ["Company B", "America", "Vacation days"], "name": "Time off policy (US).txt", "content": "COMPANY B - TIME OFF (US)\nDocument owner: People Ops (Jasmine Ortiz)\nStatus: Draft\nLast updated: 2026-08-28\n\nCompany B offers flexible (unlimited) paid time off, agreed with your manager.\nEmployees are expected to take at least 10 days off per year, including one full week in a row.\nSick days are separate and do not count as time off.\n"}, {"path": ["Company B", "America", "Vacation days"], "name": "Email - 2026 holiday calendar.txt", "content": "From: Jasmine Ortiz, People Ops\nTo: All US employees\nDate: 2025-12-01\nSubject: 2026 holiday calendar\n\nHi everyone,\n\nCompany B observes 11 paid holidays in 2026. The full list, including the floating holiday you can pick yourself,\nis in the people portal.\n\nJasmine\n"}, {"path": ["Company B", "America", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY B - AMERICA\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Time off: flexible (unlimited) PTO agreed with your manager; take at least 10 days a year,\n  including one full week in a row. Sick days are separate. [1]\n- Paid holidays: 11 in 2026, including one floating holiday you choose; the list is in the people portal. [2]\n\n⚠ NOT APPROVED\n  The time off policy is still a draft (last updated August 2026). [1]\n  Confirm with People Ops (Jasmine Ortiz) before relying on it.\n\nSources\n[1] Time off policy (US).txt\n[2] Email - 2026 holiday calendar.txt\n"}, {"path": ["Company B", "America", "Working hours"], "name": "Hybrid work policy.txt", "content": "COMPANY B - HYBRID WORK POLICY (US)\nDocument owner: People Ops (Jasmine Ortiz)\nStatus: Approved\nLast updated: 2025-11-15\nLast reviewed: 2025-12-03\n\nEmployees in hybrid roles work from the office 3 days per week, Tuesday to Thursday.\nStandard working time is 40 hours per week.\n"}, {"path": ["Company B", "America", "Working hours"], "name": "Email - Office days from October.txt", "content": "From: Office of the CEO\nTo: All US employees\nDate: 2026-09-10\nSubject: More time together in the office\n\nHi all,\n\nFrom October onwards, employees in hybrid roles work from the office 4 days per week, Monday to Thursday.\nFridays remain flexible.\n\nThanks for making this work,\nThe CEO office\n"}, {"path": ["Company B", "America", "Working hours"], "name": "FW New payroll provider.txt", "content": "From: Derek Chen, Finance\nTo: All US employees\nDate: 2026-08-19\nSubject: We are moving to a new payroll provider\n\nHi team,\n\nStarting with the October 15 payroll, Company B will use a new payroll provider.\nYou will get an invitation to create your account in the week of September 28.\nYour pay schedule does not change.\n\nPlease check your bank details in the new portal before October 5.\n\nDerek\n"}, {"path": ["Company B", "America", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY B - AMERICA\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Standard working time: 40 hours a week. [1]\n- Office days: from October 2026, hybrid employees work in the office 4 days a week, Monday to Thursday;\n  Fridays stay flexible. [2]\n\n⚠ CONFLICT - office days\n  The hybrid work policy (reviewed December 2025) says 3 office days, Tuesday to Thursday. [1]\n  The CEO office email of September 2026 raises this to 4 days from October. [2]\n  The email is newer; the policy still needs updating.\n\nⓘ MISFILED\n  \"FW New payroll provider\" is a copy of a payroll email and does not belong here; see the Payroll summary. [3]\n\nSources\n[1] Hybrid work policy.txt\n[2] Email - Office days from October.txt\n[3] FW New payroll provider.txt\n"}, {"path": ["Company B", "Belgium", "Payroll"], "name": "Payroll FAQ Belgium.txt", "content": "COMPANY B BELGIUM - PAYROLL FAQ\nDocument owner: Payroll Belgium (Sofie Maes)\nStatus: Approved\nLast updated: 2026-02-01\nLast reviewed: 2026-03-18\n\nWhen is my salary paid?\nOn the first working day of the following month.\n\nWhat is my double holiday pay?\n92% of your gross monthly salary, paid with your June salary.\n\nDo I get meal vouchers?\nYes, meal vouchers are worth €7 per day worked.\n"}, {"path": ["Company B", "Belgium", "Payroll"], "name": "Email - Payroll cut-off.txt", "content": "From: Sofie Maes, Payroll Belgium\nTo: All employees Belgium\nDate: 2026-02-03\nSubject: Payroll cut-off date\n\nHi all,\n\nChanges such as a new bank account, a new address or a change in your family situation must reach payroll\nbefore the 20th of the month to be included in that month's payroll. Later changes move to the next month.\n\nSofie\n"}, {"path": ["Company B", "Belgium", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY B - BELGIUM\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Salary: paid on the first working day of the following month. [1]\n- Double holiday pay: 92% of your gross monthly salary, paid with the June salary. [1]\n- Meal vouchers: €7 per day worked. [1]\n- Cut-off: changes (bank account, address, family situation) must reach payroll before the 20th\n  to count for that month. [2]\n\nNo conflicts found between these sources.\n\nSources\n[1] Payroll FAQ Belgium.txt\n[2] Email - Payroll cut-off.txt\n"}, {"path": ["Company B", "Belgium", "Vacation days"], "name": "Holiday policy Belgium.txt", "content": "COMPANY B BELGIUM - HOLIDAY POLICY\nDocument owner: HR Belgium (Sofie Maes)\nStatus: Approved\nLast updated: 2025-12-20\nLast reviewed: 2026-01-09\n\nFull-time employees receive 20 legal vacation days per year.\nBecause our working week is 40 hours instead of 38, you also receive 12 ADV days (arbeidsduurvermindering) per year.\n"}, {"path": ["Company B", "Belgium", "Vacation days"], "name": "Email - Collective closure summer 2026.txt", "content": "From: Sofie Maes, HR Belgium\nTo: All employees Belgium\nDate: 2026-03-05\nSubject: Collective closure this summer\n\nHi all,\n\nOur Belgian offices close from Monday 20 July to Friday 31 July 2026.\n21 July is a public holiday, so the closure uses nine of your vacation days.\n\nSofie\n"}, {"path": ["Company B", "Belgium", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY B - BELGIUM\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Legal vacation: 20 days a year (full-time). [1]\n- ADV days: 12 a year, because the working week is 40 hours instead of 38. [1]\n- Collective closure: offices are closed from Monday 20 July to Friday 31 July 2026;\n  21 July is a public holiday, so the closure uses nine vacation days. [2]\n\nNo conflicts found between these sources.\n\nSources\n[1] Holiday policy Belgium.txt\n[2] Email - Collective closure summer 2026.txt\n"}, {"path": ["Company B", "Belgium", "Working hours"], "name": "Working hours Belgium.txt", "content": "COMPANY B BELGIUM - WORKING HOURS\nDocument owner: HR Belgium (Sofie Maes)\nStatus: Approved\nLast updated: 2025-12-20\nLast reviewed: 2026-01-09\n\nThe working week is 40 hours, Monday to Friday, eight hours per day.\nTo bring the average back to 38 hours per week, you receive 12 ADV days per year (see the holiday policy).\n"}, {"path": ["Company B", "Belgium", "Working hours"], "name": "DRAFT - four-day week proposal.txt", "content": "COMPANY B BELGIUM - FOUR-DAY WEEK (PROPOSAL)\nDocument owner: HR Belgium (Sofie Maes)\nStatus: Draft\nLast updated: 2026-08-25\n\nProposal, not yet approved: employees could choose to work their full-time hours in four longer days instead of five.\nThis needs a change to the work rules and approval from the works council before it can start.\n"}, {"path": ["Company B", "Belgium", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY B - BELGIUM\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Working week: 40 hours, Monday to Friday, eight hours a day. [1]\n- 12 ADV days a year bring the average back to 38 hours a week. [1]\n\nⓘ PROPOSAL ONLY\n  A four-day week (full-time hours in four longer days) is being discussed but is not approved;\n  it needs a change to the work rules and works council approval. [2]\n\nSources\n[1] Working hours Belgium.txt\n[2] DRAFT - four-day week proposal.txt\n"}, {"path": ["Company B", "France", "Payroll"], "name": "Payroll policy France.txt", "content": "COMPANY B FRANCE - PAYROLL POLICY\nDocument owner: Paie France (Élodie Petit)\nStatus: Approved\nLast updated: 2024-12-01\nLast reviewed: 2025-02-14\n\nSalaries are paid on the last working day of the month.\nCompany B covers 50% of the mutuelle (complementary health insurance) contribution.\n"}, {"path": ["Company B", "France", "Payroll"], "name": "Email - Mutuelle contribution 2026.txt", "content": "From: Élodie Petit, Paie France\nTo: Tous les salariés / All employees France\nDate: 2025-12-12\nSubject: Mutuelle : nouvelle participation / New mutuelle contribution\n\nBonjour à tous,\n\nGood news: from January 2026, Company B covers 60% of the mutuelle contribution.\nYou will see the change on your January payslip.\n\nÉlodie\n"}, {"path": ["Company B", "France", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY B - FRANCE\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Salary: paid on the last working day of the month. [1]\n- Mutuelle: Company B pays 60% of the contribution since January 2026. [2]\n\n⚠ CONFLICT - mutuelle contribution\n  The payroll policy says 50%; it was last reviewed in February 2025. [1]\n  The December 2025 email raises it to 60% from January 2026. [2]\n  The email is newer; the policy needs updating.\n\nSources\n[1] Payroll policy France.txt\n[2] Email - Mutuelle contribution 2026.txt\n"}, {"path": ["Company B", "France", "Vacation days"], "name": "Paid leave France.txt", "content": "COMPANY B FRANCE - CONGÉS PAYÉS / PAID LEAVE\nDocument owner: RH France (Élodie Petit)\nStatus: Approved\nLast updated: 2025-05-20\nLast reviewed: 2026-05-02\n\nYou earn 2.5 days of paid leave (jours ouvrables) per month worked, i.e. five weeks per year.\nThe reference period runs from 1 June to 31 May.\n"}, {"path": ["Company B", "France", "Vacation days"], "name": "Email - Leave request deadline.txt", "content": "From: Élodie Petit, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-02-02\nSubject: Summer leave: requests before 15 March\n\nBonjour,\n\nPlease enter your summer leave requests in the HR tool before 15 March so we can plan the team rotas.\n\nÉlodie\n"}, {"path": ["Company B", "France", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY B - FRANCE\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Paid leave: 2.5 days (jours ouvrables) per month worked, five weeks a year. [1]\n- Reference period: 1 June to 31 May. [1]\n- Summer leave: enter your requests in the HR tool before 15 March. [2]\n\nNo conflicts found between these sources.\n\nSources\n[1] Paid leave France.txt\n[2] Email - Leave request deadline.txt\n"}, {"path": ["Company B", "France", "Working hours"], "name": "Working hours France.txt", "content": "COMPANY B FRANCE - WORKING HOURS\nDocument owner: RH France (Élodie Petit)\nStatus: Approved\nLast updated: 2025-09-01\nLast reviewed: 2026-04-14\n\nThe working week is 35 hours.\nHours above 35 per week are overtime: the first eight overtime hours are paid at +25%, further hours at +50%.\n"}, {"path": ["Company B", "France", "Working hours"], "name": "Working hours France (2019).txt", "content": "COMPANY B FRANCE - WORKING HOURS\nDocument owner: RH France\nStatus: Superseded\nLast updated: 2019-03-01\nLast reviewed: 2019-03-01\n\nThe working week is 39 hours, compensated with RTT days.\n"}, {"path": ["Company B", "France", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY B - FRANCE\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Working week: 35 hours. [1]\n- Overtime: the first eight overtime hours a week are paid at +25%, further hours at +50%. [1]\n\n⚠ OUTDATED SOURCE\n  The 2019 version (39 hours with RTT days) is superseded. [2]\n\nSources\n[1] Working hours France.txt\n[2] Working hours France (2019).txt\n"}]</script>
 
     <script>
       'use strict';
 
       /* ---------- Storage & data model ---------- */
 
-      // v4: one "Employee Working Conditions" summary per company and country (see the seed-data block above).
-      const STORAGE_KEY = 'knowledge-management-drive-v4';
+      // v3: the knowledge base ships with sample documents and summaries (see the seed-data block above).
+      const STORAGE_KEY = 'knowledge-management-drive-v4-policy-demo';
       const STALE_DAYS = 180;
       const MAX_IMPORT_BYTES = 2 * 1024 * 1024;
 
@@ -642,112 +698,29 @@
       const isSummary = (n) => !!n && n.type === 'folder' && typeof n.summary === 'string';
       const isDoc = (n) => !!n && (n.type === 'file' || isSummary(n));
       const docText = (n) => (n.type === 'file' ? n.content : n.summary || '');
-      const docTitle = (n) => (isSummary(n) ? n.name + ' — summary' : n.name);
+      const docTitle = (n) => (n && n.trustedPolicy ? n.name + ' — trusted version' : isSummary(n) ? n.name + ' — summary' : n.name);
 
-      const MONTH_NAMES = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-
-      // "2026-01-05" or "1 January 2026" → ISO timestamp (noon UTC, so the day never shifts with time zones).
-      function toIso(value) {
-        const v = String(value);
-        let m = v.match(/(\d{4})-(\d{2})-(\d{2})/);
-        if (m) return new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], 12)).toISOString();
-        m = v.match(/(\d{1,2})\s+([a-zé]+)\s+(\d{4})/i);
-        if (m && MONTH_NAMES.includes(m[2].toLowerCase())) return new Date(Date.UTC(+m[3], MONTH_NAMES.indexOf(m[2].toLowerCase()), +m[1], 12)).toISOString();
-        return null;
-      }
-
-      // Reads document header / footer lines: "Document owner:" / "Policy owner:", "From:", "Status:",
-      // "Last updated:" / "Date:" / "Effective date:", "Last reviewed:" / "Approval date:" and a summary's "Compiled:".
+      // Reads "Document owner:", "Status:", "Last updated:", "Last reviewed:", "From:" and "Date:" header lines.
       function parseDocMeta(text) {
         const meta = {};
-        const lines = text.split(/\r?\n/);
-        const scan = [...lines.slice(0, 15), ...lines.slice(Math.max(15, lines.length - 10))];
-        scan.forEach((line) => {
+        const toIso = (v) => {
+          const m = String(v).match(/\d{4}-\d{2}-\d{2}/);
+          if (!m) return null;
+          const t = Date.parse(m[0] + 'T12:00:00Z');
+          return isNaN(t) ? null : new Date(t).toISOString();
+        };
+        text.split(/\r?\n/).slice(0, 15).forEach((line) => {
           let m;
-          if ((m = line.match(/^\s*(?:document owner|policy owner|owner)\s*:\s*(.+)$/i))) meta.owner = m[1].trim().slice(0, 80);
+          if ((m = line.match(/^\s*(?:document owner|owner)\s*:\s*(.+)$/i))) meta.owner = m[1].trim().slice(0, 80);
           else if ((m = line.match(/^\s*from\s*:\s*(.+)$/i))) { if (!meta.owner) meta.owner = m[1].replace(/<[^>]*>/g, '').trim().slice(0, 80); }
           else if ((m = line.match(/^\s*status\s*:\s*([a-z]+)/i))) {
-            const st = m[1].toLowerCase();
-            meta.status = /^(approved|verified|final|current)$/.test(st) ? 'verified'
-              : /^(superseded|outdated|obsolete|archived|expired)$/.test(st) ? 'outdated' : 'draft';
-            meta.proposal = /^(draft|proposal|proposed)$/.test(st);   // an explicit draft, never used in a summary
-          } else if ((m = line.match(/^\s*(?:last reviewed|approval date)\s*:\s*(.+)$/i))) { const t = toIso(m[1]); if (t) meta.reviewedAt = t; }
-          else if ((m = line.match(/^\s*compiled\s*:\s*(.+)$/i))) { const t = toIso(m[1]); if (t) { meta.updatedAt = t; meta.createdAt = t; meta.reviewedAt = meta.reviewedAt || t; } }
-          else if ((m = line.match(/^\s*(?:last updated|date|effective date)\s*:\s*(.+)$/i))) { const t = toIso(m[1]); if (t && !meta.updatedAt) { meta.updatedAt = t; meta.createdAt = t; } }
+            const s = m[1].toLowerCase();
+            meta.status = /^(approved|verified|final|current)$/.test(s) ? 'verified'
+              : /^(superseded|outdated|obsolete|archived|expired)$/.test(s) ? 'outdated' : 'draft';
+          } else if ((m = line.match(/^\s*last reviewed\s*:\s*(.+)$/i))) { const t = toIso(m[1]); if (t) meta.reviewedAt = t; }
+          else if ((m = line.match(/^\s*(?:last updated|date)\s*:\s*(.+)$/i))) { const t = toIso(m[1]); if (t) { meta.updatedAt = t; meta.createdAt = t; } }
         });
         return meta;
-      }
-
-      /* ---------- Summary template ---------- */
-
-      // The sections of the "Employee Working Conditions" summary template, and how to recognise a source
-      // document that talks about each one. A document can belong to several sections (a full policy covers all).
-      const SECTIONS = [
-        { key: 'hours', title: 'Working hours', re: /working hours|hours per week|hours a week|working week|workweek|work week|weekly hours|-hour schedule|full-time schedule|core hours|\bRTT\b|\bADV\b|four-day week/i },
-        { key: 'overtime', title: 'Overtime', re: /overtime/i },
-        { key: 'vacation', title: 'Vacation', re: /vacation|paid time off|\bPTO\b|annual leave|paid leave|congés|paid holidays|holiday calendar|collective closure|leave requests?/i },
-        { key: 'remote', title: 'Remote work', re: /remote|home working|work from home|working from home|télétravail|teletravail|hybrid|office days/i },
-        { key: 'sick', title: 'Sick leave', re: /\bsick\b|illness|\bill\b|medical certificate|doctor's note|arrêt de travail/i },
-        { key: 'meal', title: 'Meal vouchers', re: /meal voucher|meal stipend|titres?-restaurant|\blunch\b/i },
-        { key: 'parental', title: 'Parental and special leave', re: /parental|maternity|paternity|birth leave|birthing|adoption|bereavement|special leave/i }
-      ];
-      const OTHER_SECTION = { key: 'other', title: 'Other documents' };
-      const FOOTER_LABELS = /^(policy owner|document owner|status|effective date|version|compiled)\s*:/i;
-
-      function docSectionKeys(fileNode) {
-        const keys = SECTIONS.filter((sec) => sec.re.test(fileNode.content)).map((sec) => sec.key);
-        return keys.length ? keys : ['other'];
-      }
-
-      // Source documents of a summary, grouped per template section (newest first).
-      function sectionGroups(summaryNode) {
-        const groups = new Map([...SECTIONS, OTHER_SECTION].map((sec) => [sec.key, []]));
-        const files = [];
-        walk(summaryNode, (n) => { if (n.type === 'file') files.push(n); });
-        files.forEach((f) => docSectionKeys(f).forEach((k) => groups.get(k).push(f)));
-        const time = (f) => (f.updatedAt ? Date.parse(f.updatedAt) : 0);
-        groups.forEach((list) => list.sort((a, b) => time(b) - time(a) || a.name.localeCompare(b.name)));
-        return groups;
-      }
-
-      // Parses a SUMMARY.txt written in the template format.
-      function parseSummary(text) {
-        const lines = text.split(/\r?\n/);
-        const out = { title: '', subtitle: '', effective: '', sections: [], footer: [], extra: [] };
-        const head = [];
-        let i = 0;
-        for (; i < lines.length; i++) {
-          const t = lines[i].trim();
-          if (!t) { if (head.length) break; continue; }
-          head.push(t);
-        }
-        out.title = head[0] || '';
-        head.slice(1).forEach((h) => { if (/^current|effective/i.test(h)) out.effective = h; else out.subtitle = out.subtitle ? out.subtitle + ' · ' + h : h; });
-        let cur = null;
-        for (; i < lines.length; i++) {
-          const raw = lines[i];
-          const t = raw.trim();
-          if (!t) { cur = null; continue; }
-          if (FOOTER_LABELS.test(t)) {
-            const [label, ...rest] = t.split(':');
-            out.footer.push({ label: label.trim(), value: rest.join(':').trim() });
-            cur = null;
-            continue;
-          }
-          const sec = SECTIONS.find((s2) => s2.title.toLowerCase() === t.toLowerCase());
-          if (sec && !cur) {
-            cur = { key: sec.key, title: sec.title, value: '', details: [], sources: [] };
-            out.sections.push(cur);
-            continue;
-          }
-          if (cur) {
-            const src = t.match(/^source\s*:\s*(.+)$/i);
-            if (src) cur.sources.push(...src[1].split(';').map((x) => x.trim()).filter(Boolean));
-            else if (!cur.value) cur.value = t;
-            else cur.details.push(t);
-          } else out.extra.push(t);
-        }
-        return out;
       }
 
       function setSummary(folderNode, text, extra = {}) {
@@ -786,6 +759,144 @@
         }
       }
 
+      function addCompanyPolicyDemo(root) {
+        const america = ensureFolderPath(root, ['Company A', 'America']);
+        america.children = america.children.filter((c) => !(c.type === 'folder' && c.name.toLowerCase() === 'company policies'));
+        const policies = folder('Company Policies');
+        america.children.push(policies);
+
+        const v14 = `EMPLOYEE WORKING CONDITIONS POLICY
+Document owner: Human Resources Department
+Approved by: Director of Human Resources
+Status: Approved
+Version: 1.4
+Effective date: 2024-01-01
+Approval date: 2023-12-12
+
+1. Purpose and Scope
+This policy establishes the general working conditions applicable to permanent employees of Company A in America, unless otherwise stated in an individual employment agreement or formally approved amendment. Where a binding agreement provides different conditions, that agreement takes precedence.
+
+2. Working Hours
+The standard full-time working schedule consists of 40 hours per week, normally distributed across five working days from Monday to Friday. Alternative schedules may be agreed with the employee's manager, subject to internal procedures. Any working time beyond the agreed schedule must receive prior approval. Approved overtime shall be compensated at 150% of the employee's standard hourly rate or, where agreed, through equivalent compensatory time off.
+
+3. Annual Leave
+Full-time employees are entitled to 20 paid vacation days per calendar year. After each completed year of continuous employment, employees receive one additional paid vacation day, up to a maximum of 25 paid vacation days per calendar year. Vacation requests must be submitted through the HR platform and are subject to manager approval.
+
+4. Remote Work
+Employees whose role is suitable for remote work may work remotely for up to one day per working week. Remote-working days must be coordinated with the employee's manager and may be restricted where physical presence is required.
+
+5. Sick Leave
+Employees unable to work due to illness must notify their manager and Human Resources as soon as reasonably possible. A medical certificate is required when an absence exceeds one consecutive working day, unless different requirements apply.
+
+6. Meal Vouchers
+Eligible employees receive meal vouchers with a total value of $6 per working day, subject to company procedures.
+
+7. Parental and Special Leave
+Employees may request parental, bereavement, and other forms of special leave in accordance with applicable employment legislation and internal HR procedures.
+
+8. Policy Administration
+Human Resources is responsible for the interpretation, implementation, and maintenance of this policy. A formally approved later version or amendment supersedes conflicting provisions in earlier versions.`;
+
+        const v28 = `EMPLOYEE WORKING CONDITIONS POLICY
+Document owner: Human Resources Department
+Approved by: Director of Human Resources
+Status: Approved
+Version: 2.8
+Effective date: 2025-01-01
+Approval date: 2024-12-15
+
+1. Purpose and Scope
+This policy establishes the general working conditions applicable to permanent employees of Company A in America, unless otherwise stated in an individual employment agreement or formally approved amendment. Where a binding agreement provides different conditions, that agreement takes precedence.
+
+2. Working Hours
+The standard full-time working schedule consists of 38 hours per week, normally distributed across five working days from Monday to Friday. Alternative schedules may be agreed with the employee's manager, subject to internal procedures. Any working time beyond the agreed schedule must receive prior approval. Approved overtime shall be compensated at 150% of the employee's standard hourly rate or, where agreed, through equivalent compensatory time off.
+
+3. Annual Leave
+Full-time employees are entitled to 21 paid vacation days per calendar year. After each completed year of continuous employment, employees receive one additional paid vacation day, up to a maximum of 26 paid vacation days per calendar year. Vacation requests must be submitted through the HR platform and are subject to manager approval.
+
+4. Remote Work
+Employees whose role is suitable for remote work may work remotely for up to two days per working week. Remote-working days must be coordinated with the employee's manager and may be restricted where physical presence is required.
+
+5. Sick Leave
+Employees unable to work due to illness must notify their manager and Human Resources as soon as reasonably possible. A medical certificate is required when an absence exceeds two consecutive working days, unless different requirements apply.
+
+6. Meal Vouchers
+Eligible employees receive meal vouchers with a total value of $8 per working day, subject to company procedures.
+
+7. Parental and Special Leave
+Employees may request parental, bereavement, and other forms of special leave in accordance with applicable employment legislation and internal HR procedures.
+
+8. Policy Administration
+Human Resources is responsible for the interpretation, implementation, and maintenance of this policy. A formally approved later version or amendment supersedes conflicting provisions in earlier versions.`;
+
+        const v31 = `EMPLOYEE WORKING CONDITIONS POLICY
+Document owner: Human Resources Department
+Approved by: Pending approval
+Status: Draft
+Version: 3.1
+Effective date: 2026-01-01
+Approval date: Pending
+
+1. Purpose and Scope
+This draft proposes updated general working conditions for permanent employees of Company A in America. Until formally approved, currently approved policies and amendments remain authoritative.
+
+2. Working Hours
+The proposed standard full-time working schedule consists of 38 hours per week, normally distributed across five working days from Monday to Friday. Approved overtime would continue to be compensated at 150% of the employee's standard hourly rate or through equivalent compensatory time off.
+
+3. Annual Leave
+The draft retains 21 paid vacation days per calendar year, with one additional paid vacation day for every completed year of continuous employment, up to a maximum of 26 paid vacation days per calendar year.
+
+4. Remote Work
+The draft proposes increasing remote work to up to three days per working week, subject to manager approval and operational requirements.
+
+5. Sick Leave
+The draft retains the requirement for a medical certificate when an absence exceeds two consecutive working days.
+
+6. Meal Vouchers
+The draft retains meal vouchers with a total value of $8 per working day.
+
+7. Parental and Special Leave
+Employees may request parental, bereavement, and other forms of special leave in accordance with applicable employment legislation and internal HR procedures.
+
+8. Policy Administration
+This document remains a draft and does not supersede approved policy version 2.8 until formal approval is completed.`;
+
+        addTextFile(policies, 'Employee Working Conditions Policy v1.4.txt', v14, { allowSummary: false, extra: { trustScore: 78 } });
+        addTextFile(policies, 'Employee Working Conditions Policy v2.8.txt', v28, { allowSummary: false, extra: { trustScore: 96 } });
+        addTextFile(policies, 'Employee Working Conditions Policy v3.1 — Draft.txt', v31, { allowSummary: false, extra: { trustScore: 63 } });
+
+        const trustedSummary = `EMPLOYEE WORKING CONDITIONS — TRUSTED SUMMARY
+Document owner: Knowledge Resolution Engine
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+Working Hours: 38 hours per week
+Vacation Entitlement: 21 paid vacation days per year
+Seniority Increase: +1 day per completed year of employment
+Maximum Vacation: 26 days per year
+Remote Work: Up to 2 days per week
+Overtime Compensation: 150% of the standard hourly rate
+Sick Leave: Medical certificate required after 2 consecutive working days
+Meal Vouchers: $8 per working day
+Parental & Special Leave: According to applicable employment legislation and company procedures`;
+        setSummary(policies, trustedSummary, { status: 'verified', owner: 'Knowledge Resolution Engine' });
+        policies.trustedPolicy = {
+          title: 'Employee Working Conditions Policy',
+          company: 'Company A',
+          scope: 'America',
+          fields: {
+            workingHours: { label: 'Working Hours', value: '38 hours per week', score: 97, detail: 'Standard full-time working schedule.', versions: ['2.8','3.1'] },
+            vacation: { label: 'Vacation Entitlement', value: '21 paid vacation days per year', score: 96, detail: '+1 day per completed year · maximum 26 days', versions: ['2.8','3.1'] },
+            remote: { label: 'Remote Work', value: 'Up to 2 days per week', score: 91, detail: 'Subject to manager approval and operational requirements.', versions: ['2.8'] },
+            overtime: { label: 'Overtime Compensation', value: '150% of the standard hourly rate', score: 99, detail: 'Equivalent compensatory time off may also be agreed.', versions: ['1.4','2.8','3.1'] },
+            sick: { label: 'Sick Leave', value: 'Medical certificate after 2 consecutive working days', score: 94, detail: 'Employee must notify their manager and Human Resources.', versions: ['2.8','3.1'] },
+            meal: { label: 'Meal Vouchers', value: '$8 per working day', score: 95, detail: 'For eligible working days under company procedures.', versions: ['2.8','3.1'] },
+            special: { label: 'Parental & Special Leave', value: 'According to applicable law and company procedures', score: 93, detail: 'Includes parental, bereavement, and other special leave.', versions: ['1.4','2.8','3.1'] }
+          }
+        };
+      }
+
       function buildInitialData() {
         const root = folder('My Drive');
         ['Company A', 'Company B'].forEach((c) => ['America', 'Belgium', 'France'].forEach((l) => ensureFolderPath(root, [c, l])));
@@ -795,6 +906,7 @@
           // Documents without a Date / Last updated line stay undated rather than pretending to be new.
           addTextFile(parent, item.name, item.content, { allowSummary: parent !== root, extra: { createdAt: null, updatedAt: null } });
         });
+        addCompanyPolicyDemo(root);
         return root;
       }
 
@@ -842,7 +954,7 @@
       };
       state.currentFolderId = state.root.id;
 
-      const UI_KEY = 'knowledge-management-ui-v4';
+      const UI_KEY = 'knowledge-management-ui-v3';
       function saveUiPrefs() {
         try { localStorage.setItem(UI_KEY, JSON.stringify({ layout: state.layout, expanded: [...state.expanded] })); } catch (e) { /* optional */ }
       }
@@ -929,7 +1041,7 @@
         '\\S+@\\S+',
         'https?://\\S+'
       ].join('|'), 'gi');
-      const HEADER_LINE = /^\s*(document owner|policy owner|owner|status|last updated|last reviewed|date|from|to|cc|applies to|company|policy id|effective date|version|approved by|approval date|compiled|source)\s*:/i;
+      const HEADER_LINE = /^\s*(document owner|owner|status|last updated|last reviewed|date|from|to|cc|applies to)\s*:/i;
       const NUM_RE = /([$€£])?\s?(\d+(?:[.,]\d+)*)\s?(%)?/g;
       const UNIT_WORDS = { day: 'day', days: 'day', hour: 'hour', hours: 'hour', week: 'week', weeks: 'week', month: 'month', months: 'month',
         year: 'year', years: 'year', minute: 'minute', minutes: 'minute', times: 'times', percent: '%', paydays: 'payday', holidays: 'holiday' };
@@ -966,14 +1078,10 @@
         return f.raw + unit + (f.unit.period && f.unit.period !== f.unit.base ? ` per ${f.unit.period}` : '');
       }
 
-      // Numbers stated in a document, with what they are about: the words before the number ("minimum wage"),
-      // the words right after it ("paid sick days"), the kind of unit, and the template section of the paragraph.
       function extractFacts(text) {
         const facts = [];
         text.split(/\r?\n/).forEach((line) => {
           if (HEADER_LINE.test(line)) return;
-          const secs = new Set(SECTIONS.filter((sec) => sec.re.test(line)).map((sec) => sec.key));
-          if (!secs.size) secs.add('other');
           line.split(/(?<=[.!?])\s+/).forEach((sentence) => {
             const shown = sentence.trim();
             if (!shown) return;
@@ -985,14 +1093,11 @@
               const context = tokens(s.slice(last, m.index)).filter((w) => w.length > 2 && !STOP.has(w)).slice(-5);
               last = m.index + m[0].length;
               if (!m[1] && !m[3] && /^(19|20)\d\d$/.test(m[2])) continue; // a bare year
-              const before = new Set();
-              for (let i = 0; i < context.length - 1; i++) before.add(context[i] + ' ' + context[i + 1]);
-              const afterWords = tokens(s.slice(last, last + 60).split(/\d/)[0])
-                .filter((w) => w.length > 2 && !STOP.has(w) && !UNIT_WORDS[w] && !PERIOD_WORDS[w]).slice(0, 2);
-              const after = afterWords.length === 2 ? afterWords.join(' ') : '';
-              if (!before.size && !after) continue;
+              const topics = new Set();
+              for (let i = 0; i < context.length - 1; i++) topics.add(context[i] + ' ' + context[i + 1]);
+              if (!topics.size) continue;
               facts.push({
-                before, after, secs,
+                topics,
                 value: numValue(m[2]),
                 raw: (m[1] || '') + m[2] + (m[3] || ''),
                 unit: unitOf(m, s.slice(last)),
@@ -1002,15 +1107,6 @@
           });
         });
         return facts;
-      }
-
-      // How well two numbers are about the same thing (0 = not comparable).
-      function factMatch(fa, fb) {
-        if (!unitsMatch(fa.unit, fb.unit)) return 0;
-        if (![...fa.secs].some((k) => fb.secs.has(k))) return 0;
-        const shared = [...fa.before].filter((t) => fb.before.has(t)).length;
-        const afterHit = fa.after && fa.after === fb.after ? 1 : 0;
-        return shared ? shared * 2 + afterHit : afterHit;
       }
 
       function daysSince(iso) {
@@ -1052,23 +1148,22 @@
 
         const comparable = (s1, s2) => !s1 || !s2 || s1 === s2 || s1.startsWith(s2 + '/') || s2.startsWith(s1 + '/');
 
-        // Conflicts: two documents of the same company & country state a different number for the same thing.
-        // Each number is compared with its best-matching number in the other document only.
+        // Conflicts: same topic (e.g. "minimum wage"), same kind of number, different value, same company & country.
         for (let i = 0; i < files.length; i++) {
           for (let j = i + 1; j < files.length; j++) {
             const a = files[i].node, b = files[j].node;
             if (!comparable(scope.get(a.id), scope.get(b.id))) continue;
             const seen = new Set();
-            const record = (fa, fb) => {
-              const key = fa.sentence + '|' + fa.raw + '|' + fb.sentence + '|' + fb.raw;
-              if (seen.has(key)) return;
-              seen.add(key);
-              result.get(a.id).conflicts.push({ otherId: b.id, mine: fa.sentence, theirs: fb.sentence, mineValue: factLabel(fa), theirValue: factLabel(fb) });
-              result.get(b.id).conflicts.push({ otherId: a.id, mine: fb.sentence, theirs: fa.sentence, mineValue: factLabel(fb), theirValue: factLabel(fa) });
-            };
-            const best = (f, pool) => pool.reduce((acc, g) => { const sc = factMatch(f, g); return sc > acc.sc ? { g, sc } : acc; }, { g: null, sc: 0 }).g;
-            facts.get(a.id).forEach((fa) => { const fb = best(fa, facts.get(b.id)); if (fb && fb.value !== fa.value) record(fa, fb); });
-            facts.get(b.id).forEach((fb) => { const fa = best(fb, facts.get(a.id)); if (fa && fa.value !== fb.value) record(fa, fb); });
+            facts.get(a.id).forEach((fa) => {
+              facts.get(b.id).forEach((fb) => {
+                if (fa.value === fb.value || !unitsMatch(fa.unit, fb.unit)) return;
+                const shared = [...fa.topics].find((t) => fb.topics.has(t));
+                if (!shared || seen.has(fa.sentence + '|' + fb.sentence)) return;
+                seen.add(fa.sentence + '|' + fb.sentence);
+                result.get(a.id).conflicts.push({ otherId: b.id, topic: shared, mine: fa.sentence, theirs: fb.sentence, mineValue: factLabel(fa), theirValue: factLabel(fb) });
+                result.get(b.id).conflicts.push({ otherId: a.id, topic: shared, mine: fb.sentence, theirs: fa.sentence, mineValue: factLabel(fb), theirValue: factLabel(fa) });
+              });
+            });
           }
         }
 
@@ -1095,27 +1190,10 @@
           const outdated = sources.filter((s) => s.status === 'outdated').length;
           const changed = sources.filter((s) => s.changedAt && (!node.updatedAt || s.changedAt > node.updatedAt)).length;
           if (!sources.length) { r.issues.push('Has no source documents.'); score += 1; }
+          if (conflicted) { r.issues.push(`${conflicted} of its ${sources.length} sources contradict another document.`); score += 1; }
+          if (outdated) r.issues.push(`${outdated} source${outdated === 1 ? ' is' : 's are'} marked outdated.`);
           if (changed) r.issues.push(`${changed} source${changed === 1 ? ' was' : 's were'} added or edited after this summary was written — it may be out of date.`);
-          // Per template section: was the most recent (non-draft, non-outdated) document the one used?
-          const parsed = parseSummary(node.summary);
-          const groups = sectionGroups(node);
-          const time = (f) => (f.updatedAt ? Date.parse(f.updatedAt) : 0);
-          let newerUnused = 0;
-          parsed.sections.forEach((sec) => {
-            const docs = groups.get(sec.key) || [];
-            const isUsed = (f) => sec.sources.some((n) => n.toLowerCase() === f.name.toLowerCase());
-            const used = docs.filter(isUsed);
-            sec.sources.filter((n) => !docs.some((f) => f.name.toLowerCase() === n.toLowerCase()))
-              .forEach((n) => { r.issues.push(`${sec.title}: the source “${n}” is missing.`); score += 1; });
-            const newestUsed = used.reduce((m, f) => Math.max(m, time(f)), 0);
-            docs.filter((f) => !isUsed(f) && f.status !== 'outdated' && !f.proposal && time(f) > newestUsed).forEach((f) => {
-              r.issues.push(`${sec.title}: “${f.name}” is newer than the document used — check that the summary is still right.`);
-              newerUnused += 1;
-            });
-          });
-          if (conflicted) r.issues.push(`${conflicted} of its ${sources.length} sources disagree with another source; the summary uses the most recent one — click a section to compare.`);
-          if (outdated) r.issues.push(`${outdated} source${outdated === 1 ? ' is' : 's are'} marked outdated and not used.`);
-          r.level = changed || newerUnused || node.status === 'outdated' ? 'bad' : score > 0 ? 'warn' : 'good';
+          r.level = changed || node.status === 'outdated' ? 'bad' : score > 0 ? 'warn' : 'good';
           r.sourceCount = sources.length;
           result.set(node.id, r);
         });
@@ -1248,7 +1326,17 @@
         if (state.layout === 'graph') return renderGraph(body, keepScroll);
 
         const folderNode = currentFolder();
-        const gridCard = (item) => {
+        if (isSummary(folderNode)) {
+          body.appendChild(el('div', { class: 'source-banner' }, [
+            el('span', { text: folderNode.trustedPolicy ? `✓ These are the ${folderNode.children.length} original policy versions used to build the trusted “${folderNode.name}” view.` : `📋 These are the ${folderNode.children.length} source document${folderNode.children.length === 1 ? '' : 's'} behind the “${folderNode.name}” summary.` }),
+            el('button', { class: 'link-btn', type: 'button', text: folderNode.trustedPolicy ? 'Open trusted version' : 'Read the summary', onclick: () => openFile(folderNode.id) })
+          ]));
+        }
+        const grid = el('div', { class: 'grid' });
+        if (!folderNode.children.length) {
+          grid.appendChild(el('div', { class: 'empty-state', text: 'This folder is empty. Create a file, import .txt files, or drag them here.' }));
+        }
+        sortedChildren(folderNode).forEach((item) => {
           const summary = isSummary(item);
           const card = el('div', { class: `item-card ${summary ? 'summary' : item.type}` + (item.id === state.activeFileId ? ' selected' : ''), tabindex: '0' });
           if (isDoc(item)) {
@@ -1259,44 +1347,19 @@
           card.appendChild(el('div', { class: 'item-name', text: item.name }));
           if (summary) {
             const n = item.children.length;
-            card.appendChild(el('div', { class: 'item-sub', text: `summary · ${n} source${n === 1 ? '' : 's'}` }));
+            card.appendChild(el('div', { class: 'item-sub', text: item.trustedPolicy ? `trusted policy · ${n} version${n === 1 ? '' : 's'}` : `summary · ${n} source${n === 1 ? '' : 's'}` }));
           } else if (item.type === 'folder') {
             let n = 0; walk(item, (x) => { if (isDoc(x)) n++; });
             card.appendChild(el('div', { class: 'item-sub', text: `${n} document${n === 1 ? '' : 's'}` }));
           } else {
-            card.appendChild(el('div', { class: 'item-sub', text: item.updatedAt ? fmtDate(item.updatedAt) : item.owner || 'no date' }));
+            card.appendChild(el('div', { class: 'item-sub', text: item.owner || 'no owner' }));
           }
           const open = () => (isDoc(item) ? openFile(item.id) : openFolder(item.id));
           card.addEventListener('click', open);
           card.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(); });
           if (item.type === 'folder') addFolderDropTarget(card, item.id);
-          return card;
-        };
-
-        if (isSummary(folderNode)) {
-          // Inside a summary: one folder per template section, holding the documents considered for it.
-          body.appendChild(el('div', { class: 'source-banner' }, [
-            el('span', { text: `📋 The ${folderNode.children.length} source document${folderNode.children.length === 1 ? '' : 's'} behind this summary, sorted into its sections (a document can appear in several).` }),
-            el('button', { class: 'link-btn', type: 'button', text: 'Read the summary', onclick: () => openFile(folderNode.id) })
-          ]));
-          const groups = sectionGroups(folderNode);
-          [...SECTIONS, OTHER_SECTION].forEach((sec) => {
-            const docs = groups.get(sec.key);
-            if (sec.key === 'other' && !docs.length) return;
-            body.appendChild(el('h4', { class: 'group-title' }, ['📁 ' + sec.title, el('span', { class: 'group-count', text: ` · ${docs.length} document${docs.length === 1 ? '' : 's'}` })]));
-            const grid = el('div', { class: 'grid' });
-            if (!docs.length) grid.appendChild(el('div', { class: 'empty-state', text: 'No source document mentions this section.' }));
-            docs.forEach((f) => grid.appendChild(gridCard(f)));
-            body.appendChild(grid);
-          });
-          return;
-        }
-
-        const grid = el('div', { class: 'grid' });
-        if (!folderNode.children.length) {
-          grid.appendChild(el('div', { class: 'empty-state', text: 'This folder is empty. Create a file, import .txt files, or drag them here.' }));
-        }
-        sortedChildren(folderNode).forEach((item) => grid.appendChild(gridCard(item)));
+          grid.appendChild(card);
+        });
         body.appendChild(grid);
       }
 
@@ -1364,7 +1427,7 @@
         wrap: null, sizer: null, canvas: null, svg: null,
         nodes: new Map(),   // id -> { el, path, parentId, x, y, o, from*, to*, leaving }
         targets: new Map(),
-        zoom: 1, autoFit: true, fitMin: 0.65, width: 0, height: 0, anim: 0, focusId: null
+        zoom: 1, autoFit: true, width: 0, height: 0, anim: 0, focusId: null
       };
 
       // Folders first, then summaries, then loose documents; alphabetical within each group.
@@ -1390,24 +1453,11 @@
         const items = [];
         const widthOf = new Map();
         const partsOf = (n) => {
-          if (!state.expanded.has(n.id)) return { branches: [], files: [] };
-          // A section of a summary: the documents considered for it (the same document can sit in several sections).
-          if (n.type === 'section') {
-            return n.docs.length
-              ? { branches: [], files: n.docs.map((f) => ({ id: n.id + '::' + f.id, type: 'file', ref: f, name: f.name })) }
-              : { branches: [{ id: n.id + ':empty', type: 'ghost', name: 'no documents' }], files: [] };
-          }
-          // A summary opens into one folder per template section.
-          if (isSummary(n)) {
-            const groups = sectionGroups(n);
-            const secs = [...SECTIONS, OTHER_SECTION].filter((sec) => sec.key !== 'other' || groups.get('other').length);
-            return { branches: secs.map((sec) => ({ id: n.id + '::' + sec.key, type: 'section', name: sec.title, key: sec.key, summary: n, docs: groups.get(sec.key) })), files: [] };
-          }
-          if (n.type !== 'folder') return { branches: [], files: [] };
+          if (n.type !== 'folder' || !state.expanded.has(n.id)) return { branches: [], files: [] };
           const kids = sortedChildren(n);
           const branches = kids.filter((k) => k.type === 'folder');
           const files = kids.filter((k) => k.type === 'file');
-          if (!kids.length) branches.push({ id: n.id + ':empty', type: 'ghost', name: 'empty folder' });
+          if (!kids.length) branches.push({ id: n.id + ':empty', type: 'ghost', name: 'empty' });
           return { branches, files };
         };
         const measure = (n) => {
@@ -1446,13 +1496,12 @@
       function createNodeEl() {
         const b = document.createElement('button');
         b.type = 'button';
-        b.addEventListener('click', () => onGraphNodeClick(b.dataset.id, b.dataset.ref));
+        b.addEventListener('click', () => onGraphNodeClick(b.dataset.id));
         return b;
       }
 
       function fillNodeEl(b, n) {
         b.dataset.id = n.id;
-        if (n.ref) b.dataset.ref = n.ref.id; else delete b.dataset.ref;
         b.style.pointerEvents = '';
         b.removeAttribute('aria-hidden');
         b.replaceChildren();
@@ -1462,33 +1511,19 @@
           b.disabled = true;
           b.tabIndex = -1;
           b.removeAttribute('aria-expanded');
-          b.appendChild(el('span', { class: 'gnode-name', text: n.name }));
+          b.appendChild(el('span', { class: 'gnode-name', text: 'empty folder' }));
           return;
         }
         b.disabled = false;
         b.tabIndex = 0;
-        if (n.type === 'section') {
-          const open = state.expanded.has(n.id);
-          const count = n.docs.length;
-          b.className = 'gnode section' + (open ? ' open' : '');
-          b.setAttribute('aria-expanded', String(open));
-          b.title = `${n.name}: the ${count} document${count === 1 ? '' : 's'} considered for this part of the summary — click to ${open ? 'fold in' : 'show them'}.`;
-          b.append(
-            el('span', { class: 'gnode-icon', text: open ? '📂' : '📁' }),
-            el('span', { class: 'gnode-text' }, [
-              el('span', { class: 'gnode-name', text: n.name }),
-              el('span', { class: 'gnode-meta', text: `${count} document${count === 1 ? '' : 's'}` })
-            ]),
-            el('span', { class: 'gnode-toggle', text: open ? '−' : '+' })
-          );
-        } else if (isSummary(n)) {
+        if (isSummary(n)) {
           const open = state.expanded.has(n.id);
           const a = analysis.get(n.id);
           const count = n.children.length;
           b.className = 'gnode summary' + (open ? ' open' : '') + (state.activeFileId === n.id ? ' selected' : '');
           b.setAttribute('aria-expanded', String(open));
-          b.title = `${n.name} summary — click to read it; use ${open ? '−' : '+'} to ${open ? 'hide' : 'show'} its sections and ${count} source documents.`;
-          const toggle = el('span', { class: 'gnode-toggle', title: `${open ? 'Hide' : 'Show'} the sections and their source documents`, text: open ? '−' : '+' });
+          b.title = `${n.name} summary — click to read it; use ${open ? '−' : '+'} to ${open ? 'hide' : 'show'} its ${count} source documents.`;
+          const toggle = el('span', { class: 'gnode-toggle', title: `${open ? 'Hide' : 'Show'} the ${count} source documents`, text: open ? '−' : '+' });
           toggle.addEventListener('click', (e) => { e.stopPropagation(); toggleGraphNode(n.id); });
           b.append(
             el('span', { class: 'gnode-icon', text: '📋' }),
@@ -1515,52 +1550,39 @@
             el('span', { class: 'gnode-toggle', text: open ? '−' : '+' })
           );
         } else {
-          const f = n.ref || n;           // a document shown inside a section points at the real file
-          const a = analysis.get(f.id);
-          b.className = 'gnode file' + (state.activeFileId === f.id ? ' selected' : '');
+          const a = analysis.get(n.id);
+          b.className = 'gnode file' + (state.activeFileId === n.id ? ' selected' : '');
           b.removeAttribute('aria-expanded');
-          const when = f.updatedAt ? ' · ' + new Date(f.updatedAt).toLocaleDateString() : '';
-          b.title = `${f.name}${f.owner ? ' · ' + f.owner : ''}${when} — ${LEVEL_LABEL[a.level]}. Click to read.`;
+          b.title = `${n.name}${n.owner ? ' · ' + n.owner : ''} — ${LEVEL_LABEL[a.level]}. Click to read.`;
           b.append(
             el('span', { class: 'gnode-icon', text: '📄' }),
             el('span', { class: 'gnode-text' }, [
-              el('span', { class: 'gnode-name', text: f.name.replace(/\.txt$/i, '') })
+              el('span', { class: 'gnode-name', text: n.name.replace(/\.txt$/i, '') })
             ]),
             el('span', { class: `gnode-dot ${a.level}` })
           );
         }
       }
 
-      function onGraphNodeClick(id, ref) {
-        if (ref) return openViewer(ref);                 // a document inside a section
-        if (id.includes('::')) return toggleGraphNode(id); // a section folder
+      function onGraphNodeClick(id) {
         const found = findById(id);
         if (!found) return;
         if (isDoc(found.node)) return openViewer(id);   // documents and summaries open in the pop-up
         toggleGraphNode(id);
       }
 
-      // Folds a node and everything below it (including the section folders of summaries inside it).
-      function collapseGraphNode(id) {
-        if (id.includes('::')) {
-          [...state.expanded].forEach((e) => { if (e === id || e.startsWith(id + '::')) state.expanded.delete(e); });
-          return;
-        }
-        const found = findById(id);
-        if (!found) { state.expanded.delete(id); return; }
-        const ids = new Set();
-        walk(found.node, (x) => { if (x.type === 'folder') ids.add(x.id); });
-        [...state.expanded].forEach((e) => { if (ids.has(e.split('::')[0])) state.expanded.delete(e); });
-      }
-
-      // Opens or folds a folder, summary or section in the graph and makes its folder the target for new files.
+      // Opens or folds a folder / summary in the graph and makes it the target for new files.
       function toggleGraphNode(id) {
-        const baseId = id.split('::')[0];
-        const found = findById(baseId);
+        const found = findById(id);
         if (!found || found.node.type !== 'folder') return;
-        if (state.expanded.has(id)) collapseGraphNode(id);
-        else { state.expanded.add(id); graph.focusId = id; }
-        state.currentFolderId = baseId;
+        if (state.expanded.has(id)) {
+          // Folding also folds everything inside it.
+          walk(found.node, (x) => { if (x.type === 'folder') state.expanded.delete(x.id); });
+        } else {
+          state.expanded.add(id);
+          graph.focusId = id;
+        }
+        state.currentFolderId = id;
         saveUiPrefs();
         renderNav();
         renderMain();
@@ -1593,7 +1615,7 @@
       function fitZoom(width) {
         const avail = graph.wrap.clientWidth - 16;
         if (avail <= 0) return graph.zoom;
-        return Math.min(1, Math.max(graph.fitMin, avail / Math.max(1, width)));
+        return Math.min(1, Math.max(0.65, avail / Math.max(1, width)));
       }
 
       function drawGraphFrame() {
@@ -1743,10 +1765,10 @@
             zoomBtn('Fold all', 'Fold every folder', () => { state.expanded.clear(); saveUiPrefs(); renderMain(); })
           ]),
           el('div', { class: 'group zoom' }, [
-            zoomBtn('−', 'Zoom out', () => { graph.autoFit = false; graph.fitMin = 0.65; setZoom(graph.zoom - 0.1); }),
+            zoomBtn('−', 'Zoom out', () => { graph.autoFit = false; setZoom(graph.zoom - 0.1); }),
             el('span', { class: 'zoom-label', id: 'zoomLabel', text: Math.round(graph.zoom * 100) + '%' }),
-            zoomBtn('+', 'Zoom in', () => { graph.autoFit = false; graph.fitMin = 0.65; setZoom(graph.zoom + 0.1); }),
-            zoomBtn('Fit', 'Zoom out until the whole graph fits (and keep fitting as it grows)', () => { graph.autoFit = true; graph.fitMin = 0.4; setZoom(fitZoom(graph.width)); })
+            zoomBtn('+', 'Zoom in', () => { graph.autoFit = false; setZoom(graph.zoom + 0.1); }),
+            zoomBtn('Fit', 'Zoom to fit the whole graph (and keep fitting as it grows)', () => { graph.autoFit = true; setZoom(fitZoom(graph.width)); })
           ])
         ]));
         body.appendChild(graph.wrap);
@@ -1754,112 +1776,197 @@
         updateGraph();
       }
 
-      // Shows a document. A summary is laid out like the template; clicking a section lists the documents considered.
+      let activePolicyView = 'full';
+
+      function trustPill(score) {
+        return el('span', { class: 'trust-pill' + (score < 92 ? ' mid' : ''), text: `${score}% trust`, title: 'Confidence in this resolved value' });
+      }
+
+      function appendResolved(container, value, score) {
+        container.appendChild(el('span', { class: 'trusted-inline', text: value }));
+        container.appendChild(trustPill(score));
+      }
+
+      function renderTrustedPolicy(target, node, mode = 'full') {
+        target.replaceChildren();
+        const policy = node.trustedPolicy;
+        const f = policy.fields;
+        const paper = el('article', { class: 'doc-paper' });
+        target.appendChild(paper);
+        paper.appendChild(el('h1', { class: 'doc-title', text: policy.title }));
+        paper.appendChild(el('div', { class: 'doc-subtitle', text: mode === 'full' ? `${policy.company} · ${policy.scope} · resolved policy view` : `${policy.company} · ${policy.scope} · trusted summary` }));
+        paper.appendChild(el('div', { class: 'resolved-note' }, [
+          el('span', { text: '✓' }),
+          el('span', { text: 'Values shown here are resolved from all available policy versions. Source documents remain unchanged.' })
+        ]));
+
+        if (mode === 'summary') {
+          paper.appendChild(el('h2', { class: 'doc-section', text: 'Key Employment Information' }));
+          const grid = el('div', { class: 'policy-summary-grid' });
+          Object.values(f).forEach((x) => {
+            const card = el('div', { class: 'policy-summary-card' });
+            card.appendChild(el('div', { class: 'policy-summary-label', text: x.label }));
+            const val = el('div', { class: 'policy-summary-value' });
+            val.append(document.createTextNode(x.value + ' '), trustPill(x.score));
+            card.appendChild(val);
+            card.appendChild(el('div', { class: 'policy-summary-detail', text: x.detail }));
+            grid.appendChild(card);
+          });
+          paper.appendChild(grid);
+          return;
+        }
+
+        const sections = [
+          ['1. Purpose and Scope', (p) => p.append('This policy establishes the general working conditions applicable to permanent employees of Company A in America, unless otherwise stated in an individual employment agreement or formally approved amendment. Where a binding agreement provides different conditions, that agreement takes precedence.')],
+          ['2. Working Hours', (p) => { p.append('The standard full-time working schedule consists of '); appendResolved(p, f.workingHours.value, f.workingHours.score); p.append(', normally distributed across five working days from Monday to Friday. Alternative schedules may be agreed with the employee’s manager, subject to internal procedures. Any working time beyond the agreed schedule must receive prior approval. Approved overtime shall be compensated at '); appendResolved(p, f.overtime.value, f.overtime.score); p.append(' or, where agreed, through equivalent compensatory time off.'); }],
+          ['3. Annual Leave', (p) => { p.append('Full-time employees are entitled to '); appendResolved(p, f.vacation.value, f.vacation.score); p.append('. After each completed year of continuous employment, employees receive '); appendResolved(p, 'one additional paid vacation day', f.vacation.score); p.append(', up to a maximum of '); appendResolved(p, '26 paid vacation days per calendar year', f.vacation.score); p.append('. Vacation requests must be submitted through the HR platform and are subject to manager approval. Unused leave may only be transferred where permitted by applicable rules and internal procedures.'); }],
+          ['4. Remote Work', (p) => { p.append('Employees whose role is suitable for remote work may work remotely for '); appendResolved(p, f.remote.value, f.remote.score); p.append('. Remote-working days must be coordinated with the employee’s manager and may be restricted where physical presence is required for operational, customer, security, or team-related reasons. Remote work does not alter contractual working hours, confidentiality obligations, availability requirements, or performance expectations.'); }],
+          ['5. Sick Leave', (p) => { p.append('Employees unable to work due to illness must notify their manager and Human Resources as soon as reasonably possible. A '); appendResolved(p, f.sick.value.toLowerCase(), f.sick.score); p.append(', unless stricter requirements apply. Employees must follow the company’s absence-reporting procedure and provide required documentation within the applicable deadlines.'); }],
+          ['6. Meal Vouchers', (p) => { p.append('Eligible employees receive meal vouchers with a total value of '); appendResolved(p, f.meal.value, f.meal.score); p.append('. Meal vouchers are provided only for eligible working days, subject to company procedures.'); }],
+          ['7. Parental and Special Leave', (p) => { p.append('Employees may request parental leave, bereavement leave, and other forms of special leave '); appendResolved(p, f.special.value.toLowerCase(), f.special.score); p.append('. Requests must be submitted through the HR platform and may require supporting documentation.'); }],
+          ['8. Policy Administration', (p) => p.append('Human Resources is responsible for the interpretation, implementation, and maintenance of this policy. The company may amend this policy where required by changes in legislation, operational requirements, or company practices. Any amendment must be formally approved and communicated before becoming effective. The trusted view above resolves conflicts between available source versions but does not modify those source documents.')]
+        ];
+        sections.forEach(([title, build]) => {
+          paper.appendChild(el('h2', { class: 'doc-section', text: title }));
+          const p = el('p', { class: 'doc-paragraph' }); build(p); paper.appendChild(p);
+        });
+      }
+
+      // Render a source or summary as a document-like page instead of raw monospaced text.
+      // Summary citations such as [1] stay clickable.
       function renderDocBody(target, node) {
         target.replaceChildren();
-        target.classList.toggle('as-card', isSummary(node));
         const text = docText(node);
         if (!text) { target.textContent = '(empty document)'; return; }
-        if (!isSummary(node)) { target.textContent = text; return; }
-        target.appendChild(renderSummaryCard(node));
-      }
 
-      const docTime = (f) => (f.updatedAt ? Date.parse(f.updatedAt) : 0);
-      const fmtDate = (iso) => (iso ? new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : 'no date');
+        const paper = el('article', { class: 'doc-paper' });
+        target.appendChild(paper);
 
-      function renderSummaryCard(node) {
-        const p = parseSummary(node.summary);
-        const groups = sectionGroups(node);
-        const card = el('div', { class: 'policy' }, [
-          el('h2', { class: 'policy-title', text: p.title || node.name }),
-          p.subtitle ? el('div', { class: 'policy-sub', text: p.subtitle }) : null,
-          p.effective ? el('div', { class: 'policy-effective', text: p.effective }) : null,
-          el('div', { class: 'policy-hint', text: 'Click a section to see which documents it was taken from.' })
-        ]);
-        p.sections.forEach((sec) => {
-          const docs = groups.get(sec.key) || [];
-          const panel = el('div', { class: 'considered hidden' });
-          const head = el('button', { class: 'policy-head', type: 'button', 'aria-expanded': 'false' }, [
-            el('span', { class: 'policy-h' }, [sec.title, el('span', { class: 'policy-count', text: `${docs.length} document${docs.length === 1 ? '' : 's'} considered ▾` })]),
-            el('span', { class: 'policy-val', text: sec.value }),
-            ...sec.details.map((dt) => el('span', { class: 'policy-det', text: dt }))
-          ]);
-          head.addEventListener('click', () => {
-            const open = panel.classList.contains('hidden');
-            if (open && !panel.childNodes.length) panel.appendChild(buildConsidered(node, sec, docs));
-            panel.classList.toggle('hidden', !open);
-            head.setAttribute('aria-expanded', String(open));
-            head.classList.toggle('open', open);
+        const lines = text.split(/\r?\n/);
+        const nonEmpty = lines.map((x) => x.trim()).filter(Boolean);
+        const firstLine = nonEmpty[0] || docTitle(node);
+        const title = firstLine.replace(/\s+-\s+/g, ' — ');
+        paper.appendChild(el('h1', { class: 'doc-title', text: title }));
+        paper.appendChild(el('div', { class: 'doc-subtitle', text: isSummary(node) ? 'Trusted knowledge summary' : 'Source document' }));
+
+        const byNumber = new Map();
+        if (isSummary(node)) {
+          lines.forEach((line) => {
+            const m = line.match(/^\s*\[(\d+)\]\s+(.+?)\s*$/);
+            if (!m) return;
+            const src = node.children.find((c) => c.type === 'file' && c.name.toLowerCase() === m[2].toLowerCase());
+            if (src) byNumber.set(m[1], src);
           });
-          card.appendChild(el('div', { class: 'policy-section' }, [head, panel]));
-        });
-        if (p.extra.length) card.appendChild(el('p', { class: 'policy-det', text: p.extra.join(' ') }));
-        const compiled = p.footer.find((f) => /compiled/i.test(f.label));
-        card.appendChild(el('div', { class: 'policy-footer' }, p.footer.filter((f) => f !== compiled).map((f) => el('div', {}, [el('strong', { text: f.label + ': ' }), f.value]))));
-        if (compiled) card.appendChild(el('div', { class: 'policy-compiled', text: 'Summary compiled: ' + compiled.value }));
-        return card;
-      }
+        }
 
-      // The sentences of a document that talk about a section, e.g. the lines about overtime.
-      function relevantLines(fileNode, re) {
-        const out = [];
-        fileNode.content.split(/\r?\n/).forEach((line) => {
-          if (HEADER_LINE.test(line) || /^subject\s*:/i.test(line)) return;
-          line.split(/(?<=[.!?])\s+/).forEach((sentence) => { if (re.test(sentence) && out.length < 2) out.push(sentence.trim()); });
-        });
-        return out;
-      }
+        function appendInline(container, value) {
+          if (!isSummary(node)) { container.appendChild(document.createTextNode(value)); return; }
+          value.split(/(\[\d+\])/).forEach((part) => {
+            const m = part.match(/^\[(\d+)\]$/);
+            const src = m && byNumber.get(m[1]);
+            if (src) container.appendChild(el('button', { class: 'cite', type: 'button', title: 'Open source: ' + src.name, text: part, onclick: () => openViewer(src.id) }));
+            else container.appendChild(document.createTextNode(part));
+          });
+        }
 
-      // "Documents considered" for one section: the one(s) used first, then the others newest first, with the reason.
-      function buildConsidered(summaryNode, sec, docs) {
-        const def = SECTIONS.find((x) => x.key === sec.key);
-        const isUsed = (f) => sec.sources.some((n) => n.toLowerCase() === f.name.toLowerCase());
-        const newestUsed = docs.filter(isUsed).reduce((m, f) => Math.max(m, docTime(f)), 0);
-        const sorted = [...docs].sort((a, b) => isUsed(b) - isUsed(a) || docTime(b) - docTime(a));
-        const wrap = el('div', {}, [el('div', { class: 'considered-intro', text: docs.length
-          ? `Documents about ${sec.title.toLowerCase()} in ${summaryNode.name}. When they disagree, the most recent approved information is used.`
-          : 'No source document mentions this section.' })]);
-        sorted.forEach((f) => {
-          const used = isUsed(f);
-          let tag, tone;
-          if (used) { tag = '✓ Used'; tone = 'good'; }
-          else if (f.status === 'outdated') { tag = 'Not used · superseded'; tone = 'muted'; }
-          else if (f.proposal) { tag = 'Not used · draft proposal'; tone = 'muted'; }
-          else if (docTime(f) > newestUsed) { tag = '⚠ Not used · newer than the one used'; tone = 'bad'; }
-          else { tag = 'Not used · older'; tone = 'muted'; }
-          const quotes = relevantLines(f, def ? def.re : /./);
-          wrap.appendChild(el('div', { class: 'considered-doc' + (used ? ' used' : '') }, [
-            el('div', { class: 'considered-top' }, [
-              el('button', { class: 'link-btn', type: 'button', text: f.name, onclick: () => openViewer(f.id) }),
-              el('span', { class: 'considered-tag ' + tone, text: tag })
-            ]),
-            el('div', { class: 'considered-meta', text: [fmtDate(f.updatedAt), f.status === 'verified' ? 'approved' : f.status === 'outdated' ? 'superseded' : f.proposal ? 'draft' : 'unverified', f.owner].filter(Boolean).join(' · ') }),
-            ...quotes.map((q) => el('div', { class: 'considered-quote', text: '“' + q + '”' }))
-          ]));
+        const meta = [];
+        let inSources = false;
+        let skipFirst = true;
+        const contentLines = [];
+        for (const raw of lines) {
+          const line = raw.trim();
+          if (!line) { contentLines.push(''); continue; }
+          if (skipFirst && line === firstLine) { skipFirst = false; continue; }
+          skipFirst = false;
+          const mm = line.match(/^([^:]{2,30}):\s*(.+)$/);
+          if (!inSources && mm && /^(document owner|owner|status|last updated|last reviewed|date|from|to|cc|applies to|version|approved by|approval date|effective date|policy id)$/i.test(mm[1])) {
+            meta.push([mm[1], mm[2]]); continue;
+          }
+          if (/^sources\s*$/i.test(line)) inSources = true;
+          contentLines.push(raw);
+        }
+
+        if (meta.length) {
+          const box = el('div', { class: 'doc-meta' });
+          meta.forEach(([k,v]) => {
+            box.appendChild(el('div', { class: 'doc-meta-key', text: k }));
+            box.appendChild(el('div', { class: 'doc-meta-value', text: v }));
+          });
+          paper.appendChild(box);
+        }
+
+        let callout = null;
+        contentLines.forEach((raw) => {
+          const line = raw.trim();
+          if (!line) { callout = null; return; }
+          if (isSummary(node) && /^\[\d+\]\s+/.test(line)) return; // source list is represented by clickable citations above
+
+          if (/^[⚠ⓘ]/.test(line)) {
+            callout = el('div', { class: 'doc-callout' });
+            appendInline(callout, line);
+            paper.appendChild(callout);
+            return;
+          }
+          if (callout && /^\s{2,}/.test(raw)) {
+            callout.appendChild(document.createElement('br'));
+            appendInline(callout, line);
+            return;
+          }
+          callout = null;
+
+          if (/^sources\s*$/i.test(line)) {
+            paper.appendChild(el('div', { class: 'doc-sources-title', text: 'Sources' }));
+            return;
+          }
+          if (/^\d+\.\s+/.test(line)) {
+            paper.appendChild(el('h2', { class: 'doc-section', text: line }));
+            return;
+          }
+          if (/^[A-ZÀ-ÖØ-Þ0-9][A-ZÀ-ÖØ-Þ0-9 &'()\-/]{5,}$/.test(line) && line.length < 90) {
+            paper.appendChild(el('h2', { class: 'doc-section', text: line }));
+            return;
+          }
+          if (/^[-•]\s+/.test(line)) {
+            const p = el('div', { class: 'doc-bullet' });
+            p.append('• '); appendInline(p, line.replace(/^[-•]\s+/, ''));
+            paper.appendChild(p);
+            return;
+          }
+          const p = el('p', { class: 'doc-paragraph' });
+          appendInline(p, line);
+          paper.appendChild(p);
         });
-        return wrap;
       }
 
       function openViewer(id) {
         const found = findById(id);
         if (!found || !isDoc(found.node)) return;
         const n = found.node;
+        state.activeFileId = n.id;
         const a = analysis.get(n.id);
         const parent = found.path[found.path.length - 1];
-        $('viewerTitle').textContent = isSummary(n) ? `📋 Summary · ${pathLabel(found.path.slice(1)) || n.name}` : docTitle(n);
-        $('viewerScore').replaceChildren(scoreBadge(n));
+        $('viewerTitle').textContent = (isSummary(n) ? '📋 ' : '') + docTitle(n);
+        $('viewerScore').replaceChildren();
+        if (!n.trustedPolicy) $('viewerScore').appendChild(scoreBadge(n));
         const info = $('viewerPath');
         info.replaceChildren('Applies to: ' + (pathLabel(found.path.slice(1)) || 'My Drive') + (n.owner ? ` · owner: ${n.owner}` : ''));
         if (isSummary(parent)) {
           info.append(' · ', el('button', { class: 'link-btn', type: 'button', text: `← back to the ${parent.name} summary`, onclick: () => openViewer(parent.id) }));
         }
-        $('viewerTrust').replaceChildren(buildTrustBox(a, openViewer));
-        renderDocBody($('viewerBody'), n);
+        const trustPanel = $('viewerTrust');
+        trustPanel.replaceChildren();
+        if (!n.trustedPolicy) trustPanel.appendChild(buildTrustBox(a, openViewer));
+        const policyToggle = $('policyViewToggle');
+        policyToggle.classList.toggle('hidden', !n.trustedPolicy);
+        activePolicyView = 'full';
+        policyToggle.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b.dataset.policyView === activePolicyView));
+        if (n.trustedPolicy) renderTrustedPolicy($('viewerBody'), n, activePolicyView);
+        else renderDocBody($('viewerBody'), n);
         $('viewerBody').scrollTop = 0;
         const sourcesBtn = $('viewerSources');
         sourcesBtn.classList.toggle('hidden', !isSummary(n));
         if (isSummary(n)) {
-          sourcesBtn.textContent = `📂 Open as folder (${n.children.length} source${n.children.length === 1 ? '' : 's'}, by section)`;
+          sourcesBtn.textContent = n.trustedPolicy ? `📂 View original versions (${n.children.length})` : `📂 Open as folder (${n.children.length} source${n.children.length === 1 ? '' : 's'})`;
           sourcesBtn.onclick = () => { closeViewer(); openFolder(n.id); };
         }
         $('viewerEdit').onclick = () => {
@@ -1871,6 +1978,18 @@
         $('viewer').classList.remove('hidden');
         $('viewerClose').focus();
       }
+
+      $('policyViewToggle').addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-policy-view]');
+        if (!btn) return;
+        const found = findById(state.activeFileId);
+        const node = found && found.node;
+        if (!node || !node.trustedPolicy) return;
+        activePolicyView = btn.dataset.policyView;
+        $('policyViewToggle').querySelectorAll('button').forEach((b) => b.classList.toggle('on', b === btn));
+        renderTrustedPolicy($('viewerBody'), node, activePolicyView);
+        $('viewerBody').scrollTop = 0;
+      });
 
       function closeViewer() { $('viewer').classList.add('hidden'); }
 
@@ -1912,8 +2031,8 @@
             el('strong', { text: 'How to use' }),
             el('ul', { class: 'howto' }, [
               el('li', { text: 'Click a folder to open it; click a 📋 summary to read it.' }),
-              el('li', { text: 'In a summary, click a section to see every document it was based on, and which one was used.' }),
-              el('li', { text: 'The + on a summary (or “Open as folder”) shows a folder per section with its source documents.' }),
+              el('li', { text: 'In a summary, click a [number] to open the source it comes from, or “Open as folder” to see all its sources.' }),
+              el('li', { text: 'The + on a summary shows its source documents in the graph.' }),
               el('li', { text: 'Search ( / ) looks through every company and country at once; summaries come first.' }),
               el('li', { text: 'Sources that give different numbers for the same thing are flagged as conflicts.' })
             ])
