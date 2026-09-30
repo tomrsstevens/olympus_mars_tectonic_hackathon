@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Everything runs locally: no network requests, no external scripts, no forms posting anywhere. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'" />
+    <meta name="referrer" content="no-referrer" />
     <title>knowledge management</title>
     <style>
       :root {
@@ -14,31 +17,30 @@
         --primary-dark: #315de8;
         --text: #1e2430;
         --muted: #667085;
-        --folder: #ffd98a;
-        --file: #dfe8ff;
+        --good: #1f9d55;
+        --good-bg: #e6f6ec;
+        --warn: #b7791f;
+        --warn-bg: #fff4dc;
+        --bad: #d64545;
+        --bad-bg: #fde8e8;
         --shadow: 0 12px 28px rgba(30, 36, 48, 0.08);
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
       html, body {
         margin: 0;
         min-height: 100%;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
         background: var(--bg);
         color: var(--text);
       }
 
-      body {
-        display: flex;
-        justify-content: center;
-        padding: 24px;
-      }
+      body { display: flex; justify-content: center; padding: 24px; }
 
       .app {
-        width: min(1200px, 100%);
+        width: min(1280px, 100%);
         min-height: 760px;
         background: var(--panel);
         border: 1px solid var(--line);
@@ -51,21 +53,57 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
         padding: 18px 22px;
         background: linear-gradient(135deg, #eef4ff 0%, #f9fbff 100%);
         border-bottom: 1px solid var(--line);
       }
 
-      .brand {
-        font-weight: 700;
-        font-size: 1.7rem;
-        letter-spacing: -0.04em;
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .logo {
+        width: 40px; height: 40px; border-radius: 12px; flex: none;
+        display: grid; place-items: center;
+        background: linear-gradient(135deg, var(--primary) 0%, #7b5cff 100%);
+        color: white; font-weight: 800; font-size: 1.2rem;
+        box-shadow: 0 6px 14px rgba(79, 124, 255, 0.3);
+      }
+      .brand-name { display: block; font-weight: 750; font-size: 1.35rem; letter-spacing: -0.03em; line-height: 1.1; }
+      .brand-sub { display: block; font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+      .group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+      button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+        outline: 3px solid rgba(79, 124, 255, 0.45);
+        outline-offset: 2px;
+      }
+      input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+
+      .target-hint { font-size: 0.85rem; color: var(--muted); margin-bottom: 10px; }
+      .target-hint strong { color: var(--text); }
+      .tree-row.selected { background: var(--panel-alt); color: var(--primary-dark); }
+
+      .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0 14px; }
+      .stat { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+      .stat-value { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+      .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+      .stat.warn .stat-value { color: var(--warn); }
+      .stat.bad .stat-value { color: var(--bad); }
+      .howto { margin: 8px 0 0; padding-left: 18px; font-size: 0.88rem; }
+      .howto li { margin-bottom: 6px; }
+
+      .search {
+        flex: 1;
+        min-width: 220px;
+        max-width: 420px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        background: white;
       }
 
-      .actions {
-        display: flex;
-        gap: 12px;
-      }
+      .actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
       button {
         border: none;
@@ -75,99 +113,69 @@
         transition: transform 0.15s ease, opacity 0.15s ease;
       }
 
-      button:hover {
-        transform: translateY(-1px);
-      }
+      button:hover { transform: translateY(-1px); }
 
-      .primary-btn {
-        background: var(--primary);
-        color: white;
-        padding: 10px 16px;
-        font-weight: 700;
-      }
+      .primary-btn { background: var(--primary); color: white; padding: 10px 16px; font-weight: 700; }
+      .secondary-btn { background: #edf2ff; color: var(--text); padding: 10px 16px; font-weight: 600; }
+      .danger-btn { background: var(--bad-bg); color: var(--bad); padding: 10px 16px; font-weight: 600; }
+      .small-btn { padding: 6px 10px; font-size: 0.82rem; }
 
-      .secondary-btn {
-        background: #edf2ff;
-        color: var(--text);
-        padding: 10px 16px;
-        font-weight: 600;
-      }
+      .content { display: grid; grid-template-columns: 240px 1fr 380px; min-height: 700px; }
 
-      .content {
-        display: grid;
-        grid-template-columns: 260px 1fr 360px;
-        min-height: 700px;
-      }
-
-      .sidebar {
-        background: #f9fbff;
-        border-right: 1px solid var(--line);
-        padding: 18px 16px;
-      }
+      .sidebar { background: #f9fbff; border-right: 1px solid var(--line); padding: 18px 16px; }
 
       .sidebar h3 {
-        margin: 0 0 14px;
+        margin: 18px 0 10px;
         font-size: 0.82rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         color: var(--muted);
       }
+      .sidebar h3:first-child { margin-top: 0; }
 
-      .nav-list {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
+      .nav-list { display: flex; flex-direction: column; gap: 4px; }
 
       .nav-item {
-        padding: 10px 12px;
+        padding: 8px 12px;
         border-radius: 10px;
         background: transparent;
         text-align: left;
         font-weight: 600;
         color: var(--text);
-      }
-
-      .nav-item.active {
-        background: var(--panel-alt);
-        color: var(--primary-dark);
-      }
-
-      .main {
-        padding: 20px;
-      }
-
-      .breadcrumbs {
         display: flex;
+        justify-content: space-between;
         align-items: center;
+      }
+      .nav-item.sub { font-weight: 400; padding-left: 26px; font-size: 0.9rem; }
+      .nav-item.active { background: var(--panel-alt); color: var(--primary-dark); }
+
+      .count {
+        background: var(--bad-bg);
+        color: var(--bad);
+        border-radius: 999px;
+        padding: 1px 8px;
+        font-size: 0.78rem;
+      }
+
+      .main { padding: 20px; min-width: 0; }
+
+      .main-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
         flex-wrap: wrap;
-        gap: 8px;
         margin-bottom: 18px;
-        color: var(--muted);
-        font-size: 0.9rem;
       }
 
-      .crumb {
-        background: transparent;
-        border: none;
-        color: var(--muted);
-        padding: 0;
-        font-size: 0.9rem;
-        cursor: pointer;
-      }
+      .breadcrumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; color: var(--muted); font-size: 0.9rem; }
+      .crumb { background: transparent; border: none; color: var(--muted); padding: 0; font-size: 0.9rem; cursor: pointer; }
+      .crumb.current { color: var(--text); font-weight: 700; cursor: default; }
 
-      .crumb.current {
-        color: var(--text);
-        font-weight: 700;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 14px;
-      }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
 
       .item-card {
+        position: relative;
         background: #fff;
         border: 1px solid var(--line);
         border-radius: 16px;
@@ -176,61 +184,51 @@
         cursor: pointer;
         transition: border-color 0.15s ease, box-shadow 0.15s ease;
       }
+      .item-card:hover { border-color: #bfd0ff; box-shadow: 0 8px 18px rgba(79, 124, 255, 0.08); }
+      .item-card.selected { border-color: var(--primary); }
+      .item-card.drop-target { border-color: var(--primary); background: var(--panel-alt); }
 
-      .item-card:hover {
-        border-color: #bfd0ff;
-        box-shadow: 0 8px 18px rgba(79, 124, 255, 0.08);
-      }
+      .item-icon { width: 52px; height: 52px; margin: 0 auto 10px; border-radius: 14px; display: grid; place-items: center; font-size: 1.4rem; }
+      .folder .item-icon { background: rgba(255, 217, 138, 0.35); }
+      .file .item-icon { background: rgba(223, 232, 255, 0.9); }
+      .item-name { font-size: 0.92rem; font-weight: 600; word-break: break-word; }
+      .item-sub { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
 
-      .item-icon {
-        width: 52px;
-        height: 52px;
-        margin: 0 auto 10px;
+      .dot { position: absolute; top: 10px; right: 10px; width: 10px; height: 10px; border-radius: 50%; }
+      .dot.good { background: var(--good); }
+      .dot.warn { background: var(--warn); }
+      .dot.bad { background: var(--bad); }
+
+      .badge { display: inline-block; border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-weight: 700; }
+      .badge.good { background: var(--good-bg); color: var(--good); }
+      .badge.warn { background: var(--warn-bg); color: var(--warn); }
+      .badge.bad { background: var(--bad-bg); color: var(--bad); }
+
+      .empty-state { border: 1px dashed var(--line); border-radius: 16px; padding: 40px 20px; text-align: center; color: var(--muted); grid-column: 1 / -1; }
+
+      .dropzone-hint { margin-top: 16px; font-size: 0.82rem; color: var(--muted); text-align: center; }
+      .main.dragging { outline: 2px dashed var(--primary); outline-offset: -8px; border-radius: 12px; }
+
+      .result-list { display: flex; flex-direction: column; gap: 10px; }
+      .result {
+        border: 1px solid var(--line);
         border-radius: 14px;
-        display: grid;
-        place-items: center;
-        font-size: 1.4rem;
+        padding: 12px 14px;
+        cursor: pointer;
+        background: white;
       }
+      .result:hover { border-color: #bfd0ff; }
+      .result-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+      .result-name { font-weight: 700; }
+      .result-path { font-size: 0.8rem; color: var(--muted); margin: 3px 0 6px; }
+      .result-snippet { font-size: 0.88rem; line-height: 1.45; color: #3a4252; }
+      .result-snippet mark { background: #fff1a8; padding: 0 1px; }
+      .result-issues { margin: 6px 0 0; padding-left: 18px; font-size: 0.82rem; color: var(--muted); }
 
-      .folder .item-icon {
-        background: rgba(255, 217, 138, 0.35);
-      }
-
-      .file .item-icon {
-        background: rgba(223, 232, 255, 0.9);
-      }
-
-      .item-name {
-        font-size: 0.92rem;
-        font-weight: 600;
-        word-break: break-word;
-      }
-
-      .empty-state {
-        border: 1px dashed var(--line);
-        border-radius: 16px;
-        padding: 40px 20px;
-        text-align: center;
-        color: var(--muted);
-      }
-
-      .editor {
-        border-left: 1px solid var(--line);
-        background: #fbfcff;
-        padding: 20px;
-      }
-
-      .editor-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 12px;
-      }
-
-      .editor-header h3 {
-        margin: 0;
-        font-size: 1.1rem;
-      }
+      .editor { border-left: 1px solid var(--line); background: #fbfcff; padding: 20px; min-width: 0; }
+      .editor-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+      .editor-header h3 { margin: 0; font-size: 1.1rem; word-break: break-word; }
+      .editor-path { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
 
       .editor-placeholder {
         border: 1px dashed var(--line);
@@ -241,9 +239,27 @@
         line-height: 1.5;
       }
 
+      .trust-box { border: 1px solid var(--line); background: white; border-radius: 14px; padding: 12px 14px; margin-bottom: 12px; }
+      .trust-box ul { margin: 8px 0 0; padding-left: 18px; font-size: 0.85rem; line-height: 1.45; }
+      .trust-box li { margin-bottom: 4px; }
+      .conflict-quote { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+      .link-btn { background: none; padding: 0; color: var(--primary-dark); font-size: inherit; text-decoration: underline; }
+
+      .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+      .meta-grid label { font-size: 0.75rem; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+      .meta-grid input, .meta-grid select {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 7px 9px;
+        font-size: 0.88rem;
+        background: white;
+        color: var(--text);
+      }
+      .meta-line { grid-column: 1 / -1; font-size: 0.78rem; color: var(--muted); }
+
       textarea {
         width: 100%;
-        min-height: 500px;
+        min-height: 340px;
         resize: vertical;
         border: 1px solid var(--line);
         border-radius: 14px;
@@ -253,12 +269,9 @@
         color: var(--text);
       }
 
-      .save-row {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 12px;
-      }
+      .save-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+      .save-row .group { display: flex; gap: 8px; flex-wrap: wrap; }
+      .status-msg { font-size: 0.82rem; color: var(--muted); }
 
       .modal {
         position: fixed;
@@ -269,7 +282,6 @@
         background: rgba(18, 26, 37, 0.42);
         z-index: 20;
       }
-
       .modal-card {
         width: min(420px, calc(100vw - 32px));
         background: white;
@@ -278,447 +290,1154 @@
         padding: 22px;
         box-shadow: var(--shadow);
       }
-
-      .modal-card h3 {
-        margin: 0 0 12px;
-      }
-
+      .modal-card h3 { margin: 0 0 12px; }
+      .modal-card p { margin: 0 0 16px; color: var(--muted); line-height: 1.45; }
       .modal-card input {
         width: 100%;
         border: 1px solid var(--line);
         border-radius: 10px;
         padding: 12px 14px;
         font-size: 1rem;
-        margin-bottom: 16px;
+        margin-bottom: 8px;
       }
+      .modal-error { color: var(--bad); font-size: 0.85rem; min-height: 1.2em; margin-bottom: 8px; }
+      .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
 
-      .modal-actions {
+      .view-toggle { display: inline-flex; background: #edf2ff; border-radius: 10px; padding: 3px; }
+      .view-toggle button { background: transparent; padding: 6px 12px; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+      .view-toggle button.on { background: white; color: var(--primary-dark); box-shadow: 0 1px 3px rgba(30, 36, 48, 0.1); }
+      .view-toggle button:hover { transform: none; }
+      .header-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+      .tree { border: 1px solid var(--line); border-radius: 14px; padding: 8px; background: white; }
+      .tree-row {
         display: flex;
-        justify-content: flex-end;
-        gap: 10px;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        background: transparent;
+        text-align: left;
+        padding: 7px 10px;
+        border-radius: 8px;
+        color: var(--text);
+        font-size: 0.93rem;
       }
+      .tree-row:hover { background: var(--panel-alt); transform: none; }
+      .tree-row.folder-row { font-weight: 600; }
+      .tree-caret { width: 14px; color: var(--muted); font-size: 0.75rem; flex: none; }
+      .tree-meta { margin-left: auto; font-size: 0.78rem; color: var(--muted); font-weight: 400; }
+      .tree-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+      .tree-dot.good { background: var(--good); }
+      .tree-dot.warn { background: var(--warn); }
+      .tree-dot.bad { background: var(--bad); }
+      .tree-empty { color: var(--muted); font-size: 0.85rem; font-style: italic; padding: 5px 10px; }
 
-      .hidden {
-        display: none !important;
+      .viewer-card { width: min(720px, calc(100vw - 32px)); max-height: calc(100vh - 48px); display: flex; flex-direction: column; }
+      .viewer-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+      .viewer-head h3 { margin: 0; word-break: break-word; }
+      .viewer-path { font-size: 0.82rem; color: var(--muted); margin: 4px 0 12px; }
+      .viewer-body {
+        flex: 1;
+        overflow: auto;
+        margin: 0 0 14px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fbfcff;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font: 14px/1.5 "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      }
+      .viewer-card .trust-box { max-height: 30vh; overflow: auto; }
+
+      .score {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 6px;
+        flex: none;
+        background: var(--panel-alt);
+        color: var(--primary-dark);
+        border: 1px solid #cfdcff;
+        border-radius: 12px;
+        padding: 5px 11px;
+        white-space: nowrap;
+      }
+      .score-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+      .score-value { font-size: 1.15rem; font-weight: 800; }
+      .editor-header, .viewer-head { align-items: flex-start; }
+
+      .hidden { display: none !important; }
+
+      @media (max-width: 1000px) {
+        body { padding: 0; }
+        .app { border-radius: 0; }
+        .content { grid-template-columns: 1fr; }
+        .sidebar, .editor { border: none; border-top: 1px solid var(--line); }
+        .sidebar { order: -1; }
       }
     </style>
   </head>
   <body>
     <div class="app">
       <div class="topbar">
-        <div class="brand">knowledge management</div>
+        <div class="brand">
+          <span class="logo" aria-hidden="true">K</span>
+          <span>
+            <span class="brand-name">knowledge management</span>
+            <span class="brand-sub">find it · understand it · trust it</span>
+          </span>
+        </div>
+        <input class="search" id="searchInput" type="search" placeholder="Search all notes…  ( / )" aria-label="Search all notes" />
         <div class="actions">
+          <button class="secondary-btn" id="importFilesBtn" title="Add .txt files from your computer to the selected folder">Import files</button>
+          <button class="secondary-btn" id="importFolderBtn" title="Import a whole folder, keeping its sub-folders">Import folder</button>
           <button class="secondary-btn" id="downloadAllBtn">Download all</button>
           <button class="secondary-btn" id="newFolderBtn">+ Folder</button>
           <button class="primary-btn" id="newFileBtn">+ File</button>
         </div>
+        <input type="file" id="fileInput" accept=".txt,text/plain" multiple class="hidden" />
+        <input type="file" id="folderInput" webkitdirectory directory multiple class="hidden" />
       </div>
 
       <div class="content">
         <aside class="sidebar">
           <h3>Workspace</h3>
+          <div class="nav-list" id="navList"></div>
+          <h3>Review</h3>
           <div class="nav-list">
-            <button class="nav-item active" id="rootNav">My Drive</button>
+            <button class="nav-item" id="attentionNav">Needs attention <span class="count hidden" id="attentionCount"></span></button>
           </div>
         </aside>
 
-        <main class="main">
-          <div class="breadcrumbs" id="breadcrumbs"></div>
-          <div class="grid" id="itemsGrid"></div>
-        </main>
-
-        <aside class="editor">
-          <div class="editor-header">
-            <h3 id="editorTitle">File preview</h3>
-          </div>
-          <div id="editorContent">
-            <div class="editor-placeholder">
-              Select a file to view and edit its text. Create folders and files from the top bar.
+        <main class="main" id="main">
+          <div class="main-header">
+            <div class="breadcrumbs" id="breadcrumbs"></div>
+            <div class="header-right">
+              <div class="group" id="folderActions"></div>
+              <div class="view-toggle" id="viewToggle" role="group" aria-label="Layout">
+                <button type="button" data-layout="grid">▦ Folders</button>
+                <button type="button" data-layout="tree">☰ Tree</button>
+              </div>
             </div>
           </div>
-        </aside>
+          <div id="mainBody"></div>
+          <div class="dropzone-hint" id="dropHint">Tip: drag .txt files here to add them to this folder.</div>
+        </main>
+
+        <aside class="editor" id="editor"></aside>
       </div>
     </div>
 
-    <div id="nameModal" class="modal hidden" aria-modal="true" role="dialog">
+    <div id="modal" class="modal hidden" aria-modal="true" role="dialog">
       <div class="modal-card">
-        <h3 id="modalTitle">Create item</h3>
-        <input id="modalInput" type="text" placeholder="Name" />
+        <h3 id="modalTitle"></h3>
+        <p id="modalText" class="hidden"></p>
+        <input id="modalInput" type="text" maxlength="120" />
+        <div class="modal-error" id="modalError"></div>
         <div class="modal-actions">
-          <button class="secondary-btn" id="cancelModalBtn" type="button">Cancel</button>
-          <button class="primary-btn" id="confirmModalBtn" type="button">Create</button>
+          <button class="secondary-btn" id="modalCancel" type="button">Cancel</button>
+          <button class="primary-btn" id="modalConfirm" type="button">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="viewer" class="modal hidden" aria-modal="true" role="dialog" aria-labelledby="viewerTitle">
+      <div class="modal-card viewer-card">
+        <div class="viewer-head">
+          <h3 id="viewerTitle"></h3>
+          <span id="viewerScore"></span>
+        </div>
+        <div class="viewer-path" id="viewerPath"></div>
+        <div id="viewerTrust"></div>
+        <div class="viewer-body" id="viewerBody"></div>
+        <div class="modal-actions">
+          <button class="secondary-btn" id="viewerClose" type="button">Close</button>
+          <button class="primary-btn" id="viewerEdit" type="button">Edit</button>
         </div>
       </div>
     </div>
 
     <script>
-      const STORAGE_KEY = 'knowledge-management-drive';
+      'use strict';
 
-      const sampleData = {
-        type: 'folder',
-        name: 'My Drive',
-        children: [
-          {
-            type: 'folder',
-            name: 'Projects',
-            children: [
-              {
-                type: 'file',
-                name: 'notes.txt',
-                content: 'Project ideas\n\n- Launch onboarding docs\n- Review team feedback\n- Schedule planning session'
-              }
-            ]
-          },
-          {
-            type: 'file',
-            name: 'todo.txt',
-            content: 'Things to do\n\n- Write project summary\n- Organize research\n- Review meeting notes'
-          },
-          {
-            type: 'file',
-            name: 'payrollemail.txt',
-            content: 'Subject: Payroll Update\n\nHi Team,\n\nThis is a reminder to review the payroll schedule and confirm any changes before Friday.\n\nThanks,\nPayroll Team'
-          }
-        ]
-      };
+      /* ---------- Storage & data model ---------- */
 
-      function ensureRequiredFiles(root) {
-        if (!root || root.type !== 'folder' || !Array.isArray(root.children)) {
-          return root;
-        }
+      // New key: the old version's built-in sample files (todo.txt, Projects/notes.txt and a made-up
+      // payroll email) were never real files on disk, so we start clean from the real folder structure.
+      const STORAGE_KEY = 'knowledge-management-drive-v2';
+      const STALE_DAYS = 180;
+      const MAX_IMPORT_BYTES = 2 * 1024 * 1024;
 
-        const required = [
-          {
-            type: 'file',
-            name: 'todo.txt',
-            content: 'Things to do\n\n- Write project summary\n- Organize research\n- Review meeting notes'
-          },
-          {
-            type: 'file',
-            name: 'payrollemail.txt',
-            content: 'Subject: Payroll Update\n\nHi Team,\n\nThis is a reminder to review the payroll schedule and confirm any changes before Friday.\n\nThanks,\nPayroll Team'
-          }
-        ];
+      const uid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now() + '-' + Math.random().toString(16).slice(2));
+      const now = () => new Date().toISOString();
 
-        const existingNames = new Set(root.children.map((item) => item && item.name).filter(Boolean));
-        required.forEach((item) => {
-          if (!existingNames.has(item.name)) {
-            root.children.push(item);
-            existingNames.add(item.name);
-          }
-        });
-
-        return root;
+      function folder(name, children = []) {
+        return { id: uid(), type: 'folder', name, children };
       }
 
-      const state = {
-        root: ensureRequiredFiles(loadState()),
-        currentPath: [],
-        activeFile: null
-      };
+      function file(name, content = '', extra = {}) {
+        const t = now();
+        return {
+          id: uid(),
+          type: 'file',
+          name,
+          content,
+          owner: '',
+          status: 'draft',        // draft | verified | outdated
+          createdAt: t,
+          updatedAt: t,
+          reviewedAt: null,
+          ...extra
+        };
+      }
 
-      const itemsGrid = document.getElementById('itemsGrid');
-      const breadcrumbs = document.getElementById('breadcrumbs');
-      const editorContent = document.getElementById('editorContent');
-      const editorTitle = document.getElementById('editorTitle');
+      const PAYROLL_EMAIL = `Subject: Updated Minimum Wage at Company A
+
+Dear Team,
+
+We are pleased to share that the minimum wage at Company A has been raised to $75,000 per year in the United States.
+
+This increase reflects our commitment to recognizing the value of our employees and supporting fair compensation across our organization. We believe this adjustment will help ensure our team members are compensated competitively and can continue to thrive in their roles.
+
+Thank you for your dedication and hard work. We appreciate everything you do to contribute to the success of Company A.
+
+Sincerely,
+[Your Name]
+[Your Title]
+Company A
+`;
+
+      const LOCATIONS = ['America', 'Belgium', 'France'];
+
+      function buildInitialData() {
+        const companies = ['Company A', 'Company B'].map((c) => folder(c, LOCATIONS.map((l) => folder(l))));
+        companies[0].children[0].children.push(file('payrollemail.txt', PAYROLL_EMAIL));
+        return folder('My Drive', companies);
+      }
+
+      function isValidNode(node) {
+        if (!node || typeof node !== 'object' || typeof node.name !== 'string') return false;
+        if (node.type === 'folder') return Array.isArray(node.children) && node.children.every(isValidNode);
+        if (node.type === 'file') return typeof node.content === 'string';
+        return false;
+      }
 
       function loadState() {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (!saved) {
-          return JSON.parse(JSON.stringify(sampleData));
-        }
-
         try {
-          const parsed = JSON.parse(saved);
-          if (parsed && parsed.type === 'folder' && Array.isArray(parsed.children)) {
-            return parsed;
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (parsed && parsed.type === 'folder' && isValidNode(parsed)) return parsed;
           }
         } catch (error) {
-          console.warn('Could not parse saved data. Falling back to sample data.', error);
+          console.warn('Could not read saved data, starting fresh.', error);
         }
-
-        return JSON.parse(JSON.stringify(sampleData));
+        return buildInitialData();
       }
 
       function saveState() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.root));
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state.root));
+          return true;
+        } catch (error) {
+          console.warn('Could not save.', error);
+          return false;
+        }
       }
 
-      function getCurrentFolder() {
-        let current = state.root;
+      const state = {
+        root: loadState(),
+        currentFolderId: null,     // null = root
+        activeFileId: null,
+        view: 'folder',            // folder | search | attention
+        query: '',
+        dirty: false,
+        layout: 'tree',            // tree | grid
+        expanded: new Set()        // folder ids open in the tree
+      };
+      state.currentFolderId = state.root.id;
 
-        for (const segment of state.currentPath) {
-          if (!current || current.type !== 'folder') return state.root;
-          current = current.children.find((child) => child.name === segment && child.type === 'folder');
-          if (!current) return state.root;
-        }
+      const UI_KEY = 'knowledge-management-ui-v1';
+      function saveUiPrefs() {
+        try { localStorage.setItem(UI_KEY, JSON.stringify({ layout: state.layout, expanded: [...state.expanded] })); } catch (e) { /* optional */ }
+      }
+      (function loadUiPrefs() {
+        let prefs = null;
+        try { prefs = JSON.parse(localStorage.getItem(UI_KEY) || 'null'); } catch (e) { /* ignore */ }
+        if (prefs && (prefs.layout === 'tree' || prefs.layout === 'grid')) state.layout = prefs.layout;
+        if (prefs && Array.isArray(prefs.expanded)) state.expanded = new Set(prefs.expanded.filter((x) => typeof x === 'string'));
+        else state.root.children.forEach((c) => { if (c.type === 'folder') state.expanded.add(c.id); }); // companies open by default
+      })();
 
-        return current;
+      /* ---------- Tree helpers ---------- */
+
+      function walk(node, fn, path = []) {
+        fn(node, path);
+        if (node.type === 'folder') node.children.forEach((c) => walk(c, fn, [...path, node]));
       }
 
-      function getFolderPathNames() {
-        const names = ['My Drive'];
-        for (const segment of state.currentPath) {
-          names.push(segment);
+      function findById(id) {
+        let found = null;
+        walk(state.root, (n, path) => { if (n.id === id) found = { node: n, path }; });
+        return found;
+      }
+
+      function allFiles() {
+        const out = [];
+        walk(state.root, (n, path) => { if (n.type === 'file') out.push({ node: n, path }); });
+        return out;
+      }
+
+      function pathLabel(path) {
+        return path.map((p) => p.name).join(' / ');
+      }
+
+      function currentFolder() {
+        const f = findById(state.currentFolderId);
+        return f && f.node.type === 'folder' ? f.node : state.root;
+      }
+
+      function nameTaken(parent, name, exceptId) {
+        const lower = name.toLowerCase();
+        return parent.children.some((c) => c.id !== exceptId && c.name.toLowerCase() === lower);
+      }
+
+      function uniqueName(parent, name) {
+        if (!nameTaken(parent, name)) return name;
+        const dot = name.lastIndexOf('.');
+        const base = dot > 0 ? name.slice(0, dot) : name;
+        const ext = dot > 0 ? name.slice(dot) : '';
+        let i = 2;
+        while (nameTaken(parent, `${base} (${i})${ext}`)) i++;
+        return `${base} (${i})${ext}`;
+      }
+
+      function validateName(name) {
+        if (!name) return 'Please enter a name.';
+        if (/[\/\\]/.test(name)) return 'Names cannot contain / or \\.';
+        if (name === '.' || name === '..') return 'That name is not allowed.';
+        return '';
+      }
+
+      /* ---------- Trust analysis ---------- */
+
+      const STOP = new Set(('the a an and or of to in on at for by with from is are was were be been has have had this that these those it its as our your their we you they per each all any not no will can may '
+        + 'please share pleased dear team hi hello thanks regards sincerely about into than then also more most very just only new updated update').split(' '));
+
+      const NUM_RE = /(?:[$€£]\s?)?\d[\d.,]*\s?(?:%|k\b|eur\b|euros?\b|usd\b|dollars?\b)?/gi;
+
+      function tokens(text) {
+        return text.toLowerCase().match(/[a-zà-ÿ]+/g) || [];
+      }
+
+      function normValue(v) {
+        return v.toLowerCase().replace(/\s+/g, '').replace(/[.,]$/, '');
+      }
+
+      function extractFacts(text) {
+        const facts = [];
+        const sentences = text.split(/(?<=[.!?])\s+|\n+/);
+        sentences.forEach((sentence) => {
+          const s = sentence.trim();
+          if (!s) return;
+          let m;
+          NUM_RE.lastIndex = 0;
+          while ((m = NUM_RE.exec(s))) {
+            const raw = m[0].trim();
+            const digits = raw.replace(/[^\d]/g, '');
+            if (!digits) continue;
+            if (/^(19|20)\d\d$/.test(raw)) continue; // skip bare years
+            const before = tokens(s.slice(0, m.index)).filter((w) => w.length > 2 && !STOP.has(w)).slice(-6);
+            const topics = new Set();
+            for (let i = 0; i < before.length - 1; i++) topics.add(before[i] + ' ' + before[i + 1]);
+            if (topics.size) facts.push({ topics, value: normValue(raw), sentence: s.length > 160 ? s.slice(0, 157) + '…' : s });
+          }
+        });
+        return facts;
+      }
+
+      function daysSince(iso) {
+        if (!iso) return Infinity;
+        return Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+      }
+
+      function analyzeAll() {
+        const files = allFiles();
+        const result = new Map();
+        const facts = new Map();
+        const contentIndex = new Map();
+
+        files.forEach(({ node }) => {
+          facts.set(node.id, extractFacts(node.content));
+          const key = node.content.trim().replace(/\s+/g, ' ').toLowerCase();
+          if (key.length > 20) {
+            if (!contentIndex.has(key)) contentIndex.set(key, []);
+            contentIndex.get(key).push(node.id);
+          }
+          result.set(node.id, { issues: [], conflicts: [], duplicates: [], level: 'good' });
+        });
+
+        // Conflicts: same topic (e.g. "minimum wage"), different number, different files.
+        for (let i = 0; i < files.length; i++) {
+          for (let j = i + 1; j < files.length; j++) {
+            const a = files[i].node, b = files[j].node;
+            const seen = new Set();
+            facts.get(a.id).forEach((fa) => {
+              facts.get(b.id).forEach((fb) => {
+                if (fa.value === fb.value) return;
+                const shared = [...fa.topics].find((t) => fb.topics.has(t));
+                if (!shared || seen.has(shared)) return;
+                seen.add(shared);
+                result.get(a.id).conflicts.push({ otherId: b.id, topic: shared, mine: fa.sentence, theirs: fb.sentence });
+                result.get(b.id).conflicts.push({ otherId: a.id, topic: shared, mine: fb.sentence, theirs: fa.sentence });
+              });
+            });
+          }
         }
-        return names;
+
+        contentIndex.forEach((ids) => {
+          if (ids.length < 2) return;
+          ids.forEach((id) => { result.get(id).duplicates = ids.filter((x) => x !== id); });
+        });
+
+        files.forEach(({ node }) => {
+          const r = result.get(node.id);
+          let score = 0;
+          if (node.status === 'outdated') { r.issues.push('Marked as outdated.'); score += 2; }
+          if (node.status === 'draft') { r.issues.push('Not verified yet (draft).'); score += 1; }
+          if (!node.owner) { r.issues.push('No owner — nobody to ask about this.'); score += 1; }
+          const age = daysSince(node.reviewedAt);
+          if (age === Infinity) { r.issues.push('Never reviewed.'); score += 1; }
+          else if (age > STALE_DAYS) { r.issues.push(`Last reviewed ${age} days ago.`); score += 1; }
+          if (!node.content.trim()) { r.issues.push('File is empty.'); score += 1; }
+          if (r.duplicates.length) { r.issues.push(`Same text as ${r.duplicates.length} other file(s).`); score += 1; }
+          // red = contradicted or explicitly outdated; amber = something still to check; green = all good
+          r.level = node.status === 'outdated' || r.conflicts.length ? 'bad' : score > 0 ? 'warn' : 'good';
+        });
+
+        return result;
+      }
+
+      // Used only for tooltips and the "Needs attention" list; the score shown to users is trustScore().
+      const LEVEL_LABEL = { good: 'No open issues', warn: 'Something to check', bad: 'Several things to check' };
+
+      // Trustworthiness score shown on every opened document.
+      // Placeholder: every document is 6/10 until the real scoring algorithm is written.
+      function trustScore(fileNode) {
+        return 6;
+      }
+
+      function scoreBadge(fileNode) {
+        return el('span', { class: 'score', title: 'Trustworthiness score (placeholder — same for every document for now)' }, [
+          el('span', { class: 'score-label', text: 'Trust' }),
+          el('span', { class: 'score-value', text: `${trustScore(fileNode)}/10` })
+        ]);
+      }
+
+      /* ---------- Rendering ---------- */
+
+      const $ = (id) => document.getElementById(id);
+      let analysis = analyzeAll();
+
+      function el(tag, props = {}, children = []) {
+        const e = document.createElement(tag);
+        Object.entries(props).forEach(([k, v]) => {
+          if (k === 'class') e.className = v;
+          else if (k === 'text') e.textContent = v;
+          else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+          else e.setAttribute(k, v);
+        });
+        [].concat(children).forEach((c) => c != null && e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c));
+        return e;
+      }
+
+      function render() {
+        analysis = analyzeAll();
+        renderNav();
+        renderMain();
+        renderEditor();
+      }
+
+      function renderNav() {
+        const nav = $('navList');
+        nav.innerHTML = '';
+        const inFolder = state.view === 'folder';
+        nav.appendChild(el('button', {
+          class: 'nav-item' + (inFolder && state.currentFolderId === state.root.id ? ' active' : ''),
+          text: 'My Drive',
+          onclick: () => openFolder(state.root.id)
+        }));
+        state.root.children.filter((c) => c.type === 'folder').forEach((f) => {
+          nav.appendChild(el('button', {
+            class: 'nav-item sub' + (inFolder && state.currentFolderId === f.id ? ' active' : ''),
+            text: '📁 ' + f.name,
+            onclick: () => openFolder(f.id)
+          }));
+        });
+
+        const needing = allFiles().filter(({ node }) => analysis.get(node.id).level !== 'good').length;
+        $('attentionNav').classList.toggle('active', state.view === 'attention');
+        $('attentionCount').textContent = needing;
+        $('attentionCount').classList.toggle('hidden', needing === 0);
       }
 
       function renderBreadcrumbs() {
-        breadcrumbs.innerHTML = '';
-        const pathNames = getFolderPathNames();
+        const bc = $('breadcrumbs');
+        bc.innerHTML = '';
+        if (state.view === 'search') { bc.appendChild(el('span', { class: 'crumb current', text: `Search results for “${state.query}”` })); return; }
+        if (state.view === 'attention') { bc.appendChild(el('span', { class: 'crumb current', text: 'Needs attention' })); return; }
+        if (state.layout === 'tree') { bc.appendChild(el('span', { class: 'crumb current', text: 'All files' })); return; }
 
-        pathNames.forEach((name, index) => {
-          const isCurrent = index === pathNames.length - 1;
-          const crumb = document.createElement('button');
-          crumb.className = isCurrent ? 'crumb current' : 'crumb';
-          crumb.textContent = name;
-          crumb.type = 'button';
-
-          if (!isCurrent) {
-            crumb.addEventListener('click', () => {
-              state.currentPath = state.currentPath.slice(0, index);
-              state.activeFile = null;
-              render();
-            });
-          }
-
-          breadcrumbs.appendChild(crumb);
-
-          if (!isCurrent && index < pathNames.length - 1) {
-            const separator = document.createTextNode(' / ');
-            breadcrumbs.appendChild(separator);
-          }
+        const found = findById(state.currentFolderId);
+        const chain = found ? [...found.path, found.node] : [state.root];
+        chain.forEach((f, i) => {
+          const last = i === chain.length - 1;
+          bc.appendChild(el('button', { class: 'crumb' + (last ? ' current' : ''), type: 'button', text: f.name, onclick: last ? null : () => openFolder(f.id) }));
+          if (!last) bc.appendChild(document.createTextNode('/'));
         });
       }
 
-      function updateRootNavState() {
-        const rootNav = document.getElementById('rootNav');
-        rootNav.classList.toggle('active', state.currentPath.length === 0);
+      function renderFolderActions() {
+        const box = $('folderActions');
+        box.innerHTML = '';
+        if (state.view !== 'folder' || state.currentFolderId === state.root.id) return;
+        if (state.layout === 'tree') box.appendChild(el('span', { class: 'status-msg', text: 'Selected: ' + currentFolder().name }));
+        box.appendChild(el('button', { class: 'secondary-btn small-btn', text: 'Rename folder', onclick: () => renameItem(state.currentFolderId) }));
+        box.appendChild(el('button', { class: 'danger-btn small-btn', text: 'Delete folder', onclick: () => deleteItem(state.currentFolderId) }));
       }
 
-      function renderItems() {
-        const folder = getCurrentFolder();
-        const children = folder.children || [];
-        itemsGrid.innerHTML = '';
+      function renderMain() {
+        renderBreadcrumbs();
+        renderFolderActions();
+        const body = $('mainBody');
+        body.innerHTML = '';
+        $('dropHint').classList.toggle('hidden', state.view !== 'folder' || state.layout === 'tree');
+        $('viewToggle').querySelectorAll('button').forEach((b) => b.classList.toggle('on', state.view === 'folder' && b.dataset.layout === state.layout));
 
-        if (!children.length) {
-          const empty = document.createElement('div');
-          empty.className = 'empty-state';
-          empty.textContent = 'This folder is empty. Create a file or folder to get started.';
-          itemsGrid.appendChild(empty);
+        if (state.view === 'search') return renderResults(body, searchFiles(state.query), 'No notes match your search.');
+        if (state.view === 'attention') {
+          const list = allFiles()
+            .filter(({ node }) => analysis.get(node.id).level !== 'good')
+            .sort((a, b) => (analysis.get(a.node.id).level === 'bad' ? -1 : 1) - (analysis.get(b.node.id).level === 'bad' ? -1 : 1))
+            .map((f) => ({ ...f, snippet: null }));
+          return renderResults(body, list, 'Nothing needs attention — every note is verified, owned and up to date.');
+        }
+
+        if (state.layout === 'tree') return renderTree(body);
+
+        const folderNode = currentFolder();
+        const grid = el('div', { class: 'grid' });
+        if (!folderNode.children.length) {
+          grid.appendChild(el('div', { class: 'empty-state', text: 'This folder is empty. Create a file, import .txt files, or drag them here.' }));
+        }
+        const sorted = [...folderNode.children].sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type === 'folder' ? -1 : 1));
+        sorted.forEach((item) => {
+          const card = el('div', { class: `item-card ${item.type}` + (item.id === state.activeFileId ? ' selected' : ''), tabindex: '0' });
+          if (item.type === 'file') {
+            const a = analysis.get(item.id);
+            card.appendChild(el('span', { class: `dot ${a.level}`, title: LEVEL_LABEL[a.level] }));
+          }
+          card.appendChild(el('div', { class: 'item-icon', text: item.type === 'folder' ? '📁' : '📄' }));
+          card.appendChild(el('div', { class: 'item-name', text: item.name }));
+          if (item.type === 'folder') {
+            let n = 0; walk(item, (x) => { if (x.type === 'file') n++; });
+            card.appendChild(el('div', { class: 'item-sub', text: `${n} file${n === 1 ? '' : 's'}` }));
+          } else {
+            card.appendChild(el('div', { class: 'item-sub', text: item.owner || 'no owner' }));
+          }
+          const open = () => (item.type === 'folder' ? openFolder(item.id) : openFile(item.id));
+          card.addEventListener('click', open);
+          card.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(); });
+          if (item.type === 'folder') addFolderDropTarget(card, item.id);
+          grid.appendChild(card);
+        });
+        body.appendChild(grid);
+      }
+
+      function renderResults(body, list, emptyText) {
+        if (!list.length) { body.appendChild(el('div', { class: 'empty-state', text: emptyText })); return; }
+        const wrap = el('div', { class: 'result-list' });
+        list.forEach(({ node, path, snippet }) => {
+          const a = analysis.get(node.id);
+          const card = el('div', { class: 'result', tabindex: '0', onclick: () => openFile(node.id) });
+          card.appendChild(el('div', { class: 'result-top' }, [
+            el('span', { class: 'result-name', text: '📄 ' + node.name }),
+            scoreBadge(node)
+          ]));
+          card.appendChild(el('div', { class: 'result-path', text: pathLabel(path) + (node.owner ? ` · owner: ${node.owner}` : '') }));
+          if (snippet) card.appendChild(snippet);
+          const issues = [...a.issues, ...a.conflicts.map((c) => `Possible conflict about “${c.topic}” with ${fileLabel(c.otherId)}`)];
+          if (issues.length) card.appendChild(el('ul', { class: 'result-issues' }, issues.slice(0, 4).map((t) => el('li', { text: t }))));
+          card.addEventListener('keydown', (e) => { if (e.key === 'Enter') openFile(node.id); });
+          wrap.appendChild(card);
+        });
+        body.appendChild(wrap);
+      }
+
+      function fileLabel(id) {
+        const f = findById(id);
+        return f ? `${f.node.name} (${pathLabel(f.path.slice(1)) || 'My Drive'})` : 'another file';
+      }
+
+      function stat(value, label, tone = '') {
+        return el('div', { class: 'stat' + (tone ? ' ' + tone : '') }, [
+          el('div', { class: 'stat-value', text: String(value) }),
+          el('div', { class: 'stat-label', text: label })
+        ]);
+      }
+
+      function buildTrustBox(a, onOpenOther) {
+        const items = a.issues.map((t) => el('li', { text: t }));
+        a.conflicts.forEach((c) => {
+          items.push(el('li', {}, [
+            `Conflicts on “${c.topic}” with `,
+            el('button', { class: 'link-btn', type: 'button', text: fileLabel(c.otherId), onclick: () => onOpenOther(c.otherId) }),
+            el('span', { class: 'conflict-quote', text: 'Here: ' + c.mine }),
+            el('span', { class: 'conflict-quote', text: 'There: ' + c.theirs })
+          ]));
+        });
+        const trust = el('div', { class: 'trust-box' }, [el('strong', { text: items.length ? 'Things to check' : 'Verified, owned and recently reviewed.' })]);
+        if (items.length) trust.appendChild(el('ul', {}, items));
+        return trust;
+      }
+
+      /* ---------- Tree view & file pop-up ---------- */
+
+      function renderTree(body) {
+        const target = findById(state.currentFolderId);
+        body.appendChild(el('div', { class: 'target-hint' }, [
+          'New files & imports go to ',
+          el('strong', { text: target && target.node.id !== state.root.id ? pathLabel([...target.path.slice(1), target.node]) : 'My Drive (top level)' }),
+          ' — click a folder to choose another.'
+        ]));
+        const tree = el('div', { class: 'tree', role: 'tree' });
+        const addChildren = (folderNode, depth) => {
+          const kids = [...folderNode.children].sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type === 'folder' ? -1 : 1));
+          if (!kids.length) {
+            tree.appendChild(el('div', { class: 'tree-empty', style: `padding-left:${10 + depth * 22 + 22}px`, text: 'empty' }));
+            return;
+          }
+          kids.forEach((item) => {
+            const pad = `padding-left:${10 + depth * 22}px`;
+            if (item.type === 'folder') {
+              const open = state.expanded.has(item.id);
+              let n = 0; walk(item, (x) => { if (x.type === 'file') n++; });
+              const selected = state.currentFolderId === item.id;
+              tree.appendChild(el('button', {
+                class: 'tree-row folder-row' + (selected ? ' selected' : ''), type: 'button', role: 'treeitem', 'aria-expanded': String(open), style: pad,
+                onclick: () => {
+                  // Clicking toggles the folder open/closed and makes it the target for new files.
+                  if (open && selected) state.expanded.delete(item.id); else state.expanded.add(item.id);
+                  state.currentFolderId = item.id;
+                  saveUiPrefs();
+                  renderNav();
+                  renderMain();
+                }
+              }, [
+                el('span', { class: 'tree-caret', text: open ? '▾' : '▸' }),
+                el('span', { text: (open ? '📂 ' : '📁 ') + item.name }),
+                el('span', { class: 'tree-meta', text: `${n} file${n === 1 ? '' : 's'}` })
+              ]));
+              if (open) addChildren(item, depth + 1);
+            } else {
+              const a = analysis.get(item.id);
+              tree.appendChild(el('button', {
+                class: 'tree-row' + (item.id === state.activeFileId ? ' selected' : ''), type: 'button', role: 'treeitem', style: pad, title: LEVEL_LABEL[a.level],
+                onclick: () => openViewer(item.id)
+              }, [
+                el('span', { class: 'tree-caret', text: '' }),
+                el('span', { text: '📄 ' + item.name }),
+                el('span', { class: 'tree-meta', text: item.owner || 'no owner' }),
+                el('span', { class: `tree-dot ${a.level}` })
+              ]));
+            }
+          });
+        };
+        addChildren(state.root, 0);
+        body.appendChild(tree);
+      }
+
+      function openViewer(id) {
+        const found = findById(id);
+        if (!found || found.node.type !== 'file') return;
+        const f = found.node;
+        const a = analysis.get(f.id);
+        $('viewerTitle').textContent = f.name;
+        $('viewerScore').replaceChildren(scoreBadge(f));
+        $('viewerPath').textContent = 'Applies to: ' + (pathLabel(found.path.slice(1)) || 'My Drive') + (f.owner ? ` · owner: ${f.owner}` : '');
+        const trust = $('viewerTrust');
+        trust.innerHTML = '';
+        trust.appendChild(buildTrustBox(a, openViewer));
+        $('viewerBody').textContent = f.content || '(empty file)';
+        $('viewerEdit').onclick = () => {
+          closeViewer();
+          openFile(f.id);
+          const ta = document.querySelector('#editor textarea');
+          if (ta) { $('editor').scrollIntoView({ behavior: 'smooth', block: 'start' }); ta.focus({ preventScroll: true }); }
+        };
+        $('viewer').classList.remove('hidden');
+        $('viewerClose').focus();
+      }
+
+      function closeViewer() { $('viewer').classList.add('hidden'); }
+
+      $('viewerClose').addEventListener('click', closeViewer);
+      $('viewer').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeViewer(); });
+
+      $('viewToggle').addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-layout]');
+        if (!btn) return;
+        state.layout = btn.dataset.layout;
+        state.view = 'folder';
+        $('searchInput').value = '';
+        state.query = '';
+        saveUiPrefs();
+        renderNav();
+        renderMain();
+      });
+
+      function renderEditor() {
+        const ed = $('editor');
+        const found = state.activeFileId && findById(state.activeFileId);
+        ed.innerHTML = '';
+        if (!found) {
+          state.activeFileId = null;
+          const files = allFiles();
+          const attention = files.filter(({ node }) => analysis.get(node.id).level !== 'good').length;
+          const conflicts = files.filter(({ node }) => analysis.get(node.id).conflicts.length).length;
+          const owned = files.filter(({ node }) => node.owner).length;
+          ed.appendChild(el('div', { class: 'editor-header' }, el('h3', { text: 'Overview' })));
+          ed.appendChild(el('div', { class: 'stats' }, [
+            stat(files.length, 'notes'),
+            stat(attention, 'need attention', attention ? 'warn' : ''),
+            stat(conflicts, 'with conflicts', conflicts ? 'bad' : ''),
+            stat(files.length ? `${Math.round((owned / files.length) * 100)}%` : '—', 'have an owner')
+          ]));
+          ed.appendChild(el('div', { class: 'editor-placeholder' }, [
+            el('strong', { text: 'How to use' }),
+            el('ul', { class: 'howto' }, [
+              el('li', { text: 'Click a file to read it; press Edit to change it.' }),
+              el('li', { text: 'Give each note an owner and mark it reviewed when you have checked it.' }),
+              el('li', { text: 'Search ( / ) looks through every company and location at once.' }),
+              el('li', { text: 'Notes that state different numbers for the same thing are flagged as conflicts.' })
+            ])
+          ]));
           return;
         }
 
-        children.forEach((item) => {
-          const card = document.createElement('div');
-          card.className = `item-card ${item.type}`;
+        const f = found.node;
+        const a = analysis.get(f.id);
 
-          const icon = document.createElement('div');
-          icon.className = 'item-icon';
-          icon.textContent = item.type === 'folder' ? '📁' : '📄';
+        ed.appendChild(el('div', { class: 'editor-header' }, [
+          el('h3', { text: f.name }),
+          scoreBadge(f)
+        ]));
+        ed.appendChild(el('div', { class: 'editor-path', text: 'Applies to: ' + (pathLabel(found.path.slice(1)) || 'My Drive (no company / location)') }));
 
-          const name = document.createElement('div');
-          name.className = 'item-name';
-          name.textContent = item.name;
+        const trustSlot = el('div', {}, buildTrustBox(a, openFile));
+        ed.appendChild(trustSlot);
 
-          card.appendChild(icon);
-          card.appendChild(name);
+        // Metadata
+        const ownerInput = el('input', { type: 'text', value: f.owner || '', maxlength: '80', placeholder: 'e.g. Payroll team' });
+        const statusSelect = el('select', {}, ['draft', 'verified', 'outdated'].map((s) => {
+          const o = el('option', { value: s, text: s[0].toUpperCase() + s.slice(1) });
+          if (f.status === s) o.selected = true;
+          return o;
+        }));
+        const fmt = (iso) => (iso ? new Date(iso).toLocaleString() : 'never');
+        const meta = el('div', { class: 'meta-grid' }, [
+          el('label', {}, ['Owner / expert', ownerInput]),
+          el('label', {}, ['Status', statusSelect]),
+          el('div', { class: 'meta-line', text: `Last edited: ${fmt(f.updatedAt)} · Last reviewed: ${fmt(f.reviewedAt)}` })
+        ]);
+        ed.appendChild(meta);
 
-          card.addEventListener('click', () => {
-            if (item.type === 'folder') {
-              state.currentPath = [...state.currentPath, item.name];
-              state.activeFile = null;
-              render();
-              return;
+        const commitMeta = () => {
+          f.owner = ownerInput.value.trim().slice(0, 80);
+          f.status = statusSelect.value;
+          if (f.status === 'verified') f.reviewedAt = now();
+          saveState();
+          render();
+        };
+        ownerInput.addEventListener('change', commitMeta);
+        statusSelect.addEventListener('change', commitMeta);
+
+        // Content
+        const textarea = el('textarea', { 'aria-label': 'File editor' });
+        textarea.value = f.content;
+        const status = el('span', { class: 'status-msg', text: '' });
+        textarea.addEventListener('input', () => { state.dirty = true; status.textContent = 'Unsaved changes'; });
+        ed.appendChild(textarea);
+
+        const save = () => {
+          if (f.content !== textarea.value) {
+            f.content = textarea.value;
+            f.updatedAt = now();
+          }
+          state.dirty = false;
+          status.textContent = saveState() ? 'Saved ✓' : 'Could not save (browser storage full?)';
+          analysis = analyzeAll();
+          trustSlot.replaceChildren(buildTrustBox(analysis.get(f.id), openFile));
+          renderNav();
+          renderMain();
+        };
+        state.saveActive = save;
+
+        ed.appendChild(el('div', { class: 'save-row' }, [
+          el('div', { class: 'group' }, [
+            el('button', { class: 'secondary-btn small-btn', text: 'Mark reviewed', title: 'I checked this and it is still correct', onclick: () => { save(); f.reviewedAt = now(); if (f.status === 'draft') f.status = 'verified'; saveState(); render(); } }),
+            el('button', { class: 'secondary-btn small-btn', text: 'Rename', onclick: () => renameItem(f.id) }),
+            el('button', { class: 'danger-btn small-btn', text: 'Delete', onclick: () => deleteItem(f.id) })
+          ]),
+          el('div', { class: 'group' }, [
+            status,
+            el('button', { class: 'secondary-btn small-btn', text: 'Save to computer', onclick: async () => { save(); await saveTextFileToComputer(f.name, f.content); } }),
+            el('button', { class: 'primary-btn small-btn', text: 'Save', onclick: save })
+          ])
+        ]));
+      }
+
+      /* ---------- Navigation ---------- */
+
+      function confirmLeave() {
+        if (!state.dirty) return true;
+        return window.confirm('You have unsaved changes in this file. Discard them?');
+      }
+
+      function openFolder(id) {
+        if (!confirmLeave()) return;
+        state.dirty = false;
+        state.view = 'folder';
+        state.currentFolderId = id;
+        state.activeFileId = null;
+        if (state.layout === 'tree') {
+          // In the tree, "opening" a folder means unfolding it (and everything above it).
+          const found = findById(id);
+          if (found) { found.path.forEach((p) => state.expanded.add(p.id)); state.expanded.add(id); saveUiPrefs(); }
+        }
+        $('searchInput').value = '';
+        state.query = '';
+        render();
+      }
+
+      function openFile(id) {
+        if (id !== state.activeFileId && !confirmLeave()) return;
+        state.dirty = false;
+        state.activeFileId = id;
+        renderMain();
+        renderEditor();
+      }
+
+      /* ---------- Search ---------- */
+
+      function searchFiles(query) {
+        const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+        if (!terms.length) return [];
+        const out = [];
+        allFiles().forEach(({ node, path }) => {
+          const name = node.name.toLowerCase();
+          const text = node.content.toLowerCase();
+          const where = path.map((p) => p.name).join(' ').toLowerCase();
+          let score = 0;
+          for (const t of terms) {
+            const inName = name.includes(t), inWhere = where.includes(t);
+            let count = 0, i = text.indexOf(t);
+            while (i !== -1 && count < 50) { count++; i = text.indexOf(t, i + t.length); }
+            if (!inName && !inWhere && !count) return; // every term must match somewhere
+            score += (inName ? 5 : 0) + (inWhere ? 3 : 0) + count;
+          }
+          const level = analysis.get(node.id).level;
+          score += level === 'good' ? 2 : level === 'warn' ? 0.5 : 0; // trusted notes float up
+          out.push({ node, path, score, snippet: makeSnippet(node.content, terms) });
+        });
+        return out.sort((a, b) => b.score - a.score);
+      }
+
+      function makeSnippet(content, terms) {
+        const lower = content.toLowerCase();
+        let pos = -1;
+        for (const t of terms) { pos = lower.indexOf(t); if (pos !== -1) break; }
+        const start = Math.max(0, pos - 60);
+        const text = (start > 0 ? '…' : '') + content.slice(start, start + 200).replace(/\s+/g, ' ') + (content.length > start + 200 ? '…' : '');
+        const div = el('div', { class: 'result-snippet' });
+        const escaped = terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const re = new RegExp('(' + escaped.join('|') + ')', 'gi');
+        text.split(re).forEach((part, i) => div.appendChild(i % 2 ? el('mark', { text: part }) : document.createTextNode(part)));
+        return div;
+      }
+
+      let searchTimer;
+      $('searchInput').addEventListener('input', (e) => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+          state.query = e.target.value.trim();
+          state.view = state.query ? 'search' : 'folder';
+          renderNav();
+          renderMain();
+        }, 120);
+      });
+
+      /* ---------- Create / rename / delete (modal) ---------- */
+
+      function showModal({ title, text, input, confirmLabel, danger, validate, onConfirm, hideCancel }) {
+        $('modalCancel').classList.toggle('hidden', !!hideCancel);
+        const modal = $('modal');
+        const inputEl = $('modalInput');
+        const confirmBtn = $('modalConfirm');
+        $('modalTitle').textContent = title;
+        $('modalText').textContent = text || '';
+        $('modalText').classList.toggle('hidden', !text);
+        $('modalError').textContent = '';
+        inputEl.classList.toggle('hidden', !input);
+        inputEl.value = input ? input.value || '' : '';
+        inputEl.placeholder = input ? input.placeholder || '' : '';
+        confirmBtn.textContent = confirmLabel || 'OK';
+        confirmBtn.className = danger ? 'danger-btn' : 'primary-btn';
+        modal.classList.remove('hidden');
+        (input ? inputEl : confirmBtn).focus();
+        if (input) inputEl.select();
+
+        const close = () => modal.classList.add('hidden');
+        const finish = () => {
+          const value = inputEl.value.trim();
+          const err = validate ? validate(value) : '';
+          if (err) { $('modalError').textContent = err; return; }
+          close();
+          onConfirm(value);
+        };
+        confirmBtn.onclick = finish;
+        inputEl.onkeydown = (e) => { if (e.key === 'Enter') finish(); };
+        $('modalCancel').onclick = close;
+        modal.onclick = (e) => { if (e.target === modal) close(); };
+      }
+
+      function createItem(type) {
+        if (state.view !== 'folder') openFolder(state.currentFolderId);
+        const parent = currentFolder();
+        showModal({
+          title: type === 'folder' ? 'Create folder' : 'Create file',
+          input: { placeholder: type === 'folder' ? 'Folder name' : 'File name (e.g. holiday-policy.txt)' },
+          confirmLabel: 'Create',
+          validate: (v) => {
+            const name = type === 'file' && v && !/\.txt$/i.test(v) ? v + '.txt' : v;
+            return validateName(v) || (nameTaken(parent, name) ? 'Something with that name already exists here.' : '');
+          },
+          onConfirm: (v) => {
+            if (type === 'folder') parent.children.push(folder(v));
+            else {
+              const f = file(/\.txt$/i.test(v) ? v : v + '.txt');
+              parent.children.push(f);
+              state.activeFileId = f.id;
             }
-
-            openFile(item);
-          });
-
-          itemsGrid.appendChild(card);
+            saveState();
+            render();
+          }
         });
       }
 
-      async function saveTextFileToComputer(fileName, content) {
-        const fileBlob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      function renameItem(id) {
+        const found = findById(id);
+        if (!found || id === state.root.id) return;
+        const parent = found.path[found.path.length - 1];
+        showModal({
+          title: 'Rename',
+          input: { value: found.node.name },
+          confirmLabel: 'Rename',
+          validate: (v) => validateName(v) || (nameTaken(parent, v, id) ? 'Something with that name already exists here.' : ''),
+          onConfirm: (v) => { found.node.name = v; saveState(); render(); }
+        });
+      }
 
-        if ('showSaveFilePicker' in window) {
+      function deleteItem(id) {
+        const found = findById(id);
+        if (!found || id === state.root.id) return;
+        const parent = found.path[found.path.length - 1];
+        let n = 0; walk(found.node, (x) => { if (x.type === 'file') n++; });
+        showModal({
+          title: `Delete “${found.node.name}”?`,
+          text: found.node.type === 'folder'
+            ? `This removes the folder and the ${n} file${n === 1 ? '' : 's'} inside it from the knowledge base. Files on your computer are not touched.`
+            : 'This removes the note from the knowledge base. Files on your computer are not touched.',
+          confirmLabel: 'Delete',
+          danger: true,
+          onConfirm: () => {
+            parent.children = parent.children.filter((c) => c.id !== id);
+            if (found.node.type === 'folder' && (state.currentFolderId === id || !findById(state.currentFolderId))) state.currentFolderId = parent.id;
+            if (!findById(state.activeFileId)) { state.activeFileId = null; state.dirty = false; }
+            saveState();
+            render();
+          }
+        });
+      }
+
+      /* ---------- Import ---------- */
+
+      async function importFiles(fileList, targetFolder, keepFolders) {
+        let added = 0, skipped = 0, lastId = null;
+        for (const f of Array.from(fileList)) {
+          const isTxt = /\.txt$/i.test(f.name) && (!f.type || f.type.startsWith('text/'));
+          if (!isTxt || f.size > MAX_IMPORT_BYTES) { skipped++; continue; }
+          let parent = targetFolder;
+          if (keepFolders && f.webkitRelativePath) {
+            const parts = f.webkitRelativePath.split('/').slice(0, -1).filter((p) => p && !p.startsWith('.'));
+            for (const part of parts) {
+              let next = parent.children.find((c) => c.type === 'folder' && c.name.toLowerCase() === part.toLowerCase());
+              if (!next) { next = folder(part); parent.children.push(next); }
+              parent = next;
+            }
+          }
+          const content = await f.text();
+          const existing = parent.children.find((c) => c.type === 'file' && c.name.toLowerCase() === f.name.toLowerCase());
+          if (existing && existing.content === content) { skipped++; continue; } // already imported, unchanged
+          const modified = f.lastModified ? new Date(f.lastModified).toISOString() : now();
+          const nf = file(uniqueName(parent, f.name), content, { createdAt: modified, updatedAt: modified });
+          parent.children.push(nf);
+          lastId = nf.id;
+          added++;
+        }
+        saveState();
+        if (added === 1 && !keepFolders) state.activeFileId = lastId;
+        state.view = 'folder';
+        render();
+        showModal({
+          title: 'Import finished',
+          text: `${added} file${added === 1 ? '' : 's'} added.` + (skipped ? ` ${skipped} skipped (not .txt, too large, or already imported).` : ''),
+          confirmLabel: 'OK',
+          hideCancel: true,
+          onConfirm: () => {}
+        });
+      }
+
+      $('importFilesBtn').addEventListener('click', () => $('fileInput').click());
+      $('importFolderBtn').addEventListener('click', () => $('folderInput').click());
+      $('fileInput').addEventListener('change', (e) => { importFiles(e.target.files, currentFolder(), false); e.target.value = ''; });
+      $('folderInput').addEventListener('change', (e) => {
+        const picked = Array.from(e.target.files);
+        e.target.value = '';
+        if (!picked.length) return;
+        // If the picked folder contains the same top-level folders as the drive (e.g. "Company A"),
+        // it is a copy of the whole knowledge base: merge it into the top level.
+        // Otherwise import it as a new sub-folder of the selected folder.
+        const topNames = new Set(state.root.children.filter((c) => c.type === 'folder').map((c) => c.name.toLowerCase()));
+        const isWholeDrive = picked.some((f) => {
+          const parts = f.webkitRelativePath.split('/');
+          return parts.length > 2 && topNames.has(parts[1].toLowerCase());
+        });
+        const files = picked.map((f) => {
+          const rel = isWholeDrive ? f.webkitRelativePath.split('/').slice(1).join('/') : f.webkitRelativePath;
+          Object.defineProperty(f, 'webkitRelativePath', { value: rel });
+          return f;
+        });
+        importFiles(files, isWholeDrive ? state.root : currentFolder(), true);
+      });
+
+      const main = $('main');
+      main.addEventListener('dragover', (e) => { if (state.view === 'folder') { e.preventDefault(); main.classList.add('dragging'); } });
+      main.addEventListener('dragleave', (e) => { if (!main.contains(e.relatedTarget)) main.classList.remove('dragging'); });
+      main.addEventListener('drop', (e) => {
+        main.classList.remove('dragging');
+        if (state.view !== 'folder' || !e.dataTransfer.files.length) return;
+        e.preventDefault();
+        importFiles(e.dataTransfer.files, currentFolder(), false);
+      });
+
+      function addFolderDropTarget(card, folderId) {
+        card.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); card.classList.add('drop-target'); });
+        card.addEventListener('dragleave', () => card.classList.remove('drop-target'));
+        card.addEventListener('drop', (e) => {
+          e.preventDefault(); e.stopPropagation();
+          card.classList.remove('drop-target');
+          main.classList.remove('dragging');
+          const target = findById(folderId);
+          if (target && e.dataTransfer.files.length) importFiles(e.dataTransfer.files, target.node, false);
+        });
+      }
+
+      /* ---------- Export ---------- */
+
+      async function saveTextFileToComputer(fileName, content) {
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        if (typeof window.showSaveFilePicker === 'function') {
           try {
-            const handle = await window.showSaveFilePicker({
-              suggestedName: fileName,
-              types: [{
-                description: 'Text files',
-                accept: { 'text/plain': ['.txt'] }
-              }]
-            });
+            const handle = await window.showSaveFilePicker({ suggestedName: fileName, types: [{ description: 'Text files', accept: { 'text/plain': ['.txt'] } }] });
             const writable = await handle.createWritable();
-            await writable.write(fileBlob);
+            await writable.write(blob);
             await writable.close();
             return;
           } catch (error) {
-            if (error && error.name !== 'AbortError') {
-              console.warn('Save dialog cancelled or unavailable:', error);
-            }
+            if (error && error.name === 'AbortError') return;
+            console.warn('Save dialog unavailable, falling back to download.', error);
           }
         }
+        downloadBlob(blob, fileName);
+      }
 
-        const url = URL.createObjectURL(fileBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
+      function downloadBlob(blob, fileName) {
+        const url = URL.createObjectURL(blob);
+        const link = el('a', { href: url, download: fileName });
         document.body.appendChild(link);
         link.click();
         link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       }
 
-      function flattenFiles(node, results = []) {
-        if (!node || !Array.isArray(node.children)) {
-          return results;
-        }
-
-        node.children.forEach((child) => {
-          if (child.type === 'file') {
-            results.push(child);
-          }
-
-          if (child.type === 'folder') {
-            flattenFiles(child, results);
-          }
-        });
-
-        return results;
-      }
-
       async function downloadAllFiles() {
-        const files = flattenFiles(state.root);
-
-        for (const file of files) {
-          await saveTextFileToComputer(file.name, file.content || '');
-        }
-      }
-
-      function openFile(file) {
-        state.activeFile = file;
-
-        editorTitle.textContent = file.name;
-        editorContent.innerHTML = `
-          <textarea id="fileEditor" aria-label="File editor">${escapeHtml(file.content || '')}</textarea>
-          <div class="save-row">
-            <button class="secondary-btn" id="downloadFileBtn">Save to computer</button>
-            <button class="primary-btn" id="saveFileBtn">Save</button>
-          </div>
-        `;
-
-        const textarea = document.getElementById('fileEditor');
-        const saveButton = document.getElementById('saveFileBtn');
-        const downloadButton = document.getElementById('downloadFileBtn');
-
-        saveButton.addEventListener('click', () => {
-          file.content = textarea.value;
-          saveState();
-          alert('File saved.');
-        });
-
-        downloadButton.addEventListener('click', async () => {
-          file.content = textarea.value;
-          saveState();
-          await saveTextFileToComputer(file.name, file.content);
-        });
-      }
-
-      function escapeHtml(value) {
-        return value
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function openNameModal(type) {
-        const modal = document.getElementById('nameModal');
-        const title = document.getElementById('modalTitle');
-        const input = document.getElementById('modalInput');
-        const confirm = document.getElementById('confirmModalBtn');
-
-        title.textContent = type === 'folder' ? 'Create folder' : 'Create file';
-        input.value = '';
-        input.placeholder = type === 'folder' ? 'Folder name' : 'File name';
-        modal.classList.remove('hidden');
-        input.focus();
-
-        const finish = () => {
-          const name = input.value.trim();
-          if (!name) {
-            modal.classList.add('hidden');
+        // Pick the destination folder once and recreate the Company / Location structure inside it.
+        if (typeof window.showDirectoryPicker === 'function') {
+          try {
+            const dir = await window.showDirectoryPicker({ mode: 'readwrite' });
+            let count = 0;
+            for (const { node, path } of allFiles()) {
+              let d = dir;
+              for (const p of path.slice(1)) d = await d.getDirectoryHandle(p.name, { create: true });
+              const fh = await d.getFileHandle(node.name, { create: true });
+              const w = await fh.createWritable();
+              await w.write(node.content);
+              await w.close();
+              count++;
+            }
+            showModal({ title: 'Saved', text: `${count} file${count === 1 ? '' : 's'} written, in their company / location folders.`, confirmLabel: 'OK', hideCancel: true, onConfirm: () => {} });
             return;
+          } catch (error) {
+            if (error && error.name === 'AbortError') return;
+            console.warn('Folder picker unavailable, falling back to downloads.', error);
           }
-
-          const currentFolder = getCurrentFolder();
-          const item = type === 'folder'
-            ? { type: 'folder', name, children: [] }
-            : { type: 'file', name, content: '' };
-
-          currentFolder.children.push(item);
-          saveState();
-          modal.classList.add('hidden');
-          render();
-
-          if (type === 'file') {
-            openFile(item);
-          }
-        };
-
-        confirm.onclick = finish;
-        input.onkeydown = (event) => {
-          if (event.key === 'Enter') {
-            finish();
-          }
-        };
-      }
-
-      function createFolder() {
-        openNameModal('folder');
-      }
-
-      function createFile() {
-        openNameModal('file');
-      }
-
-      function render() {
-        renderBreadcrumbs();
-        renderItems();
-        updateRootNavState();
-
-        if (!state.activeFile) {
-          editorTitle.textContent = 'File preview';
-          editorContent.innerHTML = `
-            <div class="editor-placeholder">
-              Select a file to view and edit its text. Create folders and files from the top bar.
-            </div>
-          `;
+        }
+        for (const { node, path } of allFiles()) {
+          const prefix = path.slice(1).map((p) => p.name).join('_');
+          downloadBlob(new Blob([node.content], { type: 'text/plain;charset=utf-8' }), (prefix ? prefix + '_' : '') + node.name);
+          await new Promise((r) => setTimeout(r, 150));
         }
       }
 
-      document.getElementById('newFolderBtn').addEventListener('click', createFolder);
-      document.getElementById('newFileBtn').addEventListener('click', createFile);
-      document.getElementById('downloadAllBtn').addEventListener('click', downloadAllFiles);
-      document.getElementById('rootNav').addEventListener('click', () => {
-        state.currentPath = [];
-        state.activeFile = null;
+      /* ---------- Wiring ---------- */
+
+      $('newFolderBtn').addEventListener('click', () => createItem('folder'));
+      $('newFileBtn').addEventListener('click', () => createItem('file'));
+      $('downloadAllBtn').addEventListener('click', downloadAllFiles);
+      $('attentionNav').addEventListener('click', () => {
+        if (!confirmLeave()) return;
+        state.dirty = false;
+        state.view = 'attention';
+        state.activeFileId = null;
         render();
       });
-      document.getElementById('cancelModalBtn').addEventListener('click', () => {
-        document.getElementById('nameModal').classList.add('hidden');
-      });
-      document.getElementById('nameModal').addEventListener('click', (event) => {
-        if (event.target === event.currentTarget) {
-          event.currentTarget.classList.add('hidden');
+
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+          if (state.activeFileId && state.saveActive) { e.preventDefault(); state.saveActive(); }
+        } else if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) {
+          e.preventDefault();
+          $('searchInput').focus();
+        } else if (e.key === 'Escape') {
+          $('modal').classList.add('hidden');
+          closeViewer();
         }
       });
 
+      window.addEventListener('beforeunload', (e) => { if (state.dirty) { e.preventDefault(); e.returnValue = ''; } });
+
+      saveState();
       render();
     </script>
   </body>
