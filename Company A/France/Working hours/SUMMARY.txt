@@ -1,0 +1,18 @@
+WORKING HOURS - COMPANY A - FRANCE
+Summary of 2 source documents - click a [number] to open that source.
+
+Document owner: Knowledge team
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+- The legal working week in France is 35 hours; Company A France works 37 hours and the extra hours become RTT days. [1]
+- Managers on a "forfait jours" contract: 218 days a year, hours are not counted. [1]
+- Right to disconnect: nobody is expected to read or answer work messages between 20:00 and 08:00,
+  at weekends or on leave. [2]
+
+No conflicts found between these sources.
+
+Sources
+[1] Working time agreement France.txt
+[2] Email - Right to disconnect.txt

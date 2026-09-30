@@ -1,0 +1,24 @@
+WORKING HOURS - COMPANY B - AMERICA
+Summary of 3 source documents - click a [number] to open that source.
+
+Document owner: Knowledge team
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+- Standard working time: 40 hours a week. [1]
+- Office days: from October 2026, hybrid employees work in the office 4 days a week, Monday to Thursday;
+  Fridays stay flexible. [2]
+
+⚠ CONFLICT - office days
+  The hybrid work policy (reviewed December 2025) says 3 office days, Tuesday to Thursday. [1]
+  The CEO office email of September 2026 raises this to 4 days from October. [2]
+  The email is newer; the policy still needs updating.
+
+ⓘ MISFILED
+  "FW New payroll provider" is a copy of a payroll email and does not belong here; see the Payroll summary. [3]
+
+Sources
+[1] Hybrid work policy.txt
+[2] Email - Office days from October.txt
+[3] FW New payroll provider.txt

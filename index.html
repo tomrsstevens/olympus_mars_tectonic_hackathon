@@ -81,7 +81,6 @@
 
       .target-hint { font-size: 0.85rem; color: var(--muted); margin-bottom: 10px; }
       .target-hint strong { color: var(--text); }
-      .tree-row.selected { background: var(--panel-alt); color: var(--primary-dark); }
 
       .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0 14px; }
       .stat { background: white; border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
@@ -309,28 +308,129 @@
       .view-toggle button:hover { transform: none; }
       .header-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
-      .tree { border: 1px solid var(--line); border-radius: 14px; padding: 8px; background: white; }
-      .tree-row {
+      .content.graph-wide { grid-template-columns: 240px 1fr; }
+      .content.graph-wide .editor { display: none; }
+      .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+      .chip { font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; background: #edf2ff; color: var(--text); }
+      .chip strong { font-weight: 800; }
+      .chip.warn { background: var(--warn-bg); color: var(--warn); }
+      .chip.bad { background: var(--bad-bg); color: var(--bad); }
+      .graph-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+      .zoom { gap: 4px; }
+      .zoom .small-btn { min-width: 32px; }
+      .zoom-label { font-size: 0.8rem; color: var(--muted); min-width: 44px; text-align: center; font-variant-numeric: tabular-nums; }
+
+      .graph-wrap {
+        position: relative;
+        overflow: auto;
+        min-height: 460px;
+        max-height: 68vh;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background-color: #fcfdff;
+        background-image: radial-gradient(#dfe6f4 1px, transparent 1px);
+        background-size: 18px 18px;
+      }
+      .graph-wrap.animating { overflow: hidden; }
+      .graph-sizer { position: relative; margin: 0 auto; }
+      .graph-canvas { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+      .graph-lines { position: absolute; top: 0; left: 0; overflow: visible; pointer-events: none; }
+      .graph-lines path { fill: none; stroke: #b3c2e4; stroke-width: 2; stroke-linecap: round; }
+
+      .gnode {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 184px;
+        height: 58px;
         display: flex;
         align-items: center;
         gap: 8px;
-        width: 100%;
-        background: transparent;
+        padding: 8px 10px;
+        border-radius: 14px;
+        background: white;
+        border: 1px solid var(--line);
+        box-shadow: 0 4px 12px rgba(30, 36, 48, 0.06);
         text-align: left;
-        padding: 7px 10px;
-        border-radius: 8px;
         color: var(--text);
-        font-size: 0.93rem;
+        will-change: transform, opacity;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
       }
-      .tree-row:hover { background: var(--panel-alt); transform: none; }
-      .tree-row.folder-row { font-weight: 600; }
-      .tree-caret { width: 14px; color: var(--muted); font-size: 0.75rem; flex: none; }
-      .tree-meta { margin-left: auto; font-size: 0.78rem; color: var(--muted); font-weight: 400; }
-      .tree-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-      .tree-dot.good { background: var(--good); }
-      .tree-dot.warn { background: var(--warn); }
-      .tree-dot.bad { background: var(--bad); }
-      .tree-empty { color: var(--muted); font-size: 0.85rem; font-style: italic; padding: 5px 10px; }
+      .gnode:hover { border-color: #bfd0ff; box-shadow: 0 8px 18px rgba(79, 124, 255, 0.12); }
+      .gnode.folder { background: #fffaf0; border-color: #f1ddb0; }
+      .gnode.folder:hover { border-color: #e6c67c; }
+      .gnode.folder.open { background: #fff4dc; }
+      .gnode.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.2); }
+      .gnode.ghost {
+        background: transparent;
+        border: 1px dashed #c9d4ea;
+        box-shadow: none;
+        justify-content: center;
+        color: var(--muted);
+        font-style: italic;
+        cursor: default;
+      }
+      .gnode.ghost .gnode-name { font-weight: 400; font-size: 0.8rem; }
+      .gnode-icon { font-size: 1.25rem; flex: none; }
+      .gnode-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+      .gnode-name { font-weight: 700; font-size: 0.86rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .gnode-meta { font-size: 0.72rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .gnode-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+      .gnode-dot.good { background: var(--good); }
+      .gnode-dot.warn { background: var(--warn); }
+      .gnode-dot.bad { background: var(--bad); }
+      .gnode-toggle {
+        position: absolute;
+        left: 50%;
+        bottom: -10px;
+        width: 20px;
+        height: 20px;
+        margin-left: -10px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--primary);
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 800;
+        line-height: 1;
+        box-shadow: 0 2px 6px rgba(79, 124, 255, 0.35);
+      }
+      .gnode.open .gnode-toggle { background: #8a97b3; box-shadow: none; }
+      .gnode.file { width: 196px; height: 44px; padding: 5px 10px; border-radius: 12px; }
+      .gnode.file .gnode-icon { font-size: 1.05rem; }
+      .gnode.file .gnode-name { font-size: 0.78rem; line-height: 1.2; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-word; }
+      .gnode.file .gnode-meta { font-size: 0.68rem; }
+      .gnode.summary { background: #eefaf3; border-color: #bfe5cd; }
+      .gnode.summary:hover { border-color: #8fd0a8; box-shadow: 0 8px 18px rgba(31, 157, 85, 0.14); }
+      .gnode.summary.open { background: #e2f6ea; }
+      .gnode.summary.selected { border-color: var(--good); box-shadow: 0 0 0 3px rgba(31, 157, 85, 0.2); }
+      .gnode.summary .gnode-toggle { background: var(--good); box-shadow: 0 2px 6px rgba(31, 157, 85, 0.35); cursor: pointer; width: 22px; height: 22px; margin-left: -11px; bottom: -11px; }
+      .gnode.summary .gnode-toggle:hover { filter: brightness(1.1); }
+      .gnode.summary.open .gnode-toggle { background: #8a97b3; box-shadow: none; }
+
+      .cite {
+        background: var(--panel-alt);
+        color: var(--primary-dark);
+        border: 1px solid #cfdcff;
+        border-radius: 6px;
+        padding: 0 4px;
+        margin: 0 1px;
+        font: inherit;
+        font-size: 0.82em;
+        font-weight: 700;
+        vertical-align: 1px;
+      }
+      .cite:hover { background: var(--primary); color: white; transform: none; }
+      .source-banner {
+        display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+        background: #eefaf3; border: 1px solid #bfe5cd; border-radius: 12px;
+        padding: 10px 14px; margin-bottom: 14px; font-size: 0.9rem;
+      }
+      .item-card.summary { background: #f5fcf8; border-color: #cdebd8; }
+      .item-card.summary .item-icon { background: rgba(31, 157, 85, 0.12); }
+      li.conflict { margin-bottom: 8px; }
+      .nav-item.quiet { font-weight: 400; color: var(--muted); font-size: 0.85rem; }
 
       .viewer-card { width: min(720px, calc(100vw - 32px)); max-height: calc(100vh - 48px); display: flex; flex-direction: column; }
       .viewer-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
@@ -399,13 +499,17 @@
         <input type="file" id="folderInput" webkitdirectory directory multiple class="hidden" />
       </div>
 
-      <div class="content">
+      <div class="content" id="content">
         <aside class="sidebar">
           <h3>Workspace</h3>
           <div class="nav-list" id="navList"></div>
           <h3>Review</h3>
           <div class="nav-list">
             <button class="nav-item" id="attentionNav">Needs attention <span class="count hidden" id="attentionCount"></span></button>
+          </div>
+          <h3>Demo</h3>
+          <div class="nav-list">
+            <button class="nav-item quiet" id="resetNav" title="Replace everything with the built-in example documents">Reset demo data</button>
           </div>
         </aside>
 
@@ -416,7 +520,7 @@
               <div class="group" id="folderActions"></div>
               <div class="view-toggle" id="viewToggle" role="group" aria-label="Layout">
                 <button type="button" data-layout="grid">▦ Folders</button>
-                <button type="button" data-layout="tree">☰ Tree</button>
+                <button type="button" data-layout="graph">◉ Graph</button>
               </div>
             </div>
           </div>
@@ -452,19 +556,22 @@
         <div class="viewer-body" id="viewerBody"></div>
         <div class="modal-actions">
           <button class="secondary-btn" id="viewerClose" type="button">Close</button>
+          <button class="secondary-btn hidden" id="viewerSources" type="button">Open as folder</button>
           <button class="primary-btn" id="viewerEdit" type="button">Edit</button>
         </div>
       </div>
     </div>
+
+    <!-- Built-in example documents (the same files as the company folders on disk). -->
+    <script type="application/json" id="seed-data">[{"path": ["Company A", "America", "Payroll"], "name": "US Payroll Policy.txt", "content": "COMPANY A - US PAYROLL POLICY\nDocument owner: Payroll Operations (US)\nStatus: Approved\nLast updated: 2026-01-12\nLast reviewed: 2026-05-04\nApplies to: all Company A employees in the United States\n\n1. Pay frequency\nEmployees are paid biweekly, every other Friday, by direct deposit.\n\n2. Minimum pay\nThe minimum wage at Company A is $48,000 per year for full-time employees in the United States.\nHourly employees are paid at least the applicable federal, state or local minimum wage, whichever is highest.\n\n3. Payroll corrections\nReport missing or incorrect pay to the payroll team within 5 business days of payday.\nCorrections are paid in the next regular payroll.\n\n4. Tax forms\nW-2 forms are available in the employee portal by January 31 each year.\n"}, {"path": ["Company A", "America", "Payroll"], "name": "Email - 2026 payroll calendar.txt", "content": "From: Maria Lopez, Payroll Operations (US)\nTo: All US employees\nDate: 2025-12-15\nSubject: 2026 payroll calendar\n\nHi all,\n\nThe 2026 payroll calendar is now in the employee portal. There are 26 paydays in 2026.\nWhen a payday falls on a bank holiday, you will be paid on the business day before.\n\nTimesheets for hourly staff are due by noon on the Monday before each payday.\n\nBest,\nMaria\n"}, {"path": ["Company A", "America", "Payroll"], "name": "payrollemail.txt", "content": "Subject: Updated Minimum Wage at Company A\n\nDear Team,\n\nWe are pleased to share that the minimum wage at Company A has been raised to $75,000 per year in the United States.\n\nThis increase reflects our commitment to recognizing the value of our employees and supporting fair compensation across our organization. We believe this adjustment will help ensure our team members are compensated competitively and can continue to thrive in their roles.\n\nThank you for your dedication and hard work. We appreciate everything you do to contribute to the success of Company A.\n\nSincerely,\n[Your Name]\n[Your Title]\nCompany A\n"}, {"path": ["Company A", "America", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY A - AMERICA\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Pay schedule: biweekly, every other Friday, by direct deposit; 26 paydays in 2026. [1][2]\n- Payday on a bank holiday: you are paid the business day before. [2]\n- Hourly staff: timesheets are due by noon on the Monday before each payday. [2]\n- Pay errors: report them within 5 business days of payday; they are fixed in the next payroll. [1]\n- W-2 forms: in the employee portal by January 31. [1]\n\n⚠ CONFLICT - minimum wage\n  The approved payroll policy (reviewed May 2026) sets the minimum wage at $48,000 a year for full-time staff. [1]\n  An undated email with no named sender says the minimum wage was raised to $75,000 a year. [3]\n  Until Payroll Operations (US) confirms the raise, rely on the policy.\n\nSources\n[1] US Payroll Policy.txt\n[2] Email - 2026 payroll calendar.txt\n[3] payrollemail.txt\n"}, {"path": ["Company A", "America", "Vacation days"], "name": "US Paid Time Off Policy.txt", "content": "COMPANY A - PAID TIME OFF (US)\nDocument owner: People Team (US)\nStatus: Approved\nLast updated: 2025-11-03\nLast reviewed: 2026-02-20\n\nFull-time employees receive 15 days of paid time off (PTO) per year, accrued each pay period.\nAfter five years of service this increases to 20 days per year.\n\nCarry-over: up to 5 unused days can be carried over to the next year and must be used by March 31.\n\nHolidays: Company A also observes 10 paid holidays; see the holiday calendar in the portal.\n\nNote: US federal law does not require paid vacation. This policy is a Company A benefit.\n"}, {"path": ["Company A", "America", "Vacation days"], "name": "Email - PTO carry-over reminder.txt", "content": "From: People Team (US)\nTo: All US employees\nDate: 2026-09-15\nSubject: Reminder: plan your remaining PTO\n\nHi everyone,\n\nA friendly reminder that only 5 unused days can be carried over into 2027.\nAnything above that is lost on December 31, so talk to your manager now if you still have days to plan.\n\nThanks,\nPeople Team\n"}, {"path": ["Company A", "America", "Vacation days"], "name": "Email - PTO changes for 2023.txt", "content": "From: HR Department\nTo: All US employees\nDate: 2022-11-03\nSubject: PTO changes for 2023\n\nDear colleagues,\n\nStarting next year, full-time employees receive 12 days of paid time off per year.\nCarry-over of unused days will no longer be allowed.\n\nRegards,\nHR Department\n"}, {"path": ["Company A", "America", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY A - AMERICA\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Paid time off: 15 days a year for full-time employees, accrued each pay period; 20 days after five years of service. [1]\n- Paid holidays: 10 a year, on top of PTO. [1]\n- Carry-over: at most 5 unused days move to the next year and must be used by March 31;\n  anything above that is lost on December 31. [1][2]\n- US law does not require paid vacation; this is a company benefit. [1]\n\n⚠ OUTDATED SOURCE\n  A 2022 email says 12 days of PTO and no carry-over. [3]\n  The current policy (reviewed February 2026) replaces it.\n\nSources\n[1] US Paid Time Off Policy.txt\n[2] Email - PTO carry-over reminder.txt\n[3] Email - PTO changes for 2023.txt\n"}, {"path": ["Company A", "America", "Working hours"], "name": "Working Hours and Overtime Policy (US).txt", "content": "COMPANY A - WORKING HOURS AND OVERTIME (US)\nDocument owner: People Team (US)\nStatus: Approved\nLast updated: 2024-10-01\nLast reviewed: 2025-03-11\n\nStandard schedule: 40 hours per week, Monday to Friday.\nCore hours are 10:00 to 15:00; outside core hours you can plan your day with your manager.\n\nOvertime: non-exempt employees are paid 1.5 times their regular rate for hours worked over 40 in a workweek,\nas required by the Fair Labor Standards Act. Overtime must be approved in advance by your manager.\n"}, {"path": ["Company A", "America", "Working hours"], "name": "Email - Summer Fridays 2026.txt", "content": "From: Office of the COO\nTo: All US employees\nDate: 2026-05-20\nSubject: Summer Fridays are back\n\nHi all,\n\nFrom Memorial Day to Labor Day, our US offices close at 1 pm on Fridays.\nYour weekly hours stay the same, so plan the missing Friday afternoon earlier in the week.\nHourly employees: record your actual hours as usual.\n\nEnjoy the summer!\n"}, {"path": ["Company A", "America", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY A - AMERICA\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Standard week: 40 hours, Monday to Friday; core hours 10:00 to 15:00. [1]\n- Overtime: non-exempt employees get 1.5 times their regular rate for hours over 40 in a week\n  (Fair Labor Standards Act); overtime needs your manager's approval in advance. [1]\n- Summer Fridays: from Memorial Day to Labor Day, offices close at 1 pm on Fridays; weekly hours stay the same. [2]\n\n⚠ REVIEW DUE\n  The working hours policy was last reviewed in March 2025, more than 18 months ago. [1]\n  Ask the People Team (US) to confirm it is still current.\n\nSources\n[1] Working Hours and Overtime Policy (US).txt\n[2] Email - Summer Fridays 2026.txt\n"}, {"path": ["Company A", "Belgium", "Payroll"], "name": "Payroll policy Belgium.txt", "content": "COMPANY A BELGIUM - PAYROLL POLICY (LOONBELEID)\nDocument owner: Payroll Belgium (Ann Peeters)\nStatus: Approved\nLast updated: 2026-01-05\nLast reviewed: 2026-04-02\n\n- Salaries are paid monthly, on the last working day of the month.\n- Double holiday pay (dubbel vakantiegeld) of 92% of the gross monthly salary is paid with the May salary.\n- An end-of-year bonus equal to one monthly salary is paid in December.\n- Salaries are indexed every January in line with the index for our joint committee.\n- Meal vouchers are worth €8 per working day; the employee share is €1.09.\n"}, {"path": ["Company A", "Belgium", "Payroll"], "name": "Email - Salary indexation January 2026.txt", "content": "From: Ann Peeters, Payroll Belgium\nTo: All employees Belgium\nDate: 2026-01-08\nSubject: Salary indexation January 2026 / Loonindexering januari 2026\n\nDear colleagues,\n\nAs every year, salaries in Belgium were indexed in January.\nFor our joint committee the indexation is 2.2%, which you will see on your January payslip.\n\nQuestions? Just reply to this email.\nAnn\n"}, {"path": ["Company A", "Belgium", "Payroll"], "name": "Email - Double holiday pay 2026.txt", "content": "From: Ann Peeters, Payroll Belgium\nTo: All employees Belgium\nDate: 2026-05-12\nSubject: Double holiday pay with your May salary\n\nDear colleagues,\n\nYour double holiday pay will be paid together with your May salary at the end of this month.\nIt is calculated on your gross monthly salary and is taxed at a special rate, so the net amount is lower than you might expect.\n\nKind regards,\nAnn\n"}, {"path": ["Company A", "Belgium", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY A - BELGIUM\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Salary: paid monthly, on the last working day of the month. [1]\n- Double holiday pay: 92% of your gross monthly salary, paid with the May salary;\n  it is taxed at a special rate, so the net amount is lower. [1][3]\n- End-of-year bonus: one monthly salary, paid in December. [1]\n- Indexation: every January, following the joint committee index; +2.2% in January 2026. [1][2]\n- Meal vouchers: €8 per working day, of which you pay €1.09. [1]\n\nNo conflicts found between these sources.\n\nSources\n[1] Payroll policy Belgium.txt\n[2] Email - Salary indexation January 2026.txt\n[3] Email - Double holiday pay 2026.txt\n"}, {"path": ["Company A", "Belgium", "Vacation days"], "name": "Vacation policy Belgium.txt", "content": "COMPANY A BELGIUM - VACATION POLICY\nDocument owner: HR Belgium (Pieter Janssens)\nStatus: Approved\nLast updated: 2025-12-18\nLast reviewed: 2026-01-15\n\nLegal vacation: employees with a full-time five-day week are entitled to 20 legal vacation days,\nbased on the days worked in the previous calendar year.\n\nCompany days: Company A Belgium adds 6 extra vacation days, for a total of 26 vacation days per year.\n\nRequests: submit vacation requests in the HR portal at least two weeks in advance for absences of a week or more.\n"}, {"path": ["Company A", "Belgium", "Vacation days"], "name": "Vacation policy Belgium (2023).txt", "content": "COMPANY A BELGIUM - VACATION POLICY\nDocument owner: HR Belgium\nStatus: Superseded\nLast updated: 2023-01-10\nLast reviewed: 2023-02-01\n\nEmployees are entitled to 20 legal vacation days.\nCompany days: Company A Belgium adds 4 extra vacation days, for a total of 24 vacation days per year.\n"}, {"path": ["Company A", "Belgium", "Vacation days"], "name": "Email - Bridge day 2026.txt", "content": "From: Pieter Janssens, HR Belgium\nTo: All employees Belgium\nDate: 2026-01-20\nSubject: Collective bridge day on Friday 15 May\n\nDear all,\n\nFriday 15 May 2026, the day after Ascension, is a collective bridge day: the office is closed.\nOne vacation day will be deducted automatically, so you do not need to request it.\n\nPieter\n"}, {"path": ["Company A", "Belgium", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY A - BELGIUM\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Total: 26 vacation days a year = 20 legal days + 6 extra company days (full-time, five-day week). [1]\n- Legal days depend on the days you worked in the previous calendar year. [1]\n- Requests: in the HR portal, at least two weeks ahead for absences of a week or more. [1]\n- Friday 15 May 2026 is a collective bridge day; one vacation day is deducted automatically. [3]\n\n⚠ OUTDATED SOURCE\n  The 2023 policy (4 extra days, 24 in total) is marked superseded. [2]\n  Use the current policy: 6 extra days, 26 in total. [1]\n\nSources\n[1] Vacation policy Belgium.txt\n[2] Vacation policy Belgium (2023).txt\n[3] Email - Bridge day 2026.txt\n"}, {"path": ["Company A", "Belgium", "Working hours"], "name": "Work rules - working hours Belgium.txt", "content": "COMPANY A BELGIUM - WORK RULES (ARBEIDSREGLEMENT): WORKING HOURS\nDocument owner: HR Belgium (Pieter Janssens)\nStatus: Approved\nLast updated: 2025-09-01\nLast reviewed: 2025-11-20\n\nFull-time employees work 38 hours per week, 7 hours 36 minutes per day, Monday to Friday.\nFlexible start between 07:30 and 09:30; core hours are 09:30 to 15:30.\nOvertime is only worked at the request of your manager and is compensated with recovery time.\n"}, {"path": ["Company A", "Belgium", "Working hours"], "name": "Email - Home working update.txt", "content": "From: Management Team Belgium\nTo: All employees Belgium\nDate: 2026-03-02\nSubject: Home working: two days per week from April\n\nDear all,\n\nFrom April onwards you can work from home on two days per week (it used to be three).\nTuesdays and Thursdays are office days for everyone.\nThe home working allowance is €150 per month.\n\nThe Management Team\n"}, {"path": ["Company A", "Belgium", "Working hours"], "name": "Home working policy (2021).txt", "content": "COMPANY A BELGIUM - HOME WORKING POLICY\nDocument owner: HR Belgium\nStatus: Superseded\nLast updated: 2021-06-01\nLast reviewed: 2021-06-01\n\nEmployees may work from home up to three days per week, in agreement with their manager.\nThe home working allowance is €129.48 per month.\n"}, {"path": ["Company A", "Belgium", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY A - BELGIUM\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Full-time week: 38 hours, 7 h 36 min a day, Monday to Friday. [1]\n- Flexible start between 07:30 and 09:30; core hours 09:30 to 15:30. [1]\n- Overtime only at your manager's request, compensated with recovery time. [1]\n- Home working: two days a week since April 2026; Tuesdays and Thursdays are office days for everyone. [2]\n- Home working allowance: €150 a month. [2]\n\n⚠ OUTDATED SOURCE\n  The 2021 home working policy (up to three days, €129.48 a month) was replaced by the March 2026 update. [3][2]\n\nSources\n[1] Work rules - working hours Belgium.txt\n[2] Email - Home working update.txt\n[3] Home working policy (2021).txt\n"}, {"path": ["Company A", "France", "Payroll"], "name": "Politique de paie France.txt", "content": "COMPANY A FRANCE - POLITIQUE DE PAIE / PAYROLL POLICY\nDocument owner: Paie France (Claire Martin)\nStatus: Approved\nLast updated: 2024-11-15\nLast reviewed: 2026-06-10\n\nSalaries are paid monthly on the 28th, or on the previous working day.\nA 13th-month bonus is paid with the December salary.\nPayslips (bulletins de paie) are issued electronically and kept in your digital safe for 50 years.\n"}, {"path": ["Company A", "France", "Payroll"], "name": "Email - New payday from January.txt", "content": "From: Claire Martin, Paie France\nTo: Tous les salariés / All employees France\nDate: 2025-12-01\nSubject: Nouvelle date de paie / New payday from January\n\nBonjour à tous,\n\nFrom January 2026, salaries are paid monthly on the 25th.\nThis gives everyone a few extra days before the end of the month.\n\nClaire\n"}, {"path": ["Company A", "France", "Payroll"], "name": "Email - Payslips going digital.txt", "content": "From: Claire Martin, Paie France\nTo: Tous les salariés / All employees France\nDate: 2025-10-01\nSubject: Your payslips are going digital\n\nBonjour à tous,\n\nFrom November, payslips will only be available in your digital safe.\nIf you prefer to keep receiving a paper payslip, let us know before the end of October.\n\nClaire\n"}, {"path": ["Company A", "France", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY A - FRANCE\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- 13th-month bonus: paid with the December salary. [1]\n- Payslips: digital only since November 2025 (paper only if you asked before the end of October 2025),\n  kept in your digital safe for 50 years. [1][3]\n\n⚠ CONFLICT - payday\n  The payroll policy says salaries are paid on the 28th. [1]\n  An email from Paie France (December 2025) says payday is the 25th from January 2026. [2]\n  The policy text dates from November 2024 and was re-approved in June 2026 without being corrected,\n  so the 25th is probably right. Confirm with Claire Martin (Paie France).\n\nSources\n[1] Politique de paie France.txt\n[2] Email - New payday from January.txt\n[3] Email - Payslips going digital.txt\n"}, {"path": ["Company A", "France", "Vacation days"], "name": "Conges payes - paid leave policy.txt", "content": "COMPANY A FRANCE - CONGÉS PAYÉS ET RTT / PAID LEAVE AND RTT\nDocument owner: RH France (Julien Bernard)\nStatus: Approved\nLast updated: 2024-06-01\nLast reviewed: 2024-09-02\n\nPaid leave: employees receive 25 working days of paid leave (five weeks) per year.\nRTT: full-time employees on the 37-hour schedule receive 10 RTT days per year.\nMain leave: take at least 12 consecutive days of leave between 1 May and 31 October.\n"}, {"path": ["Company A", "France", "Vacation days"], "name": "Email - RTT days 2026.txt", "content": "From: Julien Bernard, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-01-05\nSubject: Vos jours de RTT 2026 / Your RTT days for 2026\n\nBonjour,\n\nIn 2026, full-time employees on the 37-hour schedule receive 11 RTT days.\nFive of them are fixed by the company (see the calendar); you choose the others yourself.\n\nJulien\n"}, {"path": ["Company A", "France", "Vacation days"], "name": "Email - Summer leave requests.txt", "content": "From: Julien Bernard, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-02-16\nSubject: Congés d'été / Summer leave requests\n\nBonjour,\n\nPlease submit your summer leave requests in the HR portal before 31 March.\nManagers will confirm all requests by mid-April.\n\nJulien\n"}, {"path": ["Company A", "France", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY A - FRANCE\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Paid leave: 25 working days (five weeks) a year. [1]\n- Main leave: at least 12 consecutive days between 1 May and 31 October. [1]\n- Summer requests: in the HR portal before 31 March; managers confirm by mid-April. [3]\n- RTT (37-hour schedule): five RTT days are fixed by the company, you choose the others. [2]\n\n⚠ CONFLICT - number of RTT days\n  The paid leave policy says 10 RTT days a year. [1]\n  The January 2026 email says 11 RTT days in 2026. [2]\n  RTT days can change from year to year, so the email is probably right for 2026.\n  The policy was last reviewed in September 2024 and is overdue for review.\n\nSources\n[1] Conges payes - paid leave policy.txt\n[2] Email - RTT days 2026.txt\n[3] Email - Summer leave requests.txt\n"}, {"path": ["Company A", "France", "Working hours"], "name": "Working time agreement France.txt", "content": "COMPANY A FRANCE - ACCORD SUR LE TEMPS DE TRAVAIL / WORKING TIME AGREEMENT\nDocument owner: RH France (Julien Bernard)\nStatus: Approved\nLast updated: 2025-12-10\nLast reviewed: 2026-02-11\n\nThe legal working week in France is 35 hours.\nCompany A France works a 37-hour schedule; the extra hours are compensated with RTT days.\nManagers on a \"forfait jours\" contract work 218 days per year and do not count their hours.\n"}, {"path": ["Company A", "France", "Working hours"], "name": "Email - Right to disconnect.txt", "content": "From: Direction France\nTo: Tous les salariés / All employees France\nDate: 2025-06-18\nSubject: Droit à la déconnexion / Right to disconnect\n\nBonjour à tous,\n\nA reminder of our right-to-disconnect agreement: nobody is expected to read or answer work messages\nbetween 20:00 and 08:00, at weekends or during leave. Please schedule emails instead of sending them late.\n\nLa Direction\n"}, {"path": ["Company A", "France", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY A - FRANCE\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- The legal working week in France is 35 hours; Company A France works 37 hours and the extra hours become RTT days. [1]\n- Managers on a \"forfait jours\" contract: 218 days a year, hours are not counted. [1]\n- Right to disconnect: nobody is expected to read or answer work messages between 20:00 and 08:00,\n  at weekends or on leave. [2]\n\nNo conflicts found between these sources.\n\nSources\n[1] Working time agreement France.txt\n[2] Email - Right to disconnect.txt\n"}, {"path": ["Company B", "America", "Payroll"], "name": "Payroll handbook (US).txt", "content": "COMPANY B - PAYROLL HANDBOOK (US)\nDocument owner: Finance - Payroll (Derek Chen)\nStatus: Approved\nLast updated: 2026-06-20\nLast reviewed: 2026-07-01\n\nPay schedule: semi-monthly, on the 15th and on the last day of the month.\nDirect deposit is mandatory. Bank detail changes must be made at least ten days before a payday.\nExpense reimbursements are paid with the next regular payroll.\n"}, {"path": ["Company B", "America", "Payroll"], "name": "Email - New payroll provider.txt", "content": "From: Derek Chen, Finance\nTo: All US employees\nDate: 2026-08-19\nSubject: We are moving to a new payroll provider\n\nHi team,\n\nStarting with the October 15 payroll, Company B will use a new payroll provider.\nYou will get an invitation to create your account in the week of September 28.\nYour pay schedule does not change.\n\nPlease check your bank details in the new portal before October 5.\n\nDerek\n"}, {"path": ["Company B", "America", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY B - AMERICA\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Pay schedule: semi-monthly, on the 15th and on the last day of the month; the new provider does not change it. [1][2]\n- Direct deposit is mandatory; bank detail changes at least ten days before a payday. [1]\n- Expenses are reimbursed with the next regular payroll. [1]\n- New payroll provider from the October 15, 2026 payroll: accept the invitation (week of September 28)\n  and check your bank details in the new portal before October 5. [2]\n\nⓘ The same provider email is also filed under Working hours (\"FW New payroll provider\").\n\nSources\n[1] Payroll handbook (US).txt\n[2] Email - New payroll provider.txt\n"}, {"path": ["Company B", "America", "Vacation days"], "name": "Time off policy (US).txt", "content": "COMPANY B - TIME OFF (US)\nDocument owner: People Ops (Jasmine Ortiz)\nStatus: Draft\nLast updated: 2026-08-28\n\nCompany B offers flexible (unlimited) paid time off, agreed with your manager.\nEmployees are expected to take at least 10 days off per year, including one full week in a row.\nSick days are separate and do not count as time off.\n"}, {"path": ["Company B", "America", "Vacation days"], "name": "Email - 2026 holiday calendar.txt", "content": "From: Jasmine Ortiz, People Ops\nTo: All US employees\nDate: 2025-12-01\nSubject: 2026 holiday calendar\n\nHi everyone,\n\nCompany B observes 11 paid holidays in 2026. The full list, including the floating holiday you can pick yourself,\nis in the people portal.\n\nJasmine\n"}, {"path": ["Company B", "America", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY B - AMERICA\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Time off: flexible (unlimited) PTO agreed with your manager; take at least 10 days a year,\n  including one full week in a row. Sick days are separate. [1]\n- Paid holidays: 11 in 2026, including one floating holiday you choose; the list is in the people portal. [2]\n\n⚠ NOT APPROVED\n  The time off policy is still a draft (last updated August 2026). [1]\n  Confirm with People Ops (Jasmine Ortiz) before relying on it.\n\nSources\n[1] Time off policy (US).txt\n[2] Email - 2026 holiday calendar.txt\n"}, {"path": ["Company B", "America", "Working hours"], "name": "Hybrid work policy.txt", "content": "COMPANY B - HYBRID WORK POLICY (US)\nDocument owner: People Ops (Jasmine Ortiz)\nStatus: Approved\nLast updated: 2025-11-15\nLast reviewed: 2025-12-03\n\nEmployees in hybrid roles work from the office 3 days per week, Tuesday to Thursday.\nStandard working time is 40 hours per week.\n"}, {"path": ["Company B", "America", "Working hours"], "name": "Email - Office days from October.txt", "content": "From: Office of the CEO\nTo: All US employees\nDate: 2026-09-10\nSubject: More time together in the office\n\nHi all,\n\nFrom October onwards, employees in hybrid roles work from the office 4 days per week, Monday to Thursday.\nFridays remain flexible.\n\nThanks for making this work,\nThe CEO office\n"}, {"path": ["Company B", "America", "Working hours"], "name": "FW New payroll provider.txt", "content": "From: Derek Chen, Finance\nTo: All US employees\nDate: 2026-08-19\nSubject: We are moving to a new payroll provider\n\nHi team,\n\nStarting with the October 15 payroll, Company B will use a new payroll provider.\nYou will get an invitation to create your account in the week of September 28.\nYour pay schedule does not change.\n\nPlease check your bank details in the new portal before October 5.\n\nDerek\n"}, {"path": ["Company B", "America", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY B - AMERICA\nSummary of 3 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Standard working time: 40 hours a week. [1]\n- Office days: from October 2026, hybrid employees work in the office 4 days a week, Monday to Thursday;\n  Fridays stay flexible. [2]\n\n⚠ CONFLICT - office days\n  The hybrid work policy (reviewed December 2025) says 3 office days, Tuesday to Thursday. [1]\n  The CEO office email of September 2026 raises this to 4 days from October. [2]\n  The email is newer; the policy still needs updating.\n\nⓘ MISFILED\n  \"FW New payroll provider\" is a copy of a payroll email and does not belong here; see the Payroll summary. [3]\n\nSources\n[1] Hybrid work policy.txt\n[2] Email - Office days from October.txt\n[3] FW New payroll provider.txt\n"}, {"path": ["Company B", "Belgium", "Payroll"], "name": "Payroll FAQ Belgium.txt", "content": "COMPANY B BELGIUM - PAYROLL FAQ\nDocument owner: Payroll Belgium (Sofie Maes)\nStatus: Approved\nLast updated: 2026-02-01\nLast reviewed: 2026-03-18\n\nWhen is my salary paid?\nOn the first working day of the following month.\n\nWhat is my double holiday pay?\n92% of your gross monthly salary, paid with your June salary.\n\nDo I get meal vouchers?\nYes, meal vouchers are worth €7 per day worked.\n"}, {"path": ["Company B", "Belgium", "Payroll"], "name": "Email - Payroll cut-off.txt", "content": "From: Sofie Maes, Payroll Belgium\nTo: All employees Belgium\nDate: 2026-02-03\nSubject: Payroll cut-off date\n\nHi all,\n\nChanges such as a new bank account, a new address or a change in your family situation must reach payroll\nbefore the 20th of the month to be included in that month's payroll. Later changes move to the next month.\n\nSofie\n"}, {"path": ["Company B", "Belgium", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY B - BELGIUM\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Salary: paid on the first working day of the following month. [1]\n- Double holiday pay: 92% of your gross monthly salary, paid with the June salary. [1]\n- Meal vouchers: €7 per day worked. [1]\n- Cut-off: changes (bank account, address, family situation) must reach payroll before the 20th\n  to count for that month. [2]\n\nNo conflicts found between these sources.\n\nSources\n[1] Payroll FAQ Belgium.txt\n[2] Email - Payroll cut-off.txt\n"}, {"path": ["Company B", "Belgium", "Vacation days"], "name": "Holiday policy Belgium.txt", "content": "COMPANY B BELGIUM - HOLIDAY POLICY\nDocument owner: HR Belgium (Sofie Maes)\nStatus: Approved\nLast updated: 2025-12-20\nLast reviewed: 2026-01-09\n\nFull-time employees receive 20 legal vacation days per year.\nBecause our working week is 40 hours instead of 38, you also receive 12 ADV days (arbeidsduurvermindering) per year.\n"}, {"path": ["Company B", "Belgium", "Vacation days"], "name": "Email - Collective closure summer 2026.txt", "content": "From: Sofie Maes, HR Belgium\nTo: All employees Belgium\nDate: 2026-03-05\nSubject: Collective closure this summer\n\nHi all,\n\nOur Belgian offices close from Monday 20 July to Friday 31 July 2026.\n21 July is a public holiday, so the closure uses nine of your vacation days.\n\nSofie\n"}, {"path": ["Company B", "Belgium", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY B - BELGIUM\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Legal vacation: 20 days a year (full-time). [1]\n- ADV days: 12 a year, because the working week is 40 hours instead of 38. [1]\n- Collective closure: offices are closed from Monday 20 July to Friday 31 July 2026;\n  21 July is a public holiday, so the closure uses nine vacation days. [2]\n\nNo conflicts found between these sources.\n\nSources\n[1] Holiday policy Belgium.txt\n[2] Email - Collective closure summer 2026.txt\n"}, {"path": ["Company B", "Belgium", "Working hours"], "name": "Working hours Belgium.txt", "content": "COMPANY B BELGIUM - WORKING HOURS\nDocument owner: HR Belgium (Sofie Maes)\nStatus: Approved\nLast updated: 2025-12-20\nLast reviewed: 2026-01-09\n\nThe working week is 40 hours, Monday to Friday, eight hours per day.\nTo bring the average back to 38 hours per week, you receive 12 ADV days per year (see the holiday policy).\n"}, {"path": ["Company B", "Belgium", "Working hours"], "name": "DRAFT - four-day week proposal.txt", "content": "COMPANY B BELGIUM - FOUR-DAY WEEK (PROPOSAL)\nDocument owner: HR Belgium (Sofie Maes)\nStatus: Draft\nLast updated: 2026-08-25\n\nProposal, not yet approved: employees could choose to work their full-time hours in four longer days instead of five.\nThis needs a change to the work rules and approval from the works council before it can start.\n"}, {"path": ["Company B", "Belgium", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY B - BELGIUM\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Working week: 40 hours, Monday to Friday, eight hours a day. [1]\n- 12 ADV days a year bring the average back to 38 hours a week. [1]\n\nⓘ PROPOSAL ONLY\n  A four-day week (full-time hours in four longer days) is being discussed but is not approved;\n  it needs a change to the work rules and works council approval. [2]\n\nSources\n[1] Working hours Belgium.txt\n[2] DRAFT - four-day week proposal.txt\n"}, {"path": ["Company B", "France", "Payroll"], "name": "Payroll policy France.txt", "content": "COMPANY B FRANCE - PAYROLL POLICY\nDocument owner: Paie France (Élodie Petit)\nStatus: Approved\nLast updated: 2024-12-01\nLast reviewed: 2025-02-14\n\nSalaries are paid on the last working day of the month.\nCompany B covers 50% of the mutuelle (complementary health insurance) contribution.\n"}, {"path": ["Company B", "France", "Payroll"], "name": "Email - Mutuelle contribution 2026.txt", "content": "From: Élodie Petit, Paie France\nTo: Tous les salariés / All employees France\nDate: 2025-12-12\nSubject: Mutuelle : nouvelle participation / New mutuelle contribution\n\nBonjour à tous,\n\nGood news: from January 2026, Company B covers 60% of the mutuelle contribution.\nYou will see the change on your January payslip.\n\nÉlodie\n"}, {"path": ["Company B", "France", "Payroll"], "name": "SUMMARY.txt", "content": "PAYROLL - COMPANY B - FRANCE\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Salary: paid on the last working day of the month. [1]\n- Mutuelle: Company B pays 60% of the contribution since January 2026. [2]\n\n⚠ CONFLICT - mutuelle contribution\n  The payroll policy says 50%; it was last reviewed in February 2025. [1]\n  The December 2025 email raises it to 60% from January 2026. [2]\n  The email is newer; the policy needs updating.\n\nSources\n[1] Payroll policy France.txt\n[2] Email - Mutuelle contribution 2026.txt\n"}, {"path": ["Company B", "France", "Vacation days"], "name": "Paid leave France.txt", "content": "COMPANY B FRANCE - CONGÉS PAYÉS / PAID LEAVE\nDocument owner: RH France (Élodie Petit)\nStatus: Approved\nLast updated: 2025-05-20\nLast reviewed: 2026-05-02\n\nYou earn 2.5 days of paid leave (jours ouvrables) per month worked, i.e. five weeks per year.\nThe reference period runs from 1 June to 31 May.\n"}, {"path": ["Company B", "France", "Vacation days"], "name": "Email - Leave request deadline.txt", "content": "From: Élodie Petit, RH France\nTo: Tous les salariés / All employees France\nDate: 2026-02-02\nSubject: Summer leave: requests before 15 March\n\nBonjour,\n\nPlease enter your summer leave requests in the HR tool before 15 March so we can plan the team rotas.\n\nÉlodie\n"}, {"path": ["Company B", "France", "Vacation days"], "name": "SUMMARY.txt", "content": "VACATION DAYS - COMPANY B - FRANCE\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Paid leave: 2.5 days (jours ouvrables) per month worked, five weeks a year. [1]\n- Reference period: 1 June to 31 May. [1]\n- Summer leave: enter your requests in the HR tool before 15 March. [2]\n\nNo conflicts found between these sources.\n\nSources\n[1] Paid leave France.txt\n[2] Email - Leave request deadline.txt\n"}, {"path": ["Company B", "France", "Working hours"], "name": "Working hours France.txt", "content": "COMPANY B FRANCE - WORKING HOURS\nDocument owner: RH France (Élodie Petit)\nStatus: Approved\nLast updated: 2025-09-01\nLast reviewed: 2026-04-14\n\nThe working week is 35 hours.\nHours above 35 per week are overtime: the first eight overtime hours are paid at +25%, further hours at +50%.\n"}, {"path": ["Company B", "France", "Working hours"], "name": "Working hours France (2019).txt", "content": "COMPANY B FRANCE - WORKING HOURS\nDocument owner: RH France\nStatus: Superseded\nLast updated: 2019-03-01\nLast reviewed: 2019-03-01\n\nThe working week is 39 hours, compensated with RTT days.\n"}, {"path": ["Company B", "France", "Working hours"], "name": "SUMMARY.txt", "content": "WORKING HOURS - COMPANY B - FRANCE\nSummary of 2 source documents - click a [number] to open that source.\n\nDocument owner: Knowledge team\nStatus: Verified\nLast updated: 2026-09-30\nLast reviewed: 2026-09-30\n\n- Working week: 35 hours. [1]\n- Overtime: the first eight overtime hours a week are paid at +25%, further hours at +50%. [1]\n\n⚠ OUTDATED SOURCE\n  The 2019 version (39 hours with RTT days) is superseded. [2]\n\nSources\n[1] Working hours France.txt\n[2] Working hours France (2019).txt\n"}]</script>
 
     <script>
       'use strict';
 
       /* ---------- Storage & data model ---------- */
 
-      // New key: the old version's built-in sample files (todo.txt, Projects/notes.txt and a made-up
-      // payroll email) were never real files on disk, so we start clean from the real folder structure.
-      const STORAGE_KEY = 'knowledge-management-drive-v2';
+      // v3: the knowledge base ships with sample documents and summaries (see the seed-data block above).
+      const STORAGE_KEY = 'knowledge-management-drive-v3';
       const STALE_DAYS = 180;
       const MAX_IMPORT_BYTES = 2 * 1024 * 1024;
 
@@ -487,37 +594,94 @@
           createdAt: t,
           updatedAt: t,
           reviewedAt: null,
+          changedAt: null,        // set when added or edited in the app (used to spot stale summaries)
           ...extra
         };
       }
 
-      const PAYROLL_EMAIL = `Subject: Updated Minimum Wage at Company A
+      // A summary is a folder that carries its own summary text (SUMMARY.txt on disk).
+      // It is shown as one document; its children are the source documents it summarises.
+      const isSummary = (n) => !!n && n.type === 'folder' && typeof n.summary === 'string';
+      const isDoc = (n) => !!n && (n.type === 'file' || isSummary(n));
+      const docText = (n) => (n.type === 'file' ? n.content : n.summary || '');
+      const docTitle = (n) => (isSummary(n) ? n.name + ' — summary' : n.name);
 
-Dear Team,
+      // Reads "Document owner:", "Status:", "Last updated:", "Last reviewed:", "From:" and "Date:" header lines.
+      function parseDocMeta(text) {
+        const meta = {};
+        const toIso = (v) => {
+          const m = String(v).match(/\d{4}-\d{2}-\d{2}/);
+          if (!m) return null;
+          const t = Date.parse(m[0] + 'T12:00:00Z');
+          return isNaN(t) ? null : new Date(t).toISOString();
+        };
+        text.split(/\r?\n/).slice(0, 15).forEach((line) => {
+          let m;
+          if ((m = line.match(/^\s*(?:document owner|owner)\s*:\s*(.+)$/i))) meta.owner = m[1].trim().slice(0, 80);
+          else if ((m = line.match(/^\s*from\s*:\s*(.+)$/i))) { if (!meta.owner) meta.owner = m[1].replace(/<[^>]*>/g, '').trim().slice(0, 80); }
+          else if ((m = line.match(/^\s*status\s*:\s*([a-z]+)/i))) {
+            const s = m[1].toLowerCase();
+            meta.status = /^(approved|verified|final|current)$/.test(s) ? 'verified'
+              : /^(superseded|outdated|obsolete|archived|expired)$/.test(s) ? 'outdated' : 'draft';
+          } else if ((m = line.match(/^\s*last reviewed\s*:\s*(.+)$/i))) { const t = toIso(m[1]); if (t) meta.reviewedAt = t; }
+          else if ((m = line.match(/^\s*(?:last updated|date)\s*:\s*(.+)$/i))) { const t = toIso(m[1]); if (t) { meta.updatedAt = t; meta.createdAt = t; } }
+        });
+        return meta;
+      }
 
-We are pleased to share that the minimum wage at Company A has been raised to $75,000 per year in the United States.
+      function setSummary(folderNode, text, extra = {}) {
+        const t = now();
+        Object.assign(folderNode, { summary: text, owner: '', status: 'draft', createdAt: t, updatedAt: t, reviewedAt: null }, extra, parseDocMeta(text));
+      }
 
-This increase reflects our commitment to recognizing the value of our employees and supporting fair compensation across our organization. We believe this adjustment will help ensure our team members are compensated competitively and can continue to thrive in their roles.
+      // Adds a text file to a folder. A file called SUMMARY.txt turns its folder into a summary document instead.
+      function addTextFile(parent, name, content, { allowSummary = true, extra = {} } = {}) {
+        if (allowSummary && name.toLowerCase() === 'summary.txt') {
+          setSummary(parent, content, extra);
+          return { kind: 'summary', node: parent };
+        }
+        const f = file(uniqueName(parent, name), content, { ...extra, ...parseDocMeta(content) });
+        parent.children.push(f);
+        return { kind: 'file', node: f };
+      }
 
-Thank you for your dedication and hard work. We appreciate everything you do to contribute to the success of Company A.
+      function ensureFolderPath(root, names) {
+        let parent = root;
+        for (const name of names) {
+          let next = parent.children.find((c) => c.type === 'folder' && c.name.toLowerCase() === name.toLowerCase());
+          if (!next) { next = folder(name); parent.children.push(next); }
+          parent = next;
+        }
+        return parent;
+      }
 
-Sincerely,
-[Your Name]
-[Your Title]
-Company A
-`;
-
-      const LOCATIONS = ['America', 'Belgium', 'France'];
+      function readSeed() {
+        try {
+          const seed = JSON.parse(document.getElementById('seed-data').textContent);
+          return Array.isArray(seed) ? seed : [];
+        } catch (error) {
+          console.warn('Could not read the built-in documents.', error);
+          return [];
+        }
+      }
 
       function buildInitialData() {
-        const companies = ['Company A', 'Company B'].map((c) => folder(c, LOCATIONS.map((l) => folder(l))));
-        companies[0].children[0].children.push(file('payrollemail.txt', PAYROLL_EMAIL));
-        return folder('My Drive', companies);
+        const root = folder('My Drive');
+        ['Company A', 'Company B'].forEach((c) => ['America', 'Belgium', 'France'].forEach((l) => ensureFolderPath(root, [c, l])));
+        readSeed().forEach((item) => {
+          if (!item || !Array.isArray(item.path) || typeof item.name !== 'string' || typeof item.content !== 'string') return;
+          const parent = ensureFolderPath(root, item.path.map(String));
+          // Documents without a Date / Last updated line stay undated rather than pretending to be new.
+          addTextFile(parent, item.name, item.content, { allowSummary: parent !== root, extra: { createdAt: null, updatedAt: null } });
+        });
+        return root;
       }
 
       function isValidNode(node) {
-        if (!node || typeof node !== 'object' || typeof node.name !== 'string') return false;
-        if (node.type === 'folder') return Array.isArray(node.children) && node.children.every(isValidNode);
+        if (!node || typeof node !== 'object' || typeof node.name !== 'string' || typeof node.id !== 'string') return false;
+        if (node.type === 'folder') {
+          return Array.isArray(node.children) && (node.summary === undefined || typeof node.summary === 'string') && node.children.every(isValidNode);
+        }
         if (node.type === 'file') return typeof node.content === 'string';
         return false;
       }
@@ -548,25 +712,24 @@ Company A
       const state = {
         root: loadState(),
         currentFolderId: null,     // null = root
-        activeFileId: null,
+        activeFileId: null,        // id of the open document (a file or a summary)
         view: 'folder',            // folder | search | attention
         query: '',
         dirty: false,
-        layout: 'tree',            // tree | grid
-        expanded: new Set()        // folder ids open in the tree
+        layout: 'graph',           // graph | grid
+        expanded: new Set()        // folder / summary ids opened in the graph
       };
       state.currentFolderId = state.root.id;
 
-      const UI_KEY = 'knowledge-management-ui-v1';
+      const UI_KEY = 'knowledge-management-ui-v3';
       function saveUiPrefs() {
         try { localStorage.setItem(UI_KEY, JSON.stringify({ layout: state.layout, expanded: [...state.expanded] })); } catch (e) { /* optional */ }
       }
       (function loadUiPrefs() {
         let prefs = null;
         try { prefs = JSON.parse(localStorage.getItem(UI_KEY) || 'null'); } catch (e) { /* ignore */ }
-        if (prefs && (prefs.layout === 'tree' || prefs.layout === 'grid')) state.layout = prefs.layout;
+        if (prefs && (prefs.layout === 'graph' || prefs.layout === 'grid')) state.layout = prefs.layout;
         if (prefs && Array.isArray(prefs.expanded)) state.expanded = new Set(prefs.expanded.filter((x) => typeof x === 'string'));
-        else state.root.children.forEach((c) => { if (c.type === 'folder') state.expanded.add(c.id); }); // companies open by default
       })();
 
       /* ---------- Tree helpers ---------- */
@@ -582,9 +745,17 @@ Company A
         return found;
       }
 
+      // Source documents (plain files).
       function allFiles() {
         const out = [];
         walk(state.root, (n, path) => { if (n.type === 'file') out.push({ node: n, path }); });
+        return out;
+      }
+
+      // Everything a person can open and read: source files and summaries.
+      function allDocs() {
+        const out = [];
+        walk(state.root, (n, path) => { if (isDoc(n)) out.push({ node: n, path }); });
         return out;
       }
 
@@ -621,37 +792,86 @@ Company A
 
       /* ---------- Trust analysis ---------- */
 
-      const STOP = new Set(('the a an and or of to in on at for by with from is are was were be been has have had this that these those it its as our your their we you they per each all any not no will can may '
-        + 'please share pleased dear team hi hello thanks regards sincerely about into than then also more most very just only new updated update').split(' '));
+      const STOP = new Set(('the a an and or of to in on at for by with from is are was were be been has have had this that these those it its as our your their we you they '
+        + 'per each all any not no will can may please share pleased dear team hi hello thanks regards sincerely about into than then also more most very just only '
+        + 'new updated update since every until before after least up still stays now there here which who what when where how').split(' '));
 
-      const NUM_RE = /(?:[$€£]\s?)?\d[\d.,]*\s?(?:%|k\b|eur\b|euros?\b|usd\b|dollars?\b)?/gi;
+      const MONTHS = 'january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sept|sep|oct|nov|dec';
+      // Dates, times, e-mail addresses and links are not "facts" to compare, so they are removed first.
+      const IGNORE_RE = new RegExp([
+        '\\b\\d{4}-\\d{2}-\\d{2}\\b',
+        '\\b\\d{1,2}/\\d{1,2}/\\d{2,4}\\b',
+        `\\b\\d{1,2}(?:st|nd|rd|th)?\\s+(?:${MONTHS})\\b(?:\\s+\\d{4})?`,
+        `\\b(?:${MONTHS})\\s+\\d{1,2}(?:st|nd|rd|th)?\\b(?:,?\\s+\\d{4})?`,
+        `\\b(?:${MONTHS})\\s+\\d{4}\\b`,
+        '\\b\\d{1,2}[:h]\\d{2}\\b',
+        '\\S+@\\S+',
+        'https?://\\S+'
+      ].join('|'), 'gi');
+      const HEADER_LINE = /^\s*(document owner|owner|status|last updated|last reviewed|date|from|to|cc|applies to)\s*:/i;
+      const NUM_RE = /([$€£])?\s?(\d+(?:[.,]\d+)*)\s?(%)?/g;
+      const UNIT_WORDS = { day: 'day', days: 'day', hour: 'hour', hours: 'hour', week: 'week', weeks: 'week', month: 'month', months: 'month',
+        year: 'year', years: 'year', minute: 'minute', minutes: 'minute', times: 'times', percent: '%', paydays: 'payday', holidays: 'holiday' };
+      const PERIOD_WORDS = { year: 'year', annually: 'year', yearly: 'year', month: 'month', monthly: 'month', week: 'week', weekly: 'week',
+        workweek: 'week', day: 'day', daily: 'day', hour: 'hour', hourly: 'hour' };
 
       function tokens(text) {
         return text.toLowerCase().match(/[a-zà-ÿ]+/g) || [];
       }
 
-      function normValue(v) {
-        return v.toLowerCase().replace(/\s+/g, '').replace(/[.,]$/, '');
+      function numValue(s) {
+        if (/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) return parseFloat(s.replace(/,/g, ''));
+        if (/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) return parseFloat(s.replace(/\./g, '').replace(',', '.'));
+        return parseFloat(s.replace(',', '.'));
+      }
+
+      // What a number counts: money, %, days, hours… plus an optional period ("per year", "a month").
+      function unitOf(m, after) {
+        const words = (after.toLowerCase().match(/[a-z]+/g) || []).slice(0, 5);
+        let base = m[1] ? 'money' : m[3] ? '%' : '';
+        if (!base) for (const w of words.slice(0, 3)) if (UNIT_WORDS[w]) { base = UNIT_WORDS[w]; break; }
+        let period = '';
+        for (let i = 0; i < words.length - 1; i++) {
+          if ((words[i] === 'per' || words[i] === 'a' || words[i] === 'each') && PERIOD_WORDS[words[i + 1]]) { period = PERIOD_WORDS[words[i + 1]]; break; }
+        }
+        if (!period) for (const w of words) if (/^(annually|yearly|monthly|weekly|daily|hourly)$/.test(w)) { period = PERIOD_WORDS[w]; break; }
+        return { base, period };
+      }
+
+      const unitsMatch = (a, b) => a.base === b.base && (!a.period || !b.period || a.period === b.period);
+
+      function factLabel(f) {
+        const unit = f.unit.base && !['money', '%'].includes(f.unit.base) ? ` ${f.unit.base}${f.value === 1 ? '' : 's'}` : '';
+        return f.raw + unit + (f.unit.period && f.unit.period !== f.unit.base ? ` per ${f.unit.period}` : '');
       }
 
       function extractFacts(text) {
         const facts = [];
-        const sentences = text.split(/(?<=[.!?])\s+|\n+/);
-        sentences.forEach((sentence) => {
-          const s = sentence.trim();
-          if (!s) return;
-          let m;
-          NUM_RE.lastIndex = 0;
-          while ((m = NUM_RE.exec(s))) {
-            const raw = m[0].trim();
-            const digits = raw.replace(/[^\d]/g, '');
-            if (!digits) continue;
-            if (/^(19|20)\d\d$/.test(raw)) continue; // skip bare years
-            const before = tokens(s.slice(0, m.index)).filter((w) => w.length > 2 && !STOP.has(w)).slice(-6);
-            const topics = new Set();
-            for (let i = 0; i < before.length - 1; i++) topics.add(before[i] + ' ' + before[i + 1]);
-            if (topics.size) facts.push({ topics, value: normValue(raw), sentence: s.length > 160 ? s.slice(0, 157) + '…' : s });
-          }
+        text.split(/\r?\n/).forEach((line) => {
+          if (HEADER_LINE.test(line)) return;
+          line.split(/(?<=[.!?])\s+/).forEach((sentence) => {
+            const shown = sentence.trim();
+            if (!shown) return;
+            const s = shown.replace(IGNORE_RE, ' ');
+            let m, last = 0;
+            NUM_RE.lastIndex = 0;
+            while ((m = NUM_RE.exec(s))) {
+              if (!m[0].trim()) { NUM_RE.lastIndex++; continue; }
+              const context = tokens(s.slice(last, m.index)).filter((w) => w.length > 2 && !STOP.has(w)).slice(-5);
+              last = m.index + m[0].length;
+              if (!m[1] && !m[3] && /^(19|20)\d\d$/.test(m[2])) continue; // a bare year
+              const topics = new Set();
+              for (let i = 0; i < context.length - 1; i++) topics.add(context[i] + ' ' + context[i + 1]);
+              if (!topics.size) continue;
+              facts.push({
+                topics,
+                value: numValue(m[2]),
+                raw: (m[1] || '') + m[2] + (m[3] || ''),
+                unit: unitOf(m, s.slice(last)),
+                sentence: shown.length > 170 ? shown.slice(0, 167) + '…' : shown
+              });
+            }
+          });
         });
         return facts;
       }
@@ -661,14 +881,30 @@ Company A
         return Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
       }
 
+      function metaIssues(node, r) {
+        let score = 0;
+        if (node.status === 'outdated') { r.issues.push('Marked as outdated / superseded.'); score += 2; }
+        if (node.status === 'draft') { r.issues.push('Not verified yet (draft or unconfirmed).'); score += 1; }
+        if (!node.owner) { r.issues.push('No owner or sender — nobody to ask about this.'); score += 1; }
+        const age = daysSince(node.reviewedAt);
+        if (age === Infinity) { r.issues.push('Never reviewed.'); score += 1; }
+        else if (age > STALE_DAYS) { r.issues.push(`Last reviewed ${age} days ago.`); score += 1; }
+        if (!docText(node).trim()) { r.issues.push('Document is empty.'); score += 1; }
+        if (node.type === 'file' && !node.updatedAt) { r.issues.push('No date — you cannot tell how current it is.'); score += 1; }
+        return score;
+      }
+
       function analyzeAll() {
         const files = allFiles();
         const result = new Map();
         const facts = new Map();
+        const scope = new Map();
         const contentIndex = new Map();
 
-        files.forEach(({ node }) => {
+        files.forEach(({ node, path }) => {
           facts.set(node.id, extractFacts(node.content));
+          // Company / country the document belongs to: Belgium and France may legitimately differ.
+          scope.set(node.id, path.slice(1, 3).map((p) => p.id).join('/'));
           const key = node.content.trim().replace(/\s+/g, ' ').toLowerCase();
           if (key.length > 20) {
             if (!contentIndex.has(key)) contentIndex.set(key, []);
@@ -677,19 +913,22 @@ Company A
           result.set(node.id, { issues: [], conflicts: [], duplicates: [], level: 'good' });
         });
 
-        // Conflicts: same topic (e.g. "minimum wage"), different number, different files.
+        const comparable = (s1, s2) => !s1 || !s2 || s1 === s2 || s1.startsWith(s2 + '/') || s2.startsWith(s1 + '/');
+
+        // Conflicts: same topic (e.g. "minimum wage"), same kind of number, different value, same company & country.
         for (let i = 0; i < files.length; i++) {
           for (let j = i + 1; j < files.length; j++) {
             const a = files[i].node, b = files[j].node;
+            if (!comparable(scope.get(a.id), scope.get(b.id))) continue;
             const seen = new Set();
             facts.get(a.id).forEach((fa) => {
               facts.get(b.id).forEach((fb) => {
-                if (fa.value === fb.value) return;
+                if (fa.value === fb.value || !unitsMatch(fa.unit, fb.unit)) return;
                 const shared = [...fa.topics].find((t) => fb.topics.has(t));
-                if (!shared || seen.has(shared)) return;
-                seen.add(shared);
-                result.get(a.id).conflicts.push({ otherId: b.id, topic: shared, mine: fa.sentence, theirs: fb.sentence });
-                result.get(b.id).conflicts.push({ otherId: a.id, topic: shared, mine: fb.sentence, theirs: fa.sentence });
+                if (!shared || seen.has(fa.sentence + '|' + fb.sentence)) return;
+                seen.add(fa.sentence + '|' + fb.sentence);
+                result.get(a.id).conflicts.push({ otherId: b.id, topic: shared, mine: fa.sentence, theirs: fb.sentence, mineValue: factLabel(fa), theirValue: factLabel(fb) });
+                result.get(b.id).conflicts.push({ otherId: a.id, topic: shared, mine: fb.sentence, theirs: fa.sentence, mineValue: factLabel(fb), theirValue: factLabel(fa) });
               });
             });
           }
@@ -702,17 +941,28 @@ Company A
 
         files.forEach(({ node }) => {
           const r = result.get(node.id);
-          let score = 0;
-          if (node.status === 'outdated') { r.issues.push('Marked as outdated.'); score += 2; }
-          if (node.status === 'draft') { r.issues.push('Not verified yet (draft).'); score += 1; }
-          if (!node.owner) { r.issues.push('No owner — nobody to ask about this.'); score += 1; }
-          const age = daysSince(node.reviewedAt);
-          if (age === Infinity) { r.issues.push('Never reviewed.'); score += 1; }
-          else if (age > STALE_DAYS) { r.issues.push(`Last reviewed ${age} days ago.`); score += 1; }
-          if (!node.content.trim()) { r.issues.push('File is empty.'); score += 1; }
-          if (r.duplicates.length) { r.issues.push(`Same text as ${r.duplicates.length} other file(s).`); score += 1; }
+          let score = metaIssues(node, r);
+          if (r.duplicates.length) { r.issues.push(`Same text as ${r.duplicates.length} other document${r.duplicates.length === 1 ? '' : 's'}.`); score += 1; }
           // red = contradicted or explicitly outdated; amber = something still to check; green = all good
           r.level = node.status === 'outdated' || r.conflicts.length ? 'bad' : score > 0 ? 'warn' : 'good';
+        });
+
+        // Summaries: their own metadata, plus what is going on in the sources they are built from.
+        walk(state.root, (node) => {
+          if (!isSummary(node)) return;
+          const r = { issues: [], conflicts: [], duplicates: [], level: 'good' };
+          let score = metaIssues(node, r);
+          const sources = node.children.filter((c) => c.type === 'file');
+          const conflicted = sources.filter((s) => result.get(s.id).conflicts.length).length;
+          const outdated = sources.filter((s) => s.status === 'outdated').length;
+          const changed = sources.filter((s) => s.changedAt && (!node.updatedAt || s.changedAt > node.updatedAt)).length;
+          if (!sources.length) { r.issues.push('Has no source documents.'); score += 1; }
+          if (conflicted) { r.issues.push(`${conflicted} of its ${sources.length} sources contradict another document.`); score += 1; }
+          if (outdated) r.issues.push(`${outdated} source${outdated === 1 ? ' is' : 's are'} marked outdated.`);
+          if (changed) r.issues.push(`${changed} source${changed === 1 ? ' was' : 's were'} added or edited after this summary was written — it may be out of date.`);
+          r.level = changed || node.status === 'outdated' ? 'bad' : score > 0 ? 'warn' : 'good';
+          r.sourceCount = sources.length;
+          result.set(node.id, r);
         });
 
         return result;
@@ -775,7 +1025,7 @@ Company A
           }));
         });
 
-        const needing = allFiles().filter(({ node }) => analysis.get(node.id).level !== 'good').length;
+        const needing = allDocs().filter(({ node }) => analysis.get(node.id).level === 'bad').length;
         $('attentionNav').classList.toggle('active', state.view === 'attention');
         $('attentionCount').textContent = needing;
         $('attentionCount').classList.toggle('hidden', needing === 0);
@@ -786,7 +1036,7 @@ Company A
         bc.innerHTML = '';
         if (state.view === 'search') { bc.appendChild(el('span', { class: 'crumb current', text: `Search results for “${state.query}”` })); return; }
         if (state.view === 'attention') { bc.appendChild(el('span', { class: 'crumb current', text: 'Needs attention' })); return; }
-        if (state.layout === 'tree') { bc.appendChild(el('span', { class: 'crumb current', text: 'All files' })); return; }
+        if (state.layout === 'graph') { bc.appendChild(el('span', { class: 'crumb current', text: 'All files' })); return; }
 
         const found = findById(state.currentFolderId);
         const chain = found ? [...found.path, found.node] : [state.root];
@@ -801,51 +1051,77 @@ Company A
         const box = $('folderActions');
         box.innerHTML = '';
         if (state.view !== 'folder' || state.currentFolderId === state.root.id) return;
-        if (state.layout === 'tree') box.appendChild(el('span', { class: 'status-msg', text: 'Selected: ' + currentFolder().name }));
-        box.appendChild(el('button', { class: 'secondary-btn small-btn', text: 'Rename folder', onclick: () => renameItem(state.currentFolderId) }));
-        box.appendChild(el('button', { class: 'danger-btn small-btn', text: 'Delete folder', onclick: () => deleteItem(state.currentFolderId) }));
+        const cur = currentFolder();
+        const kind = isSummary(cur) ? 'summary' : 'folder';
+        if (state.layout === 'graph') box.appendChild(el('span', { class: 'status-msg', text: `Selected: ${cur.name}${isSummary(cur) ? ' (summary)' : ''}` }));
+        if (isSummary(cur) && state.layout === 'grid') box.appendChild(el('button', { class: 'primary-btn small-btn', text: 'Read summary', onclick: () => openFile(cur.id) }));
+        box.appendChild(el('button', { class: 'secondary-btn small-btn', text: `Rename ${kind}`, onclick: () => renameItem(state.currentFolderId) }));
+        box.appendChild(el('button', { class: 'danger-btn small-btn', text: `Delete ${kind}`, onclick: () => deleteItem(state.currentFolderId) }));
+      }
+
+      // In the graph view the right-hand panel only appears while a document is open for editing,
+      // so the graph gets the full width.
+      function updateLayoutClass() {
+        const wide = state.layout === 'graph' && state.view === 'folder' && !state.activeFileId;
+        const content = $('content');
+        if (content.classList.contains('graph-wide') === wide) return;
+        content.classList.toggle('graph-wide', wide);
+        if (graph.wrap && graph.wrap.isConnected && graph.autoFit) setZoom(fitZoom(graph.width));
       }
 
       function renderMain() {
+        updateLayoutClass();
         renderBreadcrumbs();
         renderFolderActions();
         const body = $('mainBody');
+        const keepScroll = graph.wrap && graph.wrap.isConnected ? [graph.wrap.scrollLeft, graph.wrap.scrollTop] : null;
         body.innerHTML = '';
-        $('dropHint').classList.toggle('hidden', state.view !== 'folder' || state.layout === 'tree');
+        $('dropHint').classList.toggle('hidden', state.view !== 'folder' || state.layout === 'graph');
         $('viewToggle').querySelectorAll('button').forEach((b) => b.classList.toggle('on', state.view === 'folder' && b.dataset.layout === state.layout));
 
-        if (state.view === 'search') return renderResults(body, searchFiles(state.query), 'No notes match your search.');
+        if (state.view === 'search') return renderResults(body, searchFiles(state.query), 'No documents match your search.');
         if (state.view === 'attention') {
-          const list = allFiles()
-            .filter(({ node }) => analysis.get(node.id).level !== 'good')
-            .sort((a, b) => (analysis.get(a.node.id).level === 'bad' ? -1 : 1) - (analysis.get(b.node.id).level === 'bad' ? -1 : 1))
+          // Only real problems: contradicted, superseded, or summaries whose sources changed since.
+          const list = allDocs()
+            .filter(({ node }) => analysis.get(node.id).level === 'bad')
+            .sort((a, b) => (isSummary(b.node) - isSummary(a.node)) || pathLabel(a.path).localeCompare(pathLabel(b.path)))
             .map((f) => ({ ...f, snippet: null }));
-          return renderResults(body, list, 'Nothing needs attention — every note is verified, owned and up to date.');
+          body.appendChild(el('p', { class: 'target-hint', text: 'Documents that contradict another document, are marked outdated, or summaries whose sources changed after they were written.' }));
+          return renderResults(body, list, 'Nothing needs attention — no conflicts, outdated documents or stale summaries.');
         }
 
-        if (state.layout === 'tree') return renderTree(body);
+        if (state.layout === 'graph') return renderGraph(body, keepScroll);
 
         const folderNode = currentFolder();
+        if (isSummary(folderNode)) {
+          body.appendChild(el('div', { class: 'source-banner' }, [
+            el('span', { text: `📋 These are the ${folderNode.children.length} source document${folderNode.children.length === 1 ? '' : 's'} behind the “${folderNode.name}” summary.` }),
+            el('button', { class: 'link-btn', type: 'button', text: 'Read the summary', onclick: () => openFile(folderNode.id) })
+          ]));
+        }
         const grid = el('div', { class: 'grid' });
         if (!folderNode.children.length) {
           grid.appendChild(el('div', { class: 'empty-state', text: 'This folder is empty. Create a file, import .txt files, or drag them here.' }));
         }
-        const sorted = [...folderNode.children].sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type === 'folder' ? -1 : 1));
-        sorted.forEach((item) => {
-          const card = el('div', { class: `item-card ${item.type}` + (item.id === state.activeFileId ? ' selected' : ''), tabindex: '0' });
-          if (item.type === 'file') {
+        sortedChildren(folderNode).forEach((item) => {
+          const summary = isSummary(item);
+          const card = el('div', { class: `item-card ${summary ? 'summary' : item.type}` + (item.id === state.activeFileId ? ' selected' : ''), tabindex: '0' });
+          if (isDoc(item)) {
             const a = analysis.get(item.id);
             card.appendChild(el('span', { class: `dot ${a.level}`, title: LEVEL_LABEL[a.level] }));
           }
-          card.appendChild(el('div', { class: 'item-icon', text: item.type === 'folder' ? '📁' : '📄' }));
+          card.appendChild(el('div', { class: 'item-icon', text: summary ? '📋' : item.type === 'folder' ? '📁' : '📄' }));
           card.appendChild(el('div', { class: 'item-name', text: item.name }));
-          if (item.type === 'folder') {
-            let n = 0; walk(item, (x) => { if (x.type === 'file') n++; });
-            card.appendChild(el('div', { class: 'item-sub', text: `${n} file${n === 1 ? '' : 's'}` }));
+          if (summary) {
+            const n = item.children.length;
+            card.appendChild(el('div', { class: 'item-sub', text: `summary · ${n} source${n === 1 ? '' : 's'}` }));
+          } else if (item.type === 'folder') {
+            let n = 0; walk(item, (x) => { if (isDoc(x)) n++; });
+            card.appendChild(el('div', { class: 'item-sub', text: `${n} document${n === 1 ? '' : 's'}` }));
           } else {
             card.appendChild(el('div', { class: 'item-sub', text: item.owner || 'no owner' }));
           }
-          const open = () => (item.type === 'folder' ? openFolder(item.id) : openFile(item.id));
+          const open = () => (isDoc(item) ? openFile(item.id) : openFolder(item.id));
           card.addEventListener('click', open);
           card.addEventListener('keydown', (e) => { if (e.key === 'Enter') open(); });
           if (item.type === 'folder') addFolderDropTarget(card, item.id);
@@ -861,12 +1137,12 @@ Company A
           const a = analysis.get(node.id);
           const card = el('div', { class: 'result', tabindex: '0', onclick: () => openFile(node.id) });
           card.appendChild(el('div', { class: 'result-top' }, [
-            el('span', { class: 'result-name', text: '📄 ' + node.name }),
+            el('span', { class: 'result-name', text: (isSummary(node) ? '📋 ' : '📄 ') + docTitle(node) }),
             scoreBadge(node)
           ]));
           card.appendChild(el('div', { class: 'result-path', text: pathLabel(path) + (node.owner ? ` · owner: ${node.owner}` : '') }));
           if (snippet) card.appendChild(snippet);
-          const issues = [...a.issues, ...a.conflicts.map((c) => `Possible conflict about “${c.topic}” with ${fileLabel(c.otherId)}`)];
+          const issues = [...a.issues, ...a.conflicts.map((c) => `Says ${c.mineValue}, but ${fileLabel(c.otherId)} says ${c.theirValue}.`)];
           if (issues.length) card.appendChild(el('ul', { class: 'result-issues' }, issues.slice(0, 4).map((t) => el('li', { text: t }))));
           card.addEventListener('keydown', (e) => { if (e.key === 'Enter') openFile(node.id); });
           wrap.appendChild(card);
@@ -889,11 +1165,18 @@ Company A
       function buildTrustBox(a, onOpenOther) {
         const items = a.issues.map((t) => el('li', { text: t }));
         a.conflicts.forEach((c) => {
-          items.push(el('li', {}, [
-            `Conflicts on “${c.topic}” with `,
+          const other = findById(c.otherId);
+          const o = other && other.node;
+          const otherInfo = o ? [o.status === 'outdated' ? 'marked outdated' : o.status === 'verified' ? 'verified' : 'unverified',
+            o.updatedAt ? 'dated ' + new Date(o.updatedAt).toLocaleDateString() : null].filter(Boolean).join(', ') : '';
+          items.push(el('li', { class: 'conflict' }, [
+            el('strong', { text: `Says ${c.mineValue}, ` }),
+            'but ',
             el('button', { class: 'link-btn', type: 'button', text: fileLabel(c.otherId), onclick: () => onOpenOther(c.otherId) }),
-            el('span', { class: 'conflict-quote', text: 'Here: ' + c.mine }),
-            el('span', { class: 'conflict-quote', text: 'There: ' + c.theirs })
+            otherInfo ? ` (${otherInfo})` : '',
+            el('strong', { text: ` says ${c.theirValue}.` }),
+            el('span', { class: 'conflict-quote', text: 'Here: “' + c.mine + '”' }),
+            el('span', { class: 'conflict-quote', text: 'There: “' + c.theirs + '”' })
           ]));
         });
         const trust = el('div', { class: 'trust-box' }, [el('strong', { text: items.length ? 'Things to check' : 'Verified, owned and recently reviewed.' })]);
@@ -901,77 +1184,412 @@ Company A
         return trust;
       }
 
-      /* ---------- Tree view & file pop-up ---------- */
+      /* ---------- Graph view & file pop-up ---------- */
 
-      function renderTree(body) {
+      // Layout constants (px). Each visible leaf gets one horizontal slot; parents sit centred above their children.
+      const G = { SLOT: 212, NODE_W: 184, NODE_H: 58, FILE_W: 196, FILE_H: 44, FILE_GAP: 52, INDENT: 12, LEVEL: 118, PAD: 28, DURATION: 420 };
+      const SVG_NS = 'http://www.w3.org/2000/svg';
+
+      const graph = {
+        wrap: null, sizer: null, canvas: null, svg: null,
+        nodes: new Map(),   // id -> { el, path, parentId, x, y, o, from*, to*, leaving }
+        targets: new Map(),
+        zoom: 1, autoFit: true, width: 0, height: 0, anim: 0, focusId: null
+      };
+
+      // Folders first, then summaries, then loose documents; alphabetical within each group.
+      function sortedChildren(folderNode) {
+        const rank = (n) => (n.type === 'file' ? 2 : isSummary(n) ? 1 : 0);
+        return [...folderNode.children].sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
+      }
+
+      function initGraph() {
+        if (graph.wrap) return;
+        graph.svg = document.createElementNS(SVG_NS, 'svg');
+        graph.svg.setAttribute('class', 'graph-lines');
+        graph.svg.setAttribute('aria-hidden', 'true');
+        graph.canvas = el('div', { class: 'graph-canvas' });
+        graph.canvas.appendChild(graph.svg);
+        graph.sizer = el('div', { class: 'graph-sizer' }, graph.canvas);
+        graph.wrap = el('div', { class: 'graph-wrap', role: 'tree', 'aria-label': 'Folders and documents as a graph' }, graph.sizer);
+      }
+
+      // Folders and summaries spread out sideways; the documents inside an opened folder or summary
+      // are stacked in one column under it, so the graph stays readable as it grows.
+      function layoutGraph() {
+        const items = [];
+        const widthOf = new Map();
+        const partsOf = (n) => {
+          if (n.type !== 'folder' || !state.expanded.has(n.id)) return { branches: [], files: [] };
+          const kids = sortedChildren(n);
+          const branches = kids.filter((k) => k.type === 'folder');
+          const files = kids.filter((k) => k.type === 'file');
+          if (!kids.length) branches.push({ id: n.id + ':empty', type: 'ghost', name: 'empty' });
+          return { branches, files };
+        };
+        const measure = (n) => {
+          const { branches, files } = partsOf(n);
+          const w = Math.max(1, branches.reduce((sum, c) => sum + measure(c), 0) + (files.length ? 1 : 0));
+          widthOf.set(n.id, w);
+          return w;
+        };
+        const column = (files, x, depth, parentId) => {
+          const left = G.PAD + (x + 0.5) * G.SLOT - G.NODE_W / 2 + G.INDENT;
+          files.forEach((f, i) => items.push({
+            id: f.id, node: f, parentId, depth, stacked: true,
+            tx: left, ty: G.PAD + depth * G.LEVEL + i * G.FILE_GAP, w: G.FILE_W, h: G.FILE_H
+          }));
+        };
+        const place = (n, x0, depth, parentId) => {
+          const w = widthOf.get(n.id);
+          items.push({
+            id: n.id, node: n, parentId, depth, stacked: false,
+            tx: G.PAD + (x0 + w / 2) * G.SLOT - G.NODE_W / 2, ty: G.PAD + depth * G.LEVEL, w: G.NODE_W, h: G.NODE_H
+          });
+          const { branches, files } = partsOf(n);
+          let x = x0;
+          branches.forEach((c) => { place(c, x, depth + 1, n.id); x += widthOf.get(c.id); });
+          if (files.length) column(files, x, depth + 1, n.id);
+        };
+        const top = sortedChildren(state.root);
+        let x = 0;
+        top.filter((n) => n.type === 'folder').forEach((n) => { measure(n); place(n, x, 0, null); x += widthOf.get(n.id); });
+        const looseFiles = top.filter((n) => n.type === 'file');
+        if (looseFiles.length) { column(looseFiles, x, 0, null); x += 1; }
+        const bottom = items.reduce((m, it) => Math.max(m, it.ty + it.h), 0);
+        return { items, width: 2 * G.PAD + Math.max(x, 1) * G.SLOT - (G.SLOT - G.NODE_W), height: bottom + G.PAD + 12 };
+      }
+
+      function createNodeEl() {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.addEventListener('click', () => onGraphNodeClick(b.dataset.id));
+        return b;
+      }
+
+      function fillNodeEl(b, n) {
+        b.dataset.id = n.id;
+        b.style.pointerEvents = '';
+        b.removeAttribute('aria-hidden');
+        b.replaceChildren();
+        b.setAttribute('role', 'treeitem');
+        if (n.type === 'ghost') {
+          b.className = 'gnode ghost';
+          b.disabled = true;
+          b.tabIndex = -1;
+          b.removeAttribute('aria-expanded');
+          b.appendChild(el('span', { class: 'gnode-name', text: 'empty folder' }));
+          return;
+        }
+        b.disabled = false;
+        b.tabIndex = 0;
+        if (isSummary(n)) {
+          const open = state.expanded.has(n.id);
+          const a = analysis.get(n.id);
+          const count = n.children.length;
+          b.className = 'gnode summary' + (open ? ' open' : '') + (state.activeFileId === n.id ? ' selected' : '');
+          b.setAttribute('aria-expanded', String(open));
+          b.title = `${n.name} summary — click to read it; use ${open ? '−' : '+'} to ${open ? 'hide' : 'show'} its ${count} source documents.`;
+          const toggle = el('span', { class: 'gnode-toggle', title: `${open ? 'Hide' : 'Show'} the ${count} source documents`, text: open ? '−' : '+' });
+          toggle.addEventListener('click', (e) => { e.stopPropagation(); toggleGraphNode(n.id); });
+          b.append(
+            el('span', { class: 'gnode-icon', text: '📋' }),
+            el('span', { class: 'gnode-text' }, [
+              el('span', { class: 'gnode-name', text: n.name }),
+              el('span', { class: 'gnode-meta', text: `summary · ${count} source${count === 1 ? '' : 's'}` })
+            ]),
+            el('span', { class: `gnode-dot ${a.level}` }),
+            toggle
+          );
+        } else if (n.type === 'folder') {
+          const open = state.expanded.has(n.id);
+          let files = 0; walk(n, (x) => { if (isDoc(x)) files++; });
+          const items = n.children.length;
+          b.className = 'gnode folder' + (open ? ' open' : '') + (state.currentFolderId === n.id ? ' selected' : '');
+          b.setAttribute('aria-expanded', String(open));
+          b.title = `${n.name} — click to ${open ? 'fold in' : 'open'}`;
+          b.append(
+            el('span', { class: 'gnode-icon', text: open ? '📂' : '📁' }),
+            el('span', { class: 'gnode-text' }, [
+              el('span', { class: 'gnode-name', text: n.name }),
+              el('span', { class: 'gnode-meta', text: `${items} item${items === 1 ? '' : 's'} · ${files} document${files === 1 ? '' : 's'}` })
+            ]),
+            el('span', { class: 'gnode-toggle', text: open ? '−' : '+' })
+          );
+        } else {
+          const a = analysis.get(n.id);
+          b.className = 'gnode file' + (state.activeFileId === n.id ? ' selected' : '');
+          b.removeAttribute('aria-expanded');
+          b.title = `${n.name}${n.owner ? ' · ' + n.owner : ''} — ${LEVEL_LABEL[a.level]}. Click to read.`;
+          b.append(
+            el('span', { class: 'gnode-icon', text: '📄' }),
+            el('span', { class: 'gnode-text' }, [
+              el('span', { class: 'gnode-name', text: n.name.replace(/\.txt$/i, '') })
+            ]),
+            el('span', { class: `gnode-dot ${a.level}` })
+          );
+        }
+      }
+
+      function onGraphNodeClick(id) {
+        const found = findById(id);
+        if (!found) return;
+        if (isDoc(found.node)) return openViewer(id);   // documents and summaries open in the pop-up
+        toggleGraphNode(id);
+      }
+
+      // Opens or folds a folder / summary in the graph and makes it the target for new files.
+      function toggleGraphNode(id) {
+        const found = findById(id);
+        if (!found || found.node.type !== 'folder') return;
+        if (state.expanded.has(id)) {
+          // Folding also folds everything inside it.
+          walk(found.node, (x) => { if (x.type === 'folder') state.expanded.delete(x.id); });
+        } else {
+          state.expanded.add(id);
+          graph.focusId = id;
+        }
+        state.currentFolderId = id;
+        saveUiPrefs();
+        renderNav();
+        renderMain();
+      }
+
+      function setGraphSize(w, h) {
+        graph.width = w;
+        graph.height = h;
+        graph.canvas.style.width = w + 'px';
+        graph.canvas.style.height = h + 'px';
+        graph.svg.setAttribute('width', w);
+        graph.svg.setAttribute('height', h);
+        applyZoom();
+      }
+
+      function applyZoom() {
+        graph.canvas.style.transform = `scale(${graph.zoom})`;
+        graph.sizer.style.width = graph.width * graph.zoom + 'px';
+        graph.sizer.style.height = graph.height * graph.zoom + 'px';
+        const label = document.getElementById('zoomLabel');
+        if (label) label.textContent = Math.round(graph.zoom * 100) + '%';
+      }
+
+      function setZoom(z) {
+        graph.zoom = Math.min(1.6, Math.max(0.3, Math.round(z * 100) / 100));
+        applyZoom();
+      }
+
+      // Zoom that makes the whole graph fit the panel width (never above 100%, never below 65% so text stays readable).
+      function fitZoom(width) {
+        const avail = graph.wrap.clientWidth - 16;
+        if (avail <= 0) return graph.zoom;
+        return Math.min(1, Math.max(0.65, avail / Math.max(1, width)));
+      }
+
+      function drawGraphFrame() {
+        graph.nodes.forEach((g) => {
+          g.el.style.transform = `translate(${g.x}px, ${g.y}px)`;
+          g.el.style.opacity = g.o;
+        });
+        graph.nodes.forEach((g) => {
+          if (!g.path) return;
+          const p = graph.nodes.get(g.parentId);
+          if (!p) { g.path.setAttribute('d', ''); return; }
+          const x1 = p.x + p.w / 2, y1 = p.y + p.h;
+          if (g.stacked) {
+            // Elbow: down from the parent, across to the column's spine, down, then into the document.
+            const bus = y1 + (G.LEVEL - G.NODE_H) / 2;
+            const spine = g.x - G.INDENT / 2 - 2;
+            const cy = g.y + g.h / 2;
+            g.path.setAttribute('d', `M${x1},${y1} V${bus} H${spine} V${cy} H${g.x}`);
+          } else {
+            const x2 = g.x + g.w / 2, y2 = g.y;
+            const my = (y1 + y2) / 2;
+            g.path.setAttribute('d', `M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`);
+          }
+          g.path.style.opacity = Math.min(g.o, p.o);
+        });
+      }
+
+      function updateGraph() {
+        const { items, width, height } = layoutGraph();
+        const seen = new Set();
+        graph.targets = new Map(items.map((it) => [it.id, it]));
+
+        items.forEach((it) => {
+          let g = graph.nodes.get(it.id);
+          if (!g) {
+            // New nodes spawn from their parent's current position.
+            const parent = it.parentId && graph.nodes.get(it.parentId);
+            g = { el: createNodeEl(), path: null, x: parent ? parent.x : it.tx, y: parent ? parent.y : it.ty, o: 0, w: it.w, h: it.h };
+            graph.canvas.appendChild(g.el);
+            graph.nodes.set(it.id, g);
+          }
+          g.leaving = false;
+          g.parentId = it.parentId;
+          g.stacked = it.stacked;
+          g.w = it.w;
+          g.h = it.h;
+          if (g.parentId && !g.path) {
+            g.path = document.createElementNS(SVG_NS, 'path');
+            graph.svg.appendChild(g.path);
+          } else if (!g.parentId && g.path) {
+            g.path.remove();
+            g.path = null;
+          }
+          Object.assign(g, { fromX: g.x, fromY: g.y, fromO: g.o, toX: it.tx, toY: it.ty, toO: 1 });
+          fillNodeEl(g.el, it.node);
+          seen.add(it.id);
+        });
+
+        // Nodes that disappear slide back into their nearest visible ancestor and fade out.
+        graph.nodes.forEach((g, id) => {
+          if (seen.has(id)) return;
+          g.leaving = true;
+          let anc = g.parentId;
+          while (anc && !seen.has(anc)) { const a = graph.nodes.get(anc); anc = a ? a.parentId : null; }
+          const t = anc ? graph.targets.get(anc) : null;
+          Object.assign(g, { fromX: g.x, fromY: g.y, fromO: g.o, toX: t ? t.tx : g.x, toY: t ? t.ty : g.y, toO: 0 });
+          g.el.tabIndex = -1;
+          g.el.setAttribute('aria-hidden', 'true');
+          g.el.style.pointerEvents = 'none';
+        });
+
+        setGraphSize(Math.max(width, graph.width), Math.max(height, graph.height));
+        const fromZoom = graph.zoom;
+        const toZoom = graph.autoFit ? fitZoom(width) : graph.zoom;
+        graph.wrap.classList.add('animating');
+
+        cancelAnimationFrame(graph.anim);
+        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const start = performance.now();
+        const step = (now) => {
+          const p = reduce ? 1 : Math.min(1, Math.max(0, now - start) / G.DURATION);
+          const e = 1 - Math.pow(1 - p, 3);
+          graph.nodes.forEach((g) => {
+            g.x = g.fromX + (g.toX - g.fromX) * e;
+            g.y = g.fromY + (g.toY - g.fromY) * e;
+            g.o = g.fromO + (g.toO - g.fromO) * e;
+          });
+          graph.zoom = fromZoom + (toZoom - fromZoom) * e;
+          applyZoom();
+          drawGraphFrame();
+          if (p < 1) { graph.anim = requestAnimationFrame(step); return; }
+          graph.nodes.forEach((g, id) => {
+            if (!g.leaving) return;
+            g.el.remove();
+            if (g.path) g.path.remove();
+            graph.nodes.delete(id);
+          });
+          setGraphSize(width, height);
+          graph.wrap.classList.remove('animating');
+          ensureFocusVisible();
+        };
+        graph.anim = requestAnimationFrame(step);
+      }
+
+      // After opening a folder, scroll so the folder and its new children are in view.
+      function ensureFocusVisible() {
+        const id = graph.focusId;
+        graph.focusId = null;
+        if (!id || !graph.targets.has(id)) return;
+        const group = [...graph.targets.values()].filter((t) => t.id === id || t.parentId === id);
+        const z = graph.zoom;
+        const left = Math.min(...group.map((t) => t.tx)) * z - 12;
+        const right = Math.max(...group.map((t) => t.tx + t.w)) * z + 12;
+        const bottom = Math.max(...group.map((t) => t.ty + t.h)) * z + 24;
+        const w = graph.wrap;
+        const offset = Math.max(0, (w.clientWidth - graph.width * z) / 2);
+        let sl = w.scrollLeft, st = w.scrollTop;
+        if (right + offset > sl + w.clientWidth) sl = right + offset - w.clientWidth;
+        if (left + offset < sl) sl = left + offset;
+        if (bottom > st + w.clientHeight) st = bottom - w.clientHeight;
+        w.scrollTo({ left: sl, top: st, behavior: 'smooth' });
+      }
+
+      function renderGraph(body, keepScroll) {
+        initGraph();
         const target = findById(state.currentFolderId);
         body.appendChild(el('div', { class: 'target-hint' }, [
           'New files & imports go to ',
           el('strong', { text: target && target.node.id !== state.root.id ? pathLabel([...target.path.slice(1), target.node]) : 'My Drive (top level)' }),
-          ' — click a folder to choose another.'
+          ' — click a folder to open it and choose it.'
         ]));
-        const tree = el('div', { class: 'tree', role: 'tree' });
-        const addChildren = (folderNode, depth) => {
-          const kids = [...folderNode.children].sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type === 'folder' ? -1 : 1));
-          if (!kids.length) {
-            tree.appendChild(el('div', { class: 'tree-empty', style: `padding-left:${10 + depth * 22 + 22}px`, text: 'empty' }));
-            return;
-          }
-          kids.forEach((item) => {
-            const pad = `padding-left:${10 + depth * 22}px`;
-            if (item.type === 'folder') {
-              const open = state.expanded.has(item.id);
-              let n = 0; walk(item, (x) => { if (x.type === 'file') n++; });
-              const selected = state.currentFolderId === item.id;
-              tree.appendChild(el('button', {
-                class: 'tree-row folder-row' + (selected ? ' selected' : ''), type: 'button', role: 'treeitem', 'aria-expanded': String(open), style: pad,
-                onclick: () => {
-                  // Clicking toggles the folder open/closed and makes it the target for new files.
-                  if (open && selected) state.expanded.delete(item.id); else state.expanded.add(item.id);
-                  state.currentFolderId = item.id;
-                  saveUiPrefs();
-                  renderNav();
-                  renderMain();
-                }
-              }, [
-                el('span', { class: 'tree-caret', text: open ? '▾' : '▸' }),
-                el('span', { text: (open ? '📂 ' : '📁 ') + item.name }),
-                el('span', { class: 'tree-meta', text: `${n} file${n === 1 ? '' : 's'}` })
-              ]));
-              if (open) addChildren(item, depth + 1);
-            } else {
-              const a = analysis.get(item.id);
-              tree.appendChild(el('button', {
-                class: 'tree-row' + (item.id === state.activeFileId ? ' selected' : ''), type: 'button', role: 'treeitem', style: pad, title: LEVEL_LABEL[a.level],
-                onclick: () => openViewer(item.id)
-              }, [
-                el('span', { class: 'tree-caret', text: '' }),
-                el('span', { text: '📄 ' + item.name }),
-                el('span', { class: 'tree-meta', text: item.owner || 'no owner' }),
-                el('span', { class: `tree-dot ${a.level}` })
-              ]));
-            }
-          });
-        };
-        addChildren(state.root, 0);
-        body.appendChild(tree);
+        const files = allFiles();
+        const docs = allDocs();
+        const attention = docs.filter(({ node }) => analysis.get(node.id).level === 'bad').length;
+        const conflicts = files.filter(({ node }) => analysis.get(node.id).conflicts.length).length;
+        const chip = (n, label, tone) => el('span', { class: 'chip' + (tone ? ' ' + tone : '') }, [el('strong', { text: String(n) }), ' ' + label]);
+        body.appendChild(el('div', { class: 'chips' }, [
+          chip(docs.length - files.length, 'summaries'),
+          chip(files.length, 'source documents'),
+          chip(attention, 'need attention', attention ? 'warn' : ''),
+          chip(conflicts, 'sources in conflict', conflicts ? 'bad' : '')
+        ]));
+        const zoomBtn = (text, title, fn) => el('button', { class: 'secondary-btn small-btn', type: 'button', title, text, onclick: fn });
+        body.appendChild(el('div', { class: 'graph-toolbar' }, [
+          el('div', { class: 'group' }, [
+            zoomBtn('Open all', 'Open every folder', () => { walk(state.root, (x) => { if (x.type === 'folder' && x !== state.root) state.expanded.add(x.id); }); saveUiPrefs(); renderMain(); }),
+            zoomBtn('Fold all', 'Fold every folder', () => { state.expanded.clear(); saveUiPrefs(); renderMain(); })
+          ]),
+          el('div', { class: 'group zoom' }, [
+            zoomBtn('−', 'Zoom out', () => { graph.autoFit = false; setZoom(graph.zoom - 0.1); }),
+            el('span', { class: 'zoom-label', id: 'zoomLabel', text: Math.round(graph.zoom * 100) + '%' }),
+            zoomBtn('+', 'Zoom in', () => { graph.autoFit = false; setZoom(graph.zoom + 0.1); }),
+            zoomBtn('Fit', 'Zoom to fit the whole graph (and keep fitting as it grows)', () => { graph.autoFit = true; setZoom(fitZoom(graph.width)); })
+          ])
+        ]));
+        body.appendChild(graph.wrap);
+        if (keepScroll) { graph.wrap.scrollLeft = keepScroll[0]; graph.wrap.scrollTop = keepScroll[1]; }
+        updateGraph();
+      }
+
+      // Shows a document's text. In a summary every [n] becomes a link to that source document.
+      function renderDocBody(target, node) {
+        target.replaceChildren();
+        const text = docText(node);
+        if (!text) { target.textContent = '(empty document)'; return; }
+        if (!isSummary(node)) { target.textContent = text; return; }
+        const shown = text.split(/\r?\n/).filter((line) => !HEADER_LINE.test(line)).join('\n').replace(/\n{3,}/g, '\n\n');
+        const byNumber = new Map();
+        text.split(/\r?\n/).forEach((line) => {
+          const m = line.match(/^\s*\[(\d+)\]\s+(.+?)\s*$/);
+          if (!m) return;
+          const src = node.children.find((c) => c.type === 'file' && c.name.toLowerCase() === m[2].toLowerCase());
+          if (src) byNumber.set(m[1], src);
+        });
+        shown.split(/(\[\d+\])/).forEach((part) => {
+          const m = part.match(/^\[(\d+)\]$/);
+          const src = m && byNumber.get(m[1]);
+          if (src) target.appendChild(el('button', { class: 'cite', type: 'button', title: 'Open source: ' + src.name, text: part, onclick: () => openViewer(src.id) }));
+          else target.appendChild(document.createTextNode(part));
+        });
       }
 
       function openViewer(id) {
         const found = findById(id);
-        if (!found || found.node.type !== 'file') return;
-        const f = found.node;
-        const a = analysis.get(f.id);
-        $('viewerTitle').textContent = f.name;
-        $('viewerScore').replaceChildren(scoreBadge(f));
-        $('viewerPath').textContent = 'Applies to: ' + (pathLabel(found.path.slice(1)) || 'My Drive') + (f.owner ? ` · owner: ${f.owner}` : '');
-        const trust = $('viewerTrust');
-        trust.innerHTML = '';
-        trust.appendChild(buildTrustBox(a, openViewer));
-        $('viewerBody').textContent = f.content || '(empty file)';
+        if (!found || !isDoc(found.node)) return;
+        const n = found.node;
+        const a = analysis.get(n.id);
+        const parent = found.path[found.path.length - 1];
+        $('viewerTitle').textContent = (isSummary(n) ? '📋 ' : '') + docTitle(n);
+        $('viewerScore').replaceChildren(scoreBadge(n));
+        const info = $('viewerPath');
+        info.replaceChildren('Applies to: ' + (pathLabel(found.path.slice(1)) || 'My Drive') + (n.owner ? ` · owner: ${n.owner}` : ''));
+        if (isSummary(parent)) {
+          info.append(' · ', el('button', { class: 'link-btn', type: 'button', text: `← back to the ${parent.name} summary`, onclick: () => openViewer(parent.id) }));
+        }
+        $('viewerTrust').replaceChildren(buildTrustBox(a, openViewer));
+        renderDocBody($('viewerBody'), n);
+        $('viewerBody').scrollTop = 0;
+        const sourcesBtn = $('viewerSources');
+        sourcesBtn.classList.toggle('hidden', !isSummary(n));
+        if (isSummary(n)) {
+          sourcesBtn.textContent = `📂 Open as folder (${n.children.length} source${n.children.length === 1 ? '' : 's'})`;
+          sourcesBtn.onclick = () => { closeViewer(); openFolder(n.id); };
+        }
         $('viewerEdit').onclick = () => {
           closeViewer();
-          openFile(f.id);
+          openFile(n.id);
           const ta = document.querySelector('#editor textarea');
           if (ta) { $('editor').scrollIntoView({ behavior: 'smooth', block: 'start' }); ta.focus({ preventScroll: true }); }
         };
@@ -997,29 +1615,32 @@ Company A
       });
 
       function renderEditor() {
+        updateLayoutClass();
         const ed = $('editor');
         const found = state.activeFileId && findById(state.activeFileId);
         ed.innerHTML = '';
         if (!found) {
           state.activeFileId = null;
           const files = allFiles();
-          const attention = files.filter(({ node }) => analysis.get(node.id).level !== 'good').length;
+          const docs = allDocs();
+          const summaries = docs.length - files.length;
+          const attention = docs.filter(({ node }) => analysis.get(node.id).level === 'bad').length;
           const conflicts = files.filter(({ node }) => analysis.get(node.id).conflicts.length).length;
-          const owned = files.filter(({ node }) => node.owner).length;
           ed.appendChild(el('div', { class: 'editor-header' }, el('h3', { text: 'Overview' })));
           ed.appendChild(el('div', { class: 'stats' }, [
-            stat(files.length, 'notes'),
+            stat(summaries, summaries === 1 ? 'summary' : 'summaries'),
+            stat(files.length, 'source documents'),
             stat(attention, 'need attention', attention ? 'warn' : ''),
-            stat(conflicts, 'with conflicts', conflicts ? 'bad' : ''),
-            stat(files.length ? `${Math.round((owned / files.length) * 100)}%` : '—', 'have an owner')
+            stat(conflicts, 'sources in conflict', conflicts ? 'bad' : '')
           ]));
           ed.appendChild(el('div', { class: 'editor-placeholder' }, [
             el('strong', { text: 'How to use' }),
             el('ul', { class: 'howto' }, [
-              el('li', { text: 'Click a file to read it; press Edit to change it.' }),
-              el('li', { text: 'Give each note an owner and mark it reviewed when you have checked it.' }),
-              el('li', { text: 'Search ( / ) looks through every company and location at once.' }),
-              el('li', { text: 'Notes that state different numbers for the same thing are flagged as conflicts.' })
+              el('li', { text: 'Click a folder to open it; click a 📋 summary to read it.' }),
+              el('li', { text: 'In a summary, click a [number] to open the source it comes from, or “Open as folder” to see all its sources.' }),
+              el('li', { text: 'The + on a summary shows its source documents in the graph.' }),
+              el('li', { text: 'Search ( / ) looks through every company and country at once; summaries come first.' }),
+              el('li', { text: 'Sources that give different numbers for the same thing are flagged as conflicts.' })
             ])
           ]));
           return;
@@ -1027,30 +1648,34 @@ Company A
 
         const f = found.node;
         const a = analysis.get(f.id);
+        const summary = isSummary(f);
 
         ed.appendChild(el('div', { class: 'editor-header' }, [
-          el('h3', { text: f.name }),
+          el('h3', { text: (summary ? '📋 ' : '') + docTitle(f) }),
           scoreBadge(f)
         ]));
-        ed.appendChild(el('div', { class: 'editor-path', text: 'Applies to: ' + (pathLabel(found.path.slice(1)) || 'My Drive (no company / location)') }));
+        const parent = found.path[found.path.length - 1];
+        const pathLine = el('div', { class: 'editor-path', text: 'Applies to: ' + (pathLabel(found.path.slice(1)) || 'My Drive (no company / country)') });
+        if (isSummary(parent)) pathLine.append(' · ', el('button', { class: 'link-btn', type: 'button', text: `source of the ${parent.name} summary`, onclick: () => openFile(parent.id) }));
+        ed.appendChild(pathLine);
 
         const trustSlot = el('div', {}, buildTrustBox(a, openFile));
         ed.appendChild(trustSlot);
 
         // Metadata
         const ownerInput = el('input', { type: 'text', value: f.owner || '', maxlength: '80', placeholder: 'e.g. Payroll team' });
-        const statusSelect = el('select', {}, ['draft', 'verified', 'outdated'].map((s) => {
-          const o = el('option', { value: s, text: s[0].toUpperCase() + s.slice(1) });
-          if (f.status === s) o.selected = true;
+        const statusLabels = { draft: 'Unverified / draft', verified: 'Verified', outdated: 'Outdated' };
+        const statusSelect = el('select', {}, ['draft', 'verified', 'outdated'].map((st) => {
+          const o = el('option', { value: st, text: statusLabels[st] });
+          if (f.status === st) o.selected = true;
           return o;
         }));
-        const fmt = (iso) => (iso ? new Date(iso).toLocaleString() : 'never');
-        const meta = el('div', { class: 'meta-grid' }, [
+        const fmt = (iso, none = 'never') => (iso ? new Date(iso).toLocaleDateString() : none);
+        ed.appendChild(el('div', { class: 'meta-grid' }, [
           el('label', {}, ['Owner / expert', ownerInput]),
           el('label', {}, ['Status', statusSelect]),
-          el('div', { class: 'meta-line', text: `Last edited: ${fmt(f.updatedAt)} · Last reviewed: ${fmt(f.reviewedAt)}` })
-        ]);
-        ed.appendChild(meta);
+          el('div', { class: 'meta-line', text: `Last updated: ${fmt(f.updatedAt, 'unknown')} · Last reviewed: ${fmt(f.reviewedAt)}` + (summary ? ` · ${f.children.length} sources` : '') })
+        ]));
 
         const commitMeta = () => {
           f.owner = ownerInput.value.trim().slice(0, 80);
@@ -1063,15 +1688,16 @@ Company A
         statusSelect.addEventListener('change', commitMeta);
 
         // Content
-        const textarea = el('textarea', { 'aria-label': 'File editor' });
-        textarea.value = f.content;
+        const textarea = el('textarea', { 'aria-label': summary ? 'Summary editor' : 'Document editor' });
+        textarea.value = docText(f);
         const status = el('span', { class: 'status-msg', text: '' });
         textarea.addEventListener('input', () => { state.dirty = true; status.textContent = 'Unsaved changes'; });
         ed.appendChild(textarea);
 
         const save = () => {
-          if (f.content !== textarea.value) {
-            f.content = textarea.value;
+          if (docText(f) !== textarea.value) {
+            if (summary) f.summary = textarea.value;
+            else { f.content = textarea.value; f.changedAt = now(); }
             f.updatedAt = now();
           }
           state.dirty = false;
@@ -1083,15 +1709,17 @@ Company A
         };
         state.saveActive = save;
 
+        const leftButtons = [
+          el('button', { class: 'secondary-btn small-btn', text: 'Mark reviewed', title: 'I checked this and it is still correct', onclick: () => { save(); f.reviewedAt = now(); if (f.status === 'draft') f.status = 'verified'; saveState(); render(); } }),
+          el('button', { class: 'secondary-btn small-btn', text: 'Rename', onclick: () => renameItem(f.id) }),
+          el('button', { class: 'danger-btn small-btn', text: 'Delete', onclick: () => deleteItem(f.id) })
+        ];
+        if (summary) leftButtons.unshift(el('button', { class: 'secondary-btn small-btn', text: `📂 Open as folder (${f.children.length})`, onclick: () => openFolder(f.id) }));
         ed.appendChild(el('div', { class: 'save-row' }, [
-          el('div', { class: 'group' }, [
-            el('button', { class: 'secondary-btn small-btn', text: 'Mark reviewed', title: 'I checked this and it is still correct', onclick: () => { save(); f.reviewedAt = now(); if (f.status === 'draft') f.status = 'verified'; saveState(); render(); } }),
-            el('button', { class: 'secondary-btn small-btn', text: 'Rename', onclick: () => renameItem(f.id) }),
-            el('button', { class: 'danger-btn small-btn', text: 'Delete', onclick: () => deleteItem(f.id) })
-          ]),
+          el('div', { class: 'group' }, leftButtons),
           el('div', { class: 'group' }, [
             status,
-            el('button', { class: 'secondary-btn small-btn', text: 'Save to computer', onclick: async () => { save(); await saveTextFileToComputer(f.name, f.content); } }),
+            el('button', { class: 'secondary-btn small-btn', text: 'Save to computer', onclick: async () => { save(); await saveTextFileToComputer(summary ? 'SUMMARY.txt' : f.name, docText(f)); } }),
             el('button', { class: 'primary-btn small-btn', text: 'Save', onclick: save })
           ])
         ]));
@@ -1110,10 +1738,10 @@ Company A
         state.view = 'folder';
         state.currentFolderId = id;
         state.activeFileId = null;
-        if (state.layout === 'tree') {
-          // In the tree, "opening" a folder means unfolding it (and everything above it).
+        if (state.layout === 'graph') {
+          // In the graph, "opening" a folder means unfolding it (and everything above it).
           const found = findById(id);
-          if (found) { found.path.forEach((p) => state.expanded.add(p.id)); state.expanded.add(id); saveUiPrefs(); }
+          if (found) { found.path.forEach((p) => state.expanded.add(p.id)); state.expanded.add(id); graph.focusId = id; saveUiPrefs(); }
         }
         $('searchInput').value = '';
         state.query = '';
@@ -1134,9 +1762,9 @@ Company A
         const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
         if (!terms.length) return [];
         const out = [];
-        allFiles().forEach(({ node, path }) => {
+        allDocs().forEach(({ node, path }) => {
           const name = node.name.toLowerCase();
-          const text = node.content.toLowerCase();
+          const text = docText(node).toLowerCase();
           const where = path.map((p) => p.name).join(' ').toLowerCase();
           let score = 0;
           for (const t of terms) {
@@ -1147,8 +1775,10 @@ Company A
             score += (inName ? 5 : 0) + (inWhere ? 3 : 0) + count;
           }
           const level = analysis.get(node.id).level;
-          score += level === 'good' ? 2 : level === 'warn' ? 0.5 : 0; // trusted notes float up
-          out.push({ node, path, score, snippet: makeSnippet(node.content, terms) });
+          score += level === 'good' ? 2 : level === 'warn' ? 0.5 : 0; // trusted documents float up
+          if (isSummary(node)) score += 4;                            // the summary is usually the best answer
+          if (node.status === 'outdated') score -= 3;                 // superseded documents sink
+          out.push({ node, path, score, snippet: makeSnippet(docText(node), terms) });
         });
         return out.sort((a, b) => b.score - a.score);
       }
@@ -1225,7 +1855,7 @@ Company A
           onConfirm: (v) => {
             if (type === 'folder') parent.children.push(folder(v));
             else {
-              const f = file(/\.txt$/i.test(v) ? v : v + '.txt');
+              const f = file(/\.txt$/i.test(v) ? v : v + '.txt', '', { changedAt: now() });
               parent.children.push(f);
               state.activeFileId = f.id;
             }
@@ -1252,12 +1882,12 @@ Company A
         const found = findById(id);
         if (!found || id === state.root.id) return;
         const parent = found.path[found.path.length - 1];
-        let n = 0; walk(found.node, (x) => { if (x.type === 'file') n++; });
+        let n = 0; walk(found.node, (x) => { if (x !== found.node && isDoc(x)) n++; });
+        const what = isSummary(found.node) ? `the summary and its ${n} source document${n === 1 ? '' : 's'}`
+          : found.node.type === 'folder' ? `the folder and the ${n} document${n === 1 ? '' : 's'} inside it` : 'this document';
         showModal({
           title: `Delete “${found.node.name}”?`,
-          text: found.node.type === 'folder'
-            ? `This removes the folder and the ${n} file${n === 1 ? '' : 's'} inside it from the knowledge base. Files on your computer are not touched.`
-            : 'This removes the note from the knowledge base. Files on your computer are not touched.',
+          text: `This removes ${what} from the knowledge base. Files on your computer are not touched.`,
           confirmLabel: 'Delete',
           danger: true,
           onConfirm: () => {
@@ -1287,12 +1917,16 @@ Company A
             }
           }
           const content = await f.text();
+          const isSummaryFile = f.name.toLowerCase() === 'summary.txt' && parent !== state.root;
+          if (isSummaryFile && parent.summary === content) { skipped++; continue; }
           const existing = parent.children.find((c) => c.type === 'file' && c.name.toLowerCase() === f.name.toLowerCase());
-          if (existing && existing.content === content) { skipped++; continue; } // already imported, unchanged
+          if (!isSummaryFile && existing && existing.content === content) { skipped++; continue; } // already imported, unchanged
           const modified = f.lastModified ? new Date(f.lastModified).toISOString() : now();
-          const nf = file(uniqueName(parent, f.name), content, { createdAt: modified, updatedAt: modified });
-          parent.children.push(nf);
-          lastId = nf.id;
+          // Single files added by hand count as new material (a summary above them may now be out of date);
+          // a whole imported folder is taken as it is on disk.
+          const extra = { createdAt: modified, updatedAt: modified, ...(keepFolders ? {} : { changedAt: now() }) };
+          const res = addTextFile(parent, f.name, content, { allowSummary: parent !== state.root, extra });
+          lastId = res.node.id;
           added++;
         }
         saveState();
@@ -1387,12 +2021,12 @@ Company A
           try {
             const dir = await window.showDirectoryPicker({ mode: 'readwrite' });
             let count = 0;
-            for (const { node, path } of allFiles()) {
+            for (const { dirs, name, text } of exportEntries()) {
               let d = dir;
-              for (const p of path.slice(1)) d = await d.getDirectoryHandle(p.name, { create: true });
-              const fh = await d.getFileHandle(node.name, { create: true });
+              for (const part of dirs) d = await d.getDirectoryHandle(part, { create: true });
+              const fh = await d.getFileHandle(name, { create: true });
               const w = await fh.createWritable();
-              await w.write(node.content);
+              await w.write(text);
               await w.close();
               count++;
             }
@@ -1403,11 +2037,18 @@ Company A
             console.warn('Folder picker unavailable, falling back to downloads.', error);
           }
         }
-        for (const { node, path } of allFiles()) {
-          const prefix = path.slice(1).map((p) => p.name).join('_');
-          downloadBlob(new Blob([node.content], { type: 'text/plain;charset=utf-8' }), (prefix ? prefix + '_' : '') + node.name);
+        for (const { dirs, name, text } of exportEntries()) {
+          const prefix = dirs.join('_');
+          downloadBlob(new Blob([text], { type: 'text/plain;charset=utf-8' }), (prefix ? prefix + '_' : '') + name);
           await new Promise((r) => setTimeout(r, 150));
         }
+      }
+
+      // Every document with the folders it lives in; a summary is saved as SUMMARY.txt inside its folder.
+      function exportEntries() {
+        return allDocs().map(({ node, path }) => (isSummary(node)
+          ? { dirs: [...path.slice(1), node].map((p) => p.name), name: 'SUMMARY.txt', text: node.summary }
+          : { dirs: path.slice(1).map((p) => p.name), name: node.name, text: node.content }));
       }
 
       /* ---------- Wiring ---------- */
@@ -1415,6 +2056,26 @@ Company A
       $('newFolderBtn').addEventListener('click', () => createItem('folder'));
       $('newFileBtn').addEventListener('click', () => createItem('file'));
       $('downloadAllBtn').addEventListener('click', downloadAllFiles);
+      $('resetNav').addEventListener('click', () => {
+        showModal({
+          title: 'Reset demo data?',
+          text: 'This replaces everything in the knowledge base with the built-in example documents and summaries. Files on your computer are not touched.',
+          confirmLabel: 'Reset',
+          danger: true,
+          onConfirm: () => {
+            state.root = buildInitialData();
+            state.currentFolderId = state.root.id;
+            state.activeFileId = null;
+            state.dirty = false;
+            state.view = 'folder';
+            state.expanded.clear();
+            saveState();
+            saveUiPrefs();
+            render();
+          }
+        });
+      });
+
       $('attentionNav').addEventListener('click', () => {
         if (!confirmLeave()) return;
         state.dirty = false;
@@ -1433,6 +2094,14 @@ Company A
           $('modal').classList.add('hidden');
           closeViewer();
         }
+      });
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (graph.wrap && graph.wrap.isConnected && graph.autoFit) setZoom(fitZoom(graph.width));
+        }, 120);
       });
 
       window.addEventListener('beforeunload', (e) => { if (state.dirty) { e.preventDefault(); e.returnValue = ''; } });

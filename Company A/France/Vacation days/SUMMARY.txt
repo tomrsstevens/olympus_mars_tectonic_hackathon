@@ -1,0 +1,23 @@
+VACATION DAYS - COMPANY A - FRANCE
+Summary of 3 source documents - click a [number] to open that source.
+
+Document owner: Knowledge team
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+- Paid leave: 25 working days (five weeks) a year. [1]
+- Main leave: at least 12 consecutive days between 1 May and 31 October. [1]
+- Summer requests: in the HR portal before 31 March; managers confirm by mid-April. [3]
+- RTT (37-hour schedule): five RTT days are fixed by the company, you choose the others. [2]
+
+⚠ CONFLICT - number of RTT days
+  The paid leave policy says 10 RTT days a year. [1]
+  The January 2026 email says 11 RTT days in 2026. [2]
+  RTT days can change from year to year, so the email is probably right for 2026.
+  The policy was last reviewed in September 2024 and is overdue for review.
+
+Sources
+[1] Conges payes - paid leave policy.txt
+[2] Email - RTT days 2026.txt
+[3] Email - Summer leave requests.txt

@@ -1,0 +1,67 @@
+# knowledge management
+
+> Proof of concept for the SD Worx challenge "Unlock the Knowledge Within: Find it. Understand it. Trust it." at the Tectonic Hackathon (30 September 2026). It is a single-page, offline knowledge manager. It gathers scattered HR documents (policies and update emails about payroll, vacation days and working hours) into one short summary per topic, links every statement in a summary to its source documents, and shows what a reader should check before trusting a document.
+
+## Challenge it addresses
+
+SD Worx asked: "How might we turn fragmented organisational knowledge into a trusted shared resource?" The prompt describes the moment of doubt when several documents answer the same question and one is outdated, one has no owner and one applies to another country. This project targets that moment. For any question about payroll, vacation days or working hours, in a given company and country, it gives one summary and makes visible why each part of it can or cannot be trusted.
+
+## How it works
+
+- Structure: Company -> Country -> topic summary (Payroll, Vacation days, Working hours) -> the source documents behind it.
+- Graph view (default): nodes for each company. Clicking a folder makes its children appear below it, connected by lines. Clicking a summary or document opens it in a pop-up. The "+" on a summary shows its source documents in the graph.
+- Summaries: short bullet points, each ending in numbered citations such as [1]. In the pop-up every [n] opens that source document. "Open as folder" lists all sources. Each summary states conflicts, outdated sources and unapproved drafts explicitly.
+- Trust signals per document: owner or sender, status (verified / unverified / outdated), last updated, last reviewed (flagged after 180 days), missing date, duplicate text, and conflicts with other documents.
+- Metadata is read from the document header lines "Document owner:", "Status:", "Last updated:", "Last reviewed:", "From:" and "Date:", so imported .txt files keep this information.
+- Conflict detection (heuristic, runs in the browser):
+  - It compares numbers in documents from the same company and country only, because Belgium and France may legitimately differ.
+  - It ignores dates, times, e-mail addresses and links.
+  - Two numbers are a conflict only if they share topic words (for example "minimum wage"), have the same kind of unit (money, %, days or hours, and the same period) and have different values.
+- Stale summaries: if a source is added or edited in the app after its summary was written, the summary is flagged as possibly out of date.
+- Search covers every company and country and ranks summaries first and superseded documents last. "Needs attention" lists contradicted and outdated documents and stale summaries.
+- Trustworthiness score: every opened document shows "Trust 6/10". This is a deliberate placeholder. The function trustScore() in index.html returns 6 for every document, and no scoring algorithm exists yet.
+
+## How to run
+
+Open index.html in a browser (Chrome or Edge recommended). There is no build step, no server and no network access. Data is kept in the browser's localStorage. "Reset demo data" in the sidebar restores the built-in example documents.
+
+## Files
+
+- [index.html](index.html): the whole application (HTML, CSS and JavaScript in one file), plus the built-in example documents in a JSON block with id "seed-data".
+- [README.md](README.md): project description, how to run, and what is unfinished.
+- Company A/ and Company B/: the example documents as plain .txt files, one folder per country and topic. SUMMARY.txt in a topic folder is that topic's summary. These are the same texts as the built-in data, and "Import folder" in the app reads this layout.
+- [robots.txt](robots.txt): allows all crawlers.
+
+## Example data (all fictional)
+
+The example data covers Company A and Company B, each with America, Belgium and France. That is 18 summaries and 44 source documents. General legal references (Belgian double holiday pay of 92%, 20 legal vacation days in Belgium, the 35-hour week in France, US overtime at 1.5 times the regular rate above 40 hours) reflect the rules as generally known. Company-specific numbers are invented.
+
+Some problems are planted on purpose so the trust features can be checked:
+- Conflicts that the app detects (9):
+  - Company A / America / Payroll: $48,000 vs $75,000 minimum wage. The $75,000 email is undated and unsigned.
+  - Company A / America / Vacation days: 15 vs 12 days of PTO (the 12 comes from an old 2022 email).
+  - Company A / Belgium / Vacation days: 6 vs 4 extra days (the 4 comes from a superseded 2023 policy).
+  - Company A / Belgium / Working hours: €150 vs €129.48 home working allowance (the €129.48 comes from a superseded 2021 policy).
+  - Company A / France / Payroll: payday on the 28th vs the 25th.
+  - Company A / France / Vacation days: 10 vs 11 RTT days.
+  - Company B / America / Working hours: 3 vs 4 office days.
+  - Company B / France / Payroll: 50% vs 60% mutuelle contribution.
+  - Company B / France / Working hours: 35 vs 39 hours (the 39 comes from a superseded 2019 policy).
+- One duplicate filed in the wrong folder: "FW New payroll provider.txt" under Company B / America / Working hours.
+- One policy that is still a draft: Company B / America / Time off policy.
+- Policies overdue for review (more than 180 days since the last review).
+
+## Security
+
+- A Content-Security-Policy blocks all network requests, external scripts, form submissions and base-URL changes.
+- User content is inserted into the page only as text, never as HTML.
+- Imports accept .txt files up to 2 MB only.
+- There are no accounts, API keys or secrets.
+
+## Limitations
+
+- The trust score is a fixed placeholder (6/10).
+- The summaries were written in advance. They are not generated when the app runs. The app flags a summary that may be out of date, but it does not rewrite it.
+- Only .txt sources are supported. There are no email, Teams, PDF or SharePoint connectors.
+- The app runs in a single browser for a single user. There is no shared backend, so there is no authentication or authorisation.
+- Conflict detection is a heuristic. It can miss contradictions that are not stated as numbers.

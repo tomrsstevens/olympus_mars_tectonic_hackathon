@@ -1,0 +1,21 @@
+PAYROLL - COMPANY A - BELGIUM
+Summary of 3 source documents - click a [number] to open that source.
+
+Document owner: Knowledge team
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+- Salary: paid monthly, on the last working day of the month. [1]
+- Double holiday pay: 92% of your gross monthly salary, paid with the May salary;
+  it is taxed at a special rate, so the net amount is lower. [1][3]
+- End-of-year bonus: one monthly salary, paid in December. [1]
+- Indexation: every January, following the joint committee index; +2.2% in January 2026. [1][2]
+- Meal vouchers: €8 per working day, of which you pay €1.09. [1]
+
+No conflicts found between these sources.
+
+Sources
+[1] Payroll policy Belgium.txt
+[2] Email - Salary indexation January 2026.txt
+[3] Email - Double holiday pay 2026.txt

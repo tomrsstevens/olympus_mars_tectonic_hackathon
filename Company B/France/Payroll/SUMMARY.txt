@@ -1,0 +1,19 @@
+PAYROLL - COMPANY B - FRANCE
+Summary of 2 source documents - click a [number] to open that source.
+
+Document owner: Knowledge team
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+- Salary: paid on the last working day of the month. [1]
+- Mutuelle: Company B pays 60% of the contribution since January 2026. [2]
+
+⚠ CONFLICT - mutuelle contribution
+  The payroll policy says 50%; it was last reviewed in February 2025. [1]
+  The December 2025 email raises it to 60% from January 2026. [2]
+  The email is newer; the policy needs updating.
+
+Sources
+[1] Payroll policy France.txt
+[2] Email - Mutuelle contribution 2026.txt

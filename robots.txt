@@ -1,0 +1,9 @@
+# robots.txt - knowledge management
+# Tectonic Hackathon 2026, SD Worx challenge ("Unlock the Knowledge Within").
+# Everything here is a demo with fictional companies and people, so crawlers and AI agents are welcome.
+
+User-agent: *
+Allow: /
+
+# A plain-language description of the project for AI agents and language models:
+# llms.txt (in the same folder as this file)

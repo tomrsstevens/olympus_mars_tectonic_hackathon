@@ -1,0 +1,17 @@
+WORKING HOURS - COMPANY B - FRANCE
+Summary of 2 source documents - click a [number] to open that source.
+
+Document owner: Knowledge team
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+- Working week: 35 hours. [1]
+- Overtime: the first eight overtime hours a week are paid at +25%, further hours at +50%. [1]
+
+⚠ OUTDATED SOURCE
+  The 2019 version (39 hours with RTT days) is superseded. [2]
+
+Sources
+[1] Working hours France.txt
+[2] Working hours France (2019).txt

@@ -1,0 +1,23 @@
+PAYROLL - COMPANY A - AMERICA
+Summary of 3 source documents - click a [number] to open that source.
+
+Document owner: Knowledge team
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+- Pay schedule: biweekly, every other Friday, by direct deposit; 26 paydays in 2026. [1][2]
+- Payday on a bank holiday: you are paid the business day before. [2]
+- Hourly staff: timesheets are due by noon on the Monday before each payday. [2]
+- Pay errors: report them within 5 business days of payday; they are fixed in the next payroll. [1]
+- W-2 forms: in the employee portal by January 31. [1]
+
+⚠ CONFLICT - minimum wage
+  The approved payroll policy (reviewed May 2026) sets the minimum wage at $48,000 a year for full-time staff. [1]
+  An undated email with no named sender says the minimum wage was raised to $75,000 a year. [3]
+  Until Payroll Operations (US) confirms the raise, rely on the policy.
+
+Sources
+[1] US Payroll Policy.txt
+[2] Email - 2026 payroll calendar.txt
+[3] payrollemail.txt

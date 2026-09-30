@@ -1,0 +1,19 @@
+PAYROLL - COMPANY B - AMERICA
+Summary of 2 source documents - click a [number] to open that source.
+
+Document owner: Knowledge team
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+- Pay schedule: semi-monthly, on the 15th and on the last day of the month; the new provider does not change it. [1][2]
+- Direct deposit is mandatory; bank detail changes at least ten days before a payday. [1]
+- Expenses are reimbursed with the next regular payroll. [1]
+- New payroll provider from the October 15, 2026 payroll: accept the invitation (week of September 28)
+  and check your bank details in the new portal before October 5. [2]
+
+ⓘ The same provider email is also filed under Working hours ("FW New payroll provider").
+
+Sources
+[1] Payroll handbook (US).txt
+[2] Email - New payroll provider.txt

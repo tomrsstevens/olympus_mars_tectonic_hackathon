@@ -1,0 +1,18 @@
+VACATION DAYS - COMPANY B - BELGIUM
+Summary of 2 source documents - click a [number] to open that source.
+
+Document owner: Knowledge team
+Status: Verified
+Last updated: 2026-09-30
+Last reviewed: 2026-09-30
+
+- Legal vacation: 20 days a year (full-time). [1]
+- ADV days: 12 a year, because the working week is 40 hours instead of 38. [1]
+- Collective closure: offices are closed from Monday 20 July to Friday 31 July 2026;
+  21 July is a public holiday, so the closure uses nine vacation days. [2]
+
+No conflicts found between these sources.
+
+Sources
+[1] Holiday policy Belgium.txt
+[2] Email - Collective closure summer 2026.txt
